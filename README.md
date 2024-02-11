@@ -9,7 +9,7 @@ Main assumption is to enable the user easily operate on the json digraphs repres
 The core of the diblob is the data structure, where every operation is managed by `GraphManager`. Operations are performed on `Node`, `Edge` and `Blob` components. 
 
 
-<Picture placeholder>
+<img width="518" alt="image" src="https://github.com/Zeleczek-kodowniczek/Diblob/assets/72871011/1e5394ca-ac78-4e3c-90f7-948bb9a338be">
 
 
 ## `Node`
