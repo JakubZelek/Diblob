@@ -39,5 +39,6 @@ Diblob representation in digraph.
 
 Diblobs which share the same graph creates tree-based structure. Moreover, entire graph is also treat as diblob (root):
 
-<img width="762" alt="image" src="https://github.com/Zeleczek-kodowniczek/Diblob/assets/72871011/0d8a98d7-360d-4069-a218-f0e614c8931c">
+<img width="760" alt="image" src="https://github.com/Zeleczek-kodowniczek/Diblob/assets/72871011/04efed64-f957-4feb-81f9-ac2af97a2034">
+
 
