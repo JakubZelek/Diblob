@@ -23,8 +23,12 @@ Node representation in digraph.
 Incoming/outgoing nodes could be redundant (pseudographs are also considered).
 
 ## `Edge`
-Edge representation in digraph. Path is keep as list, which enables treat chain of nodes with `outgoing_dim` and `incoming_dim` in {0,1}.
+Edge representation in digraph.
  - `path` - list of node ids (solution enable treat entire path as the edge).
+
+Path is keep as list, which enables treat chain of nodes with `outgoing_dim` and `incoming_dim` in {0, 1}:
+<img width="521" alt="image" src="https://github.com/Zeleczek-kodowniczek/Diblob/assets/72871011/048eaba4-e8f2-4940-9312-c2edb72804b7">
+
 
 ## `Diblob`
 Diblob representation in digraph. 
@@ -36,6 +40,4 @@ Diblob representation in digraph.
 Diblobs which share the same graph creates tree-based structure. Moreover, entire graph is also treat as diblob (root):
 
 <img width="762" alt="image" src="https://github.com/Zeleczek-kodowniczek/Diblob/assets/72871011/0d8a98d7-360d-4069-a218-f0e614c8931c">
-
-
 
