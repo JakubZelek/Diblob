@@ -34,6 +34,8 @@ Diblob representation in digraph.
 - `nodes` - node ids (or diblob ids) embedded in diblob.
 
 Diblobs which share the same graph creates tree-based structure. Moreover, entire graph is also treat as diblob (root):
-  <img width="763" alt="image" src="https://github.com/Zeleczek-kodowniczek/Diblob/assets/72871011/eab6e966-f7d4-4d21-b0cc-1bb3c20bd5ca">
+
+<img width="762" alt="image" src="https://github.com/Zeleczek-kodowniczek/Diblob/assets/72871011/0d8a98d7-360d-4069-a218-f0e614c8931c">
+
 
 
