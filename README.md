@@ -2,7 +2,7 @@
 # Diblob
 
 Diblob is the package for digraphs (pseudographs) computations.
-Main assumption is to enable the user easily operate on the json digraphs representations. Package enables treat subgraph as poin or subraphs extractation for future work. 
+Main assumption is enable easily operate on the json digraphs representations. Package enables treat subgraph as poin or subraphs extractation for future work. 
 Package based on basic python structures (not depend on non-basic packages)
 
 # Installation
@@ -24,7 +24,7 @@ Node representation in digraph.
 - `incoming_nodes` - list of node ids (tails of the edges for which node is head).
 - `outgoing_nodes` - list of node ids (heads of the edges for which node is tail).
 
-Incoming/outgoing nodes could be redundant (pseudographs are also considered).
+Incoming / outgoing nodes can be redundant (pseudographs are also considered).
 
 ## `Edge`
 Edge representation in digraph.
@@ -46,4 +46,67 @@ Diblobs which share the same graph creates tree-based structure. Moreover, entir
 
 <img width="760" alt="image" src="https://github.com/Zeleczek-kodowniczek/Diblob/assets/72871011/04efed64-f957-4feb-81f9-ac2af97a2034">
 
+## Examples
 
+Digraph data structure can be created as following:
+```python
+from diblob import DigraphManager
+
+digraph_dict = {"B0": {"A": ["B", "F"],
+                       "B": ["C", "D", "E"],
+                       "C": ["D"],
+                       "D": ["E", "F", "G"],
+                       "E": ["F", "A"],
+                       "F": ["G", "B"],
+                       "G": ["A", "D"]}}
+
+digraph_manager = DigraphManager(digraph_dict)
+```
+Note that if we have digraph in json file, we can load it using `json.load`.
+Let's create in the digraph blobs `B1`, `B2` with following nodes: `A`, `B` and `C`, `D`, `E`:
+
+```python
+from diblob import tools
+
+digraph_manager.gather('B1', {'A', 'B'})
+digraph_manager.gather('B2', {'C', 'D', 'E'})
+
+tools.display_digraph_json(digraph_manager('B0'))
+```
+The result is following (display_digraph is helper function for printing human friendly python output): 
+```json
+{
+"B0": {
+    "B1": {
+        "B": [{"B2": ["C", "D", "E"]}],
+        "A": ["B", {"B0": ["F"]}],
+    },
+    "B2": {
+        "C": ["D"],
+        "D": ["E", {"B0": ["F", "G"]}],
+        "E": [{"B0": ["F"]}, {"B1": ["A"]}],
+    },
+    "F": ["G", {"B1": ["B"]}],
+    "G": [{"B1": ["A"]}, {"B2": ["D"]}],
+},
+}
+```
+Now let's compress created diblobs to points: 
+```python
+digraph_manager.compress_diblob('B1')
+digraph_manager.compress_diblob('B2')
+
+tools.display_digraph(digraph_manager('B0'))
+```
+The result is as follows:
+```json
+{
+"B0": {
+    "F": ["G", "B1"],
+    "B2": ["F", "B1", "G", "F"],
+    "B1": ["F", "B2", "B2", "B2"],
+    "G": ["B1", "B2"],
+},
+}
+```
+## Features documentation
