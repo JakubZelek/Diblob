@@ -27,6 +27,7 @@ Edge representation in digraph.
  - `path` - list of node ids.
 
 Path is keep as list, which enables treat chain of node ids as edge:
+
 <img width="521" alt="image" src="https://github.com/Zeleczek-kodowniczek/Diblob/assets/72871011/048eaba4-e8f2-4940-9312-c2edb72804b7">
 
 
