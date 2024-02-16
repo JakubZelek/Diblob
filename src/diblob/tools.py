@@ -3,7 +3,7 @@ Tools used in diblob.
 """
 import json
 
-def display_digraph_json(d: dict, indent=0):
+def display_digraph(d: dict, indent=0):
     """
     Print digraph json in the human friendly format
     """
