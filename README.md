@@ -109,4 +109,5 @@ The result is as follows:
 },
 }
 ```
-## Features documentation
+## Diblob documentation
+Check out the [Diblob documentation](src.diblob/README.md) for more details.
