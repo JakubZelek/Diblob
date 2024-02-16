@@ -58,28 +58,28 @@ class Node:
         return len(self.outgoing_nodes)
 
 
-    def add_incoming(self, node_id):
+    def _add_incoming(self, node_id):
         """
         Ads new node_id to incoming nodes list.
         """
         self.incoming_nodes.append(node_id)
 
 
-    def add_outgoing(self, node_id):
+    def _add_outgoing(self, node_id):
         """
         Adds new node_id to outgoing nodes list.
         """
         self.outgoing_nodes.append(node_id)
 
 
-    def rm_incoming(self, node_id):
+    def _rm_incoming(self, node_id):
         """
         Removes node_id from incoming nodes list.
         """
         self.incoming_nodes.remove(node_id)
 
 
-    def rm_outgoing(self, node_id):
+    def _rm_outgoing(self, node_id):
         """
         Removes node_id from outgoing nodes list.
         """
@@ -106,9 +106,9 @@ class Edge:
         self.path = path
 
 
-    def reverse(self):
+    def _reverse(self):
         """
-        Reverses path of the edge.
+        Reverses path of the edge
         """
         self.path = self.path[::-1]
 
@@ -129,11 +129,11 @@ class Edge:
 
 class Diblob:
     """
-    Subgraph of the digraph.
+    Subgraph of the graph.
 
     Args: 
         diblob_id (str): unique id of the diblob.
-        children (set): set of diblob_ids which is the subgraphs of the considered digraph.
+        children (set): set of diblob_ids which is the subgraphs of the considered graph.
         nodes (list[str]): list of node_ids which are located in the diblob.
         parent_id (str): id of the diblob in which the considered diblob is contained. 
     """
@@ -149,14 +149,14 @@ class Diblob:
         self.nodes = nodes
 
 
-    def add_children(self, *child_ids):
+    def _add_children(self, *child_ids):
         """
         Adds diblob_ids to the diblob.
         """
         self.children |= set(child_ids)
 
 
-    def add_nodes(self, *node_ids):
+    def _add_nodes(self, *node_ids):
         """
         Adds node_ids to the diblob.
         """

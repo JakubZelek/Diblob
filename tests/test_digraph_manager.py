@@ -1,3 +1,4 @@
+# pylint: disable=redefined-outer-name
 """
 Diblob digraph_manager tests. 
 """
@@ -62,19 +63,19 @@ def test_empty_graph(digraph_dict):
 
     assert set(digraph_manager.diblobs) == {'B0', 'B1', 'B2'}
     assert digraph_manager('B0') == {"B0": {"B1": {"C": [],
-                                                       "D": [{"B0": ["E"]}],
-                                                       "B2": {"A": ["B", {"B1": ["D"]}],
-                                                              "B": [{"B1": ["C"]}]}},
-                                                 "E": []}}
+                                                   "D": [{"B0": ["E"]}],
+                                                   "B2": {"A": ["B", {"B1": ["D"]}],
+                                                          "B": [{"B1": ["C"]}]}},
+                                                   "E": []}}
 
     digraph_manager.reverse_edges(*[edge[0] for edge in digraph_manager.edges.values()])
 
     assert set(digraph_manager.edges) == {('B', 'A'), ('C','B'), ('D', 'A'), ('E', 'D')}
     assert digraph_manager('B0') == {"B0": {"B1": {"C": [{"B2": ["B"]}],
-                                                       "D": [{"B2": ["A"]}],
-                                                       "B2": {"A": [],
-                                                              "B": ["A"]}},
-                                                 "E": [{"B1": ["D"]}]}}
+                                                   "D": [{"B2": ["A"]}],
+                                                   "B2": {"A": [],
+                                                          "B": ["A"]}},
+                                                   "E": [{"B1": ["D"]}]}}
 
     with pytest.raises(RemoveRootDiblobException):
         digraph_manager.flatten('B0')
@@ -218,10 +219,10 @@ def test_decouple(digraph_dict):
     digraph_manager.decouple_edges()
 
     assert digraph_manager('B0') == {'B0': {'dec3(A,F)': ['F'],
-                                          'F': [], 
-                                          'dec1(A,F)': ['F'], 
-                                          'dec2(A,F)': ['F'], 
-                                          'A': ['F', 'dec1(A,F)', 'dec2(A,F)', 'dec3(A,F)']}}
+                                            'F': [], 
+                                            'dec1(A,F)': ['F'], 
+                                            'dec2(A,F)': ['F'], 
+                                            'A': ['F', 'dec1(A,F)', 'dec2(A,F)', 'dec3(A,F)']}}
 
 
 def test_diblob_compression(digraph_dict):
@@ -235,16 +236,16 @@ def test_diblob_compression(digraph_dict):
     digraph_manager.sorted()
 
     assert digraph_manager("B0") == {'B0': {'F': ['B2'],
-                                          'D': ['F'], 
-                                          'B2': ['D', 'D', 'E', 'F'],
-                                          'E': ['F']}}
+                                            'D': ['F'], 
+                                            'B2': ['D', 'D', 'E', 'F'],
+                                            'E': ['F']}}
     digraph_manager.decouple_edges()
 
     assert digraph_manager("B0") == {'B0': {'B2': ['D', 'E', 'F', 'dec1(B2,D)'],
-                                          'D': ['F'], 
-                                          'dec1(B2,D)': ['D'], 
-                                          'E': ['F'], 
-                                          'F': ['B2']}}
+                                            'D': ['F'], 
+                                            'dec1(B2,D)': ['D'], 
+                                            'E': ['F'], 
+                                            'F': ['B2']}}
 
 
 def test_digraph_injection(digraph_dict):
@@ -272,12 +273,12 @@ def test_digraph_injection(digraph_dict):
     digraph_manager.inject(DigraphManager(injection_dict), 'E')
     digraph_manager.sorted()
 
-    assert digraph_manager('B0') == {'B0': {'C': ['D'], 
-                                          'F': ['G'], 
-                                          'B0`': {'C`': ['A`', 'B`', {'B0': ['F']}], 
-                                                  'B`': ['C`', {'B0': ['F']}],
-                                                  'A`': ['B`', 'C`', {'B0': ['F']}]}, 
-                                          'B': ['C'], 
-                                          'A': ['B'], 
-                                          'D': [{'B0`': ['A`', 'B`', 'C`']}], 
-                                          'G': ['A']}}
+    assert digraph_manager('B0') == {'B0': {'C': ['D'],
+                                            'F': ['G'], 
+                                            'B0`': {'C`': ['A`', 'B`', {'B0': ['F']}], 
+                                                    'B`': ['C`', {'B0': ['F']}],
+                                                    'A`': ['B`', 'C`', {'B0': ['F']}]}, 
+                                            'B': ['C'], 
+                                            'A': ['B'], 
+                                            'D': [{'B0`': ['A`', 'B`', 'C`']}], 
+                                            'G': ['A']}}

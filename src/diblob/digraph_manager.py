@@ -1,3 +1,5 @@
+# pylint: disable=protected-access
+
 from diblob.components import Edge, Node, Diblob
 from diblob.tools import list_groupby
 from diblob.exceptions import (CollisionException,
@@ -37,7 +39,7 @@ class DigraphManager:
 
         if not isinstance(digraph_dict_representation[root_diblob_id], dict):
             raise InvalidDigraphDictException("Delivered dict should contains diblob_id\
-                                             which cover entire digraph!")
+                                             which cover entire graph!")
 
         self.diblobs = {}
         self.nodes = {}
@@ -118,14 +120,14 @@ class DigraphManager:
         return repr_dict
 
 
-    def construct(self, diblob_id, digraph_dict_representation,
+    def construct(self, diblob_id, graph_dict_representation, 
                   gather_dict, edges_to_connect):
         """ 
-        Used in __init__. Constructs digraphs based on delivered dictionary.
+        Used in __init__. Constructs graphs based on delivered dictionary.
         """
         gather_dict[diblob_id] = []
 
-        sub_digraph_dict_representation = digraph_dict_representation[diblob_id]
+        sub_digraph_dict_representation = graph_dict_representation[diblob_id]
 
 
         for key in sub_digraph_dict_representation:
@@ -405,7 +407,7 @@ class DigraphManager:
 
     def remove_edges(self, *edges):
         """
-        Removes edges from the digraph.
+        Removes edges from the graph.
         """
 
         for edge in edges:
@@ -421,7 +423,7 @@ class DigraphManager:
 
     def connect_nodes(self, *edge_ids):
         """
-        Adds edges in existing digraph structure.
+        Adds edges in existing graph structure.
         """
 
         for edge_id in edge_ids:
@@ -433,7 +435,7 @@ class DigraphManager:
 
     def remove_nodes(self, *nodes):
         """
-        Removes nodes from the digraph.
+        Removes nodes from the graph.
         """
 
         for node in nodes:
@@ -451,7 +453,7 @@ class DigraphManager:
 
     def add_nodes(self, *node_ids, diblob_id=None):
         """
-        Adds nodes to the digraph structure.
+        Adds nodes to the graph structure.
         """
 
         if not diblob_id:
@@ -516,8 +518,8 @@ class DigraphManager:
         self.edges |= digraph_manager.edges
 
         self[injected_diblob_root_id].parent_id = node.diblob_id
-        self[node.diblob_id].add_children(injected_diblob_root_id)
-        self[node.diblob_id].add_nodes(injected_diblob_root_id)
+        self[node.diblob_id]._add_children(injected_diblob_root_id)
+        self[node.diblob_id]._add_nodes(injected_diblob_root_id)
 
 
         for injected_node_id in digraph_manager[injected_diblob_root_id].nodes:
@@ -565,7 +567,7 @@ class DigraphManager:
 
     def sorted(self):
         """
-        Sort components of the digraph structure.
+        Sort components of the graph structure.
         """
         self.edges = dict(sorted(self.edges.items()))
         self.nodes = dict(sorted(self.nodes.items()))
