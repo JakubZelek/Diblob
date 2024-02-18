@@ -58,28 +58,28 @@ class Node:
         return len(self.outgoing_nodes)
 
 
-    def _add_incoming(self, node_id):
+    def _add_incoming(self, node_id: str):
         """
-        Ads new node_id to incoming nodes list.
+        Adds new node_id to incoming nodes list.
         """
         self.incoming_nodes.append(node_id)
 
 
-    def _add_outgoing(self, node_id):
+    def _add_outgoing(self, node_id: str):
         """
         Adds new node_id to outgoing nodes list.
         """
         self.outgoing_nodes.append(node_id)
 
 
-    def _rm_incoming(self, node_id):
+    def _rm_incoming(self, node_id: str):
         """
         Removes node_id from incoming nodes list.
         """
         self.incoming_nodes.remove(node_id)
 
 
-    def _rm_outgoing(self, node_id):
+    def _rm_outgoing(self, node_id: str):
         """
         Removes node_id from outgoing nodes list.
         """
@@ -97,20 +97,12 @@ class Edge:
              A -> B with edge [A, B, C, D].
     """
 
-    def __init__(self, 
-                 path: list[str]):
+    def __init__(self, path: list[str]):
 
         if len(path) < 2:
             raise InvalidPathException("Edge path should be of the length > 2!")
 
         self.path = path
-
-
-    def _reverse(self):
-        """
-        Reverses path of the edge
-        """
-        self.path = self.path[::-1]
 
 
     def get_tail_and_head(self):
@@ -122,10 +114,15 @@ class Edge:
 
     def get_id(self):
         """
-        Returns edge_id (used by DigraphManager).
+        Returns edge_id.
         """
         return (self.path[0], self.path[-1])
 
+    def _reverse(self):
+        """
+        Reverses path of the edge
+        """
+        self.path = self.path[::-1]
 
 class Diblob:
     """
@@ -149,14 +146,14 @@ class Diblob:
         self.nodes = nodes
 
 
-    def _add_children(self, *child_ids):
+    def _add_children(self, *child_ids: tuple[str]):
         """
         Adds diblob_ids to the diblob.
         """
         self.children |= set(child_ids)
 
 
-    def _add_nodes(self, *node_ids):
+    def _add_nodes(self, *node_ids: tuple[str]):
         """
         Adds node_ids to the diblob.
         """
