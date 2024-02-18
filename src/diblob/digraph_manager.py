@@ -120,14 +120,14 @@ class DigraphManager:
         return repr_dict
 
 
-    def construct(self, diblob_id: str, graph_dict_representation: dict,
+    def construct(self, diblob_id: str, digraph_dict_representation: dict,
                   gather_dict: dict, edges_to_connect: list[str]):
         """ 
         Used in __init__. Constructs graphs based on delivered dictionary.
         """
         gather_dict[diblob_id] = []
 
-        sub_digraph_dict_representation = graph_dict_representation[diblob_id]
+        sub_digraph_dict_representation = digraph_dict_representation[diblob_id]
 
 
         for key in sub_digraph_dict_representation:
