@@ -110,4 +110,4 @@ The result is as follows:
 }
 ```
 ## Diblob documentation
-Check out the [Diblob documentation](src.diblob/README.md) for more details.
+Check out the [Diblob documentation](https://github.com/Zeleczek-kodowniczek/Diblob/blob/main/src/diblob/README.md) for more details.
