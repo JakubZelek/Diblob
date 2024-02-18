@@ -78,7 +78,13 @@ digraph_dict = {
 
 graph_manager = GraphManager(digraph_dict)
 ```
-In effect, following digraph is created:
+In effect, following digraph has been created:
 
 <img width="551" alt="image" src="https://github.com/Zeleczek-kodowniczek/Diblob/assets/72871011/16aeb5fe-78ff-42d5-93a2-77e6d4a94a1f">
 
+### Fields
+- `diblobs` - dict where key, value equals diblob_id, Diblob object respecively (keep *B0*, *B1*, *B2* in the picture above).
+- `nodes` - dict where key, value equals node_id,  Node object respectively (keep *A*, *B*, *C*, *D*, *E*, *F*, *G* in the picture above).
+- `edges` - dict where key, value equals node_id,  list of Edge objects respectively. List is used because multiple edges with the same  
+            head and tail are enabled (keeps edges *AB*, *AF*, *BC*, *BD*, *BE*, *CD*, *DE*, *DF*, *DG*, *FB*, *FG*, *GA* in the picture above).
+- `root_diblob_id` - root blob_id which represents entire digraphs .Even if digraph doesn't have diblobs inside, entire graphs is treat as diblob. (*B0* in the picture above).
