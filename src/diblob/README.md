@@ -195,4 +195,25 @@ returns
 },
 }
 ```
-Note that otgoing edges are saved. For cutting them use `cut_outgoing_edges` from tools.
+Note that outgoing edges are saved. For cutting them use `cut_outgoing_edges` from tools.
+
+# Factory 
+Factory enables creation other types of digraphs based on delivered digraph. It's decoupled with GraphManager, because GraphManager working with it's own structure. 
+<br><br>
+Edge digraph and Biparite digraph can be created just for digraphs with only root diblobs.
+
+## methods:
+- `generate_edge_digraph` enable edge digraph creation (edges becase nodes):
+<img width="993" alt="image" src="https://github.com/Zeleczek-kodowniczek/Diblob/assets/72871011/eb9e5376-f7c3-4788-a551-2738f8b5c26b">
+In the example default `delimiter` and `reduce_value` was used. Delimiter add separator between node_ids during node_id creation in edge graph, reduce value enable cutting delimiter (for example if we use generate_edge_digraph second time in the graph on the right in the picture, we get for example node with id = "A|C|C|B" with default reduce value = 0, but "A|C|B" if reduce_value = 1 is set).
+
+- `generate_bipartite_digraph` enable bipartitie digraph creation:
+  
+<img width="862" alt="image" src="https://github.com/Zeleczek-kodowniczek/Diblob/assets/72871011/c79954a3-f357-4aaa-9aa2-cb4f29df7eaf">
+
+## Aghoritms
+In order to working with diblob explanation, DFS, DFSA and Dikstra alghoritms are created. 
+For more details check out alghoritms.py directly in the code.
+
+## Tools
+Tools for diblob which are used for user priendly printing or cutting nodes in json. Tools don't interfere with diblob class, justr working with output dict. 
