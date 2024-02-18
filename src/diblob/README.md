@@ -96,15 +96,15 @@ For imformations about functions arguments, lets check out the code.
 - `get_diblob_descendants` - returns set of diblob id's which are in the diblob subtree, where delivered node_id is the root.
 - `get_diblob_edges` - returns set of all edge ids, set of incoming edge ids, set of outgoing edge ids and set of diblob descendants with considered diblob_id as side effect.
 - `is_diblob_ancestor` - validates if diblob with id=potential_ancestors is the ancestor of the diblob with delivered diblob_id.
-- `flatten` - removes diblobs with delivered ids (removing diblob doesn't implify nodes deletion. Nodes are transfered to the diblob direct ancestor). Root diblob cannot be flattened.
+- `flatten` - removes diblobs with delivered ids (removing diblob doesn't implify nodes deletion. Nodes are transfered to the diblob direct ancestor). Root diblob cannot be flattened:
 
   <img width="813" alt="image" src="https://github.com/Zeleczek-kodowniczek/Diblob/assets/72871011/2a6e0532-34b7-4dd2-ae34-d16311aba2e1">
 
-- `gather` - accumulate nodes and diblobs into new diblob.
+- `gather` - accumulate nodes and diblobs into new diblob:
   
 <img width="882" alt="image" src="https://github.com/Zeleczek-kodowniczek/Diblob/assets/72871011/132d9ba1-5a09-4e2d-8578-5ef550da6d74">
 
-- `compress_diblob` - compress diblob into single node.
+- `compress_diblob` - compress diblob into single node:
 
 <img width="947" alt="image" src="https://github.com/Zeleczek-kodowniczek/Diblob/assets/72871011/2bca3160-1a4d-45b7-9a5a-2fabcc08cc39">
 
@@ -114,14 +114,22 @@ For imformations about functions arguments, lets check out the code.
 - `connect_nodes` - creates edges from pair of node_ids.
 - `remove_nodes` - remove nodes from the digraph (uses objects, no edge_ids).
 - `add_nodes` - add nodes to the digraph (optionally diblob_id can be choosen. Set as root_id if not delivered).
-- `compress_edges` - compress edges in the digraph (accumulates nodes with len(incoming_nodes) = len)outgoing_nodes) = 1).
+- `compress_edges` - compress edges in the digraph (accumulates nodes with len(incoming_nodes) = len)outgoing_nodes) = 1):
   
 <img width="596" alt="image" src="https://github.com/Zeleczek-kodowniczek/Diblob/assets/72871011/e1447975-5ad3-49b0-96d9-d9c17131063e">
 
-- `decompress_edges` - reverse operation to compress_edges.
+- `decompress_edges` - reverse operation to compress_edges:
   
 <img width="605" alt="image" src="https://github.com/Zeleczek-kodowniczek/Diblob/assets/72871011/4b066d0f-3e08-46e2-bd61-e0742ecf10d4">
 
-- `inject` - takes other DigraphManager and inject it to the digraph in place of the selected node.
+- `inject` - takes other DigraphManager and inject it to the digraph in place of the selected node:
 
-<img width="919" alt="image" src="https://github.com/Zeleczek-kodowniczek/Diblob/assets/72871011/87697524-cf44-462c-bcc3-3a16320a7b18">
+<img width="915" alt="image" src="https://github.com/Zeleczek-kodowniczek/Diblob/assets/72871011/869d7c50-8791-4286-9f24-2964295f2c19">
+
+- `decouple_edges` - convert pseudograph to digraph by edge decoupling:
+
+<img width="814" alt="image" src="https://github.com/Zeleczek-kodowniczek/Diblob/assets/72871011/23f69820-fcc8-4b44-880c-b92c49c521b3">
+
+- `reverse_edges` - reverse selected edges (use object, not node_id).
+- `sorted` - sort all fields of the digraph structure.
+  
