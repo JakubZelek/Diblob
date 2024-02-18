@@ -17,7 +17,7 @@ The core of the diblob is the data structure, where every operation is managed b
 <img width="518" alt="image" src="https://github.com/Zeleczek-kodowniczek/Diblob/assets/72871011/1e5394ca-ac78-4e3c-90f7-948bb9a338be">
 
 
-## `Node`
+## Node
 Node representation in digraph. Components cosists of following fields:
 
 - `node_id` - id of the node used by `GraphManager`. 
@@ -27,11 +27,11 @@ Node representation in digraph. Components cosists of following fields:
 
 Incoming / outgoing nodes can be redundant (pseudographs are also considered).
 
-## `Edge`
+## Edge
 Edge representation in digraph.
  - `path` - list of node ids.
 
-## `Diblob`
+## Diblob
 Diblob representation in digraph. 
 - `diblob_id` - id of the diblob used by `GraphManager`.
 - `parent_id` - id of the diblob which is the parent for diblob.
@@ -119,7 +119,7 @@ In entire package methods started with '_' are used by GraphManager (indirectly)
 # Components
 Components are used by GraphManager for data structure creation. Data Structure consist of instances of classes `Node`, `Edge` and `Diblob`.
 
-## `Node`
+## Node
 Node representation in digraph.
 Incoming / outgoing nodes can be redundant (pseudographs are also considered).
 ### Fields
@@ -129,7 +129,7 @@ Incoming / outgoing nodes can be redundant (pseudographs are also considered).
 - `outgoing_nodes` - list of node ids (heads of the edges for which node is tail).
 
 ### Methods
-- `get_incoming_edges(self)` - returns set of edge ids where the node is head.
+- `get_incoming_edges(self)` returns set of edge ids where the node is head.
 - `get_outgoing_edges(self)` - returns set of edge ids where the node is tail.
 - `incoming_dim(self)` - number of incoming nodes.
 - `outgoing_dim(self)` - number of outgoing nodes.
@@ -138,7 +138,7 @@ Incoming / outgoing nodes can be redundant (pseudographs are also considered).
 - `_rm_incoming(self, node_id: str)` - removes node_id from incoming_nodes.
 - `_rm_outgoing(self, node_id: str)` - removes node_id from outgoing_nodes.
 
-## `Edge`
+## Edge
 Edge representation in digraph. Enable to treat some kinds of paths as one edge.
 
 ### Fields
@@ -152,7 +152,7 @@ Path is keep as list, which enables treat chain of node ids as edge (used for ex
 - `get_tail_and_head(self)` -  returns tail and head of the edge.
 - `get_id(self)` - returns edge_id (head, tail).
 - `_reverse(self)` - reverse path field.
-## `Diblob`
+## Diblob
 
 ### Fields
 Diblob representation in digraph. 
@@ -193,27 +193,50 @@ In effect, following digraph has been created:
 <img width="551" alt="image" src="https://github.com/Zeleczek-kodowniczek/Diblob/assets/72871011/16aeb5fe-78ff-42d5-93a2-77e6d4a94a1f">
 
 ### Fields
-- `diblobs` - dict where key, value equals diblob_id, Diblob object respectively (keep *B0*, *B1*, *B2* in the picture above).
-- `nodes` - dict where key, value equals node_id,  Node object respectively (keep *A*, *B*, *C*, *D*, *E*, *F*, *G* in the picture above).
+- `diblobs` - dict where key, value equals diblob_id, Diblob object respectively (keep `B0`, `B1`, `B2` in the picture above).
+- `nodes` - dict where key, value equals node_id,  Node object respectively (keep `A`, `B`, `C`, `D`, `E`, `F`, `G` in the picture above).
 - `edges` - dict where key, value equals node_id,  list of Edge objects respectively. List is used because multiple edges with the same  
-            head and tail are enabled (keeps edges *AB*, *AF*, *BC*, *BD*, *BE*, *CD*, *DE*, *DF*, *DG*, *FB*, *FG*, *GA* in the picture above).
-- `root_diblob_id` - root blob_id which represents entire digraphs .Even if digraph doesn't have diblobs inside, entire graphs is treat as diblob. (*B0* in the picture above).
+            head and tail are enabled (keeps edges `AB`, `AF`, `BC`, `BD`, `BE`, `CD`, `DE`, `DF`, `DG`, `FB`, `FG`, `GA` in the picture above).
+- `root_diblob_id` - root blob_id which represents entire digraphs .Even if digraph doesn't have diblobs inside, entire graphs is treat as diblob.
+  (`B0` in the picture above).
 
 ### Methods
-- `construct` - helper function used in `__init__`.
-- `get_diblobs_common_ancestor` - returns id of common ancestor of diblobs (diblobs have tree structure).
-- `get_diblob_descendants` - returns set of diblob id's which are in the diblob subtree, where delivered node_id is the root.
-- `get_diblob_edges` - returns set of all edge ids, set of incoming edge ids, set of outgoing edge ids and set of diblob descendants with considered diblob_id as side effect.
-- `is_diblob_ancestor` - validates if diblob with id=potential_ancestors is the ancestor of the diblob with delivered diblob_id.
-- `flatten` - removes diblobs with delivered ids (removing diblob doesn't implies nodes deletion. Nodes are transferred to the diblob direct ancestor). Root diblob cannot be flattened:
+- `construct(self, diblob_id: str, graph_dict_representation: dict, gather_dict: dict, edges_to_connect: list[str])`
+  - `diblob_id: str` - id of the considered Diblob (recurrsion).
+  - `graph_dict_representation: dict` - delivered dict digraph representation.
+  - `gather_dict: dict` - dict for reccursion result accumulation.
+  - `edges_to_connect: list[str]` - edges to connect during digraph building.
+<br /><br />  helper function used in `__init__` for diblob construction using reccursion.
+- `get_diblobs_common_ancestor(self, diblob_id1: str, diblob_id2: str)`
+  - `diblob_id1: str` - diblob_id of the first Diblob.
+  - `diblob_id2: str` - diblob_id of the second Diblob.
+<br /><br /> returns diblob_id of the common ancestor of diblobs using delivered blob_ids (Diblobs have tree structure).
+- `get_diblob_descendants(self, diblob_id: str)`
+  - `diblob_id: str` - diblob_id of the Diblob for which its ancestor is being searched.
+<br /><br /> returns set of diblob_ids which are in the subtree for which Diblob with diblob_id is the root.
+- `get_diblob_edges(self, diblob_id: str)`
+  - `diblob_id: str` - diblob_id of considered Diblob.
+<br /><br />  returns set of all edge ids, set of incoming edge ids, set of outgoing edge ids and set of diblob descendants with considered diblob_id as side effect.
+- `is_diblob_ancestor(self, potential_ancestors: set, diblob_id: str)`
+  - `potential_ancestors: set` - set of blob_ids of potential ancestors.
+  - `diblob_id: str` - considered Diblob.
+<br /><br />  validates if diblob with diblob_id in potential_ancestors is the ancestor of the diblob.
+- `flatten(self, *diblob_ids: tuple[str])`
+  - `*diblob_ids: tuple[str]` - blob_ids which will be flatten.
+<br /><br />  removes diblobs with delivered ids (removing diblob doesn't implies nodes deletion. Nodes are transferred to the diblob's direct ancestor). Root diblob cannot be flattened:
 
   <img width="813" alt="image" src="https://github.com/Zeleczek-kodowniczek/Diblob/assets/72871011/2a6e0532-34b7-4dd2-ae34-d16311aba2e1">
 
-- `gather` - accumulate nodes and diblobs into new diblob:
+- `gather(self, new_diblob_id: str, node_ids: set[str])`
+  - `new_diblob_id: str` - diblob_id of the diblob which will be created.
+  - `node_ids: set[str]` - node_ids which will be placed in the new Diblob.
+ <br /><br /> accumulate nodes and diblobs into new diblob:
   
 <img width="882" alt="image" src="https://github.com/Zeleczek-kodowniczek/Diblob/assets/72871011/132d9ba1-5a09-4e2d-8578-5ef550da6d74">
 
-- `compress_diblob` - compress diblob into single node:
+- `compress_diblob(self, diblob_id: str)`
+  - `diblob_id: str` - diblob_id of Diblob which will be compressed.
+ <br /><br /> compress diblob into single node:
 
 <img width="947" alt="image" src="https://github.com/Zeleczek-kodowniczek/Diblob/assets/72871011/2bca3160-1a4d-45b7-9a5a-2fabcc08cc39">
 
