@@ -91,7 +91,7 @@ In effect, following digraph has been created:
 
 ### Methods
 For imformations about functions arguments, lets check out the code. 
-- `construct` - helper function used in __init__.
+- `construct` - helper function used in `__init__`.
 - `get_diblobs_common_ancestor` - returns id of comon ancestor of diblobs (diblobs have tree structure).
 - `get_diblob_descendants` - returns set of diblob id's which are in the diblob subtree, where delivered node_id is the root.
 - `get_diblob_edges` - returns set of all edge ids, set of incoming edge ids, set of outgoing edge ids and set of diblob descendants with considered diblob_id as side effect.
@@ -100,6 +100,25 @@ For imformations about functions arguments, lets check out the code.
 
   <img width="813" alt="image" src="https://github.com/Zeleczek-kodowniczek/Diblob/assets/72871011/2a6e0532-34b7-4dd2-ae34-d16311aba2e1">
 
-- `gather` - accumulate nodes and diblobs in new diblob.
+- `gather` - accumulate nodes and diblobs into new diblob.
   
 <img width="882" alt="image" src="https://github.com/Zeleczek-kodowniczek/Diblob/assets/72871011/132d9ba1-5a09-4e2d-8578-5ef550da6d74">
+
+- `compress_diblob` - compress diblob into single node.
+
+<img width="947" alt="image" src="https://github.com/Zeleczek-kodowniczek/Diblob/assets/72871011/2bca3160-1a4d-45b7-9a5a-2fabcc08cc39">
+
+- `merge_edges` - merge edges if they are compatible (head of the first one should equals tail of the second one, and incoming / outgoing edges of the second one should equal 1)
+- `get_multiple_edge_ids` - returns list of edge_ids with every occurence.
+- `remove_edges` - remove edges from the digraph (uses objects, no edge_ids)
+- `connect_nodes` - creates edges from pair of node_ids.
+- `remove_nodes` - remove nodes from the digraph (uses objects, no edge_ids).
+- `add_nodes` - add nodes to the digraph (optionally diblob_id can be choosen. Set as root_id if not delivered).
+- `compress_edges` - compress edges in the digraph (accumulates nodes with len(incoming_nodes) = len)outgoing_nodes) = 1).
+  
+<img width="596" alt="image" src="https://github.com/Zeleczek-kodowniczek/Diblob/assets/72871011/e1447975-5ad3-49b0-96d9-d9c17131063e">
+
+- `decompress_edges` - reverse operation to compress_edges.
+  
+<img width="605" alt="image" src="https://github.com/Zeleczek-kodowniczek/Diblob/assets/72871011/4b066d0f-3e08-46e2-bd61-e0742ecf10d4">
+
