@@ -122,3 +122,6 @@ For imformations about functions arguments, lets check out the code.
   
 <img width="605" alt="image" src="https://github.com/Zeleczek-kodowniczek/Diblob/assets/72871011/4b066d0f-3e08-46e2-bd61-e0742ecf10d4">
 
+- `inject` - takes other DigraphManager and inject it to the digraph in place of the selected node.
+
+<img width="919" alt="image" src="https://github.com/Zeleczek-kodowniczek/Diblob/assets/72871011/87697524-cf44-462c-bcc3-3a16320a7b18">
