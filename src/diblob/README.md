@@ -133,3 +133,66 @@ For imformations about functions arguments, lets check out the code.
 - `reverse_edges` - reverse selected edges (use object, not node_id).
 - `sorted` - sort all fields of the digraph structure.
   
+GraphManager has also magic mathods which enables comfortable work on the structure:
+- `__setitem__` enable during implementation new methods with easy components setting:
+  
+```python
+"""
+Note that structure maintaince is covered by other methods. __set_item__ is used just for methods implementation.
+For instance digraph_manager[('A', 'B')] = AB not implify that nodes 'A' and 'B' are connected in structure.
+Edge object is just registered by GraphManager.
+
+If you want to create correct edge use connect_nodes method  on structure without Edge.
+"""
+  
+
+
+digraph_dict = {"B0": {}}
+digraph_manager = DigraphManager(digraph_dict)
+ 
+A = Node(node_id='A', diblob_id='B0', incoming_nodes=[], outgoing_nodes=[])
+B = Node(node_id='B', diblob_id='B0', incoming_nodes=[], outgoing_nodes=[])
+B1 = Diblob(children={}, diblob_id='B1', nodes=['A', 'B'], parent_id='B0')
+AB = Edge(['A', 'B'])
+ 
+digraph_manager['A'] = A
+digraph_manager['B'] = B
+digraph_manager['B1'] = B1
+digraph_manager[('A', 'B')] = AB
+```
+
+- `__get_item__` enable getting object by it's registered id.
+- `__contains__` check if specific id is registered by diblob.
+- `__call__` can be used for diblob extraction. For example following code:
+```python
+digraph_dict = {
+                "B0": {
+                    "B2": {
+                        "E": [{"B0": ["F"]}, {"B1": ["A"]}],
+                        "C": ["D"],
+                        "D": ["E", {"B0": ["F", "G"]}],
+                    },
+                    "G": [{"B1": ["A"]}, {"B2": ["D"]}],
+                    "F": ["G", {"B1": ["B"]}],
+                    "B1": {
+                        "B": [{"B2": ["C", "D", "E"]}],
+                        "A": ["B", {"B0": ["F"]}],
+                    },
+                },
+                }
+
+digraph_manager = DigraphManager(digraph_dict)
+tools.display_digraph(digraph_manager('B1'))
+
+```
+returns 
+
+```json
+{
+"B1": {
+    "B": [{"B2": ["C", "D", "E"]}],
+    "A": ["B", {"B0": ["F"]}],
+},
+}
+```
+Note that otgoing edges are saved. For cutting them use `cut_outgoing_edges` from tools.
