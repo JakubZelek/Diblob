@@ -359,13 +359,19 @@ Factory enables creation other types of digraphs based on delivered digraph. It'
 Edge digraph and Biparite digraph can be created just for digraphs with only root diblobs.
 
 ## methods:
-- `generate_edge_digraph` enable edge digraph creation (edges because nodes):
+- `generate_edge_digraph(digraph_manager: DigraphManager, reduce_value: int = 0, delimiter: str = '|')`
+  - `digraph_manager: DigraphManager` - DigraphManager which is the base for edge digraph contruction.
+  - `reduce_value: int` - reduce number of delimiter.
+  - `delimiter: str` - delimiter which will be used for node_id from edge creation.
+<br><br> enable edge digraph creation (edges because nodes):
 <img width="1022" alt="image" src="https://github.com/Zeleczek-kodowniczek/Diblob/assets/72871011/151e5f9b-35ee-4f43-8613-3c908880efd0">
 
 In the example default `delimiter` and `reduce_value` was used. Delimiter add separator between node_ids during node_id creation in edge graph, reduce value enable cutting delimiter (for example if we use generate_edge_digraph second time in the graph on the right in the picture, we get for instance the node with node_id = `"A|C|C|B"` with default reduce value = 0, but `"A|C|B"` if reduce_value = 1 is set).
 
-- `generate_bipartite_digraph` enable bipartite digraph creation:
-  
+- `generate_bipartite_digraph(digraph_manager: DigraphManager)`
+  - `digraph_manager: DigraphManager` - DigraphManager which is the base for bipartite digraph contruction.
+ <br><br> enable bipartite digraph creation:
+
 <img width="1028" alt="image" src="https://github.com/Zeleczek-kodowniczek/Diblob/assets/72871011/1f3a686e-c1ef-4a41-8fa2-58a67a83fd12">
 
 
