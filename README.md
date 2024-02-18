@@ -275,9 +275,10 @@ In effect, following digraph has been created:
 - `inject(self, digraph_manager: GraphManager, node_id: str)`
   - `digraph_manager: DiraphManager` - dighraph which will be injected.
   - `node_id` - node_id of the node which will be replaced by digraph.
-<br /><br /> takes other DigraphManager and inject it to the digraph in place of the selected node:
+<br /><br /> takes other DigraphManager andreplace node by it:
 
-<img width="915" alt="image" src="https://github.com/Zeleczek-kodowniczek/Diblob/assets/72871011/869d7c50-8791-4286-9f24-2964295f2c19">
+<img width="1075" alt="image" src="https://github.com/Zeleczek-kodowniczek/Diblob/assets/72871011/614e76e0-9a33-46d0-9439-397f29324d11">
+
 
 - `decouple_edges(self)` - convert pseudograph to digraph by edge decoupling:
 
@@ -359,12 +360,14 @@ Edge digraph and Biparite digraph can be created just for digraphs with only roo
 
 ## methods:
 - `generate_edge_digraph` enable edge digraph creation (edges because nodes):
-<img width="993" alt="image" src="https://github.com/Zeleczek-kodowniczek/Diblob/assets/72871011/eb9e5376-f7c3-4788-a551-2738f8b5c26b">
-In the example default `delimiter` and `reduce_value` was used. Delimiter add separator between node_ids during node_id creation in edge graph, reduce value enable cutting delimiter (for example if we use generate_edge_digraph second time in the graph on the right in the picture, we get for example node with id = "A|C|C|B" with default reduce value = 0, but "A|C|B" if reduce_value = 1 is set).
+<img width="1022" alt="image" src="https://github.com/Zeleczek-kodowniczek/Diblob/assets/72871011/151e5f9b-35ee-4f43-8613-3c908880efd0">
+
+In the example default `delimiter` and `reduce_value` was used. Delimiter add separator between node_ids during node_id creation in edge graph, reduce value enable cutting delimiter (for example if we use generate_edge_digraph second time in the graph on the right in the picture, we get for instance the node with node_id = `"A|C|C|B"` with default reduce value = 0, but `"A|C|B"` if reduce_value = 1 is set).
 
 - `generate_bipartite_digraph` enable bipartite digraph creation:
   
-<img width="862" alt="image" src="https://github.com/Zeleczek-kodowniczek/Diblob/assets/72871011/c79954a3-f357-4aaa-9aa2-cb4f29df7eaf">
+<img width="1028" alt="image" src="https://github.com/Zeleczek-kodowniczek/Diblob/assets/72871011/1f3a686e-c1ef-4a41-8fa2-58a67a83fd12">
+
 
 ## Aghoritms
 In order to working with diblob explanation, DFS, DFSA and Dijkstra algorithms are created. 
