@@ -241,32 +241,52 @@ In effect, following digraph has been created:
   - `diblob_id: str` - diblob_id of Diblob which will be compressed.
  <br /><br /> compress diblob into single node:
 
-<img width="947" alt="image" src="https://github.com/Zeleczek-kodowniczek/Diblob/assets/72871011/2bca3160-1a4d-45b7-9a5a-2fabcc08cc39">
+<img width="1061" alt="image" src="https://github.com/Zeleczek-kodowniczek/Diblob/assets/72871011/b212cd6a-dda5-4cbc-963a-d7b4d40cc054">
 
-- `merge_edges` - merge edges if they are compatible (head of the first one should equals tail of the second one, and incoming / outgoing edges of the second one should equal 1)
-- `get_multiple_edge_ids` - returns list of edge_ids with every occurrence.
-- `remove_edges` - remove edges from the digraph (uses objects, no edge_ids)
-- `connect_nodes` - creates edges from pair of node_ids.
-- `remove_nodes` - remove nodes from the digraph (uses objects, no edge_ids).
-- `add_nodes` - add nodes to the digraph (optionally diblob_id can be chosen. Set as root_id if not delivered).
-- `compress_edges` - compress edges in the digraph (accumulates nodes with len(incoming_nodes) = len)outgoing_nodes) = 1):
+
+- `merge_edges(self, edge_1: Edge, edge_2: Edge)`
+  - `edge_1: Edge` - first edge which will be merged.
+  - `edge_2: Edge` - second edge which will be merged.
+ <br /><br /> merge edges if they are compatible (head of the first one should equals tail of the second one, and incoming / outgoing edges of the second one should equal 1)
+- `get_multiple_edge_ids(self, *edge_ids : tuple[str])`
+  - `*edge_ids : tuple[str]` - edge_ids for which operation will be performed.
+<br /><br /> returns list of edge_ids with every occurrence.
+- `remove_edges(self, *edges: tuple[Edge])`
+  - `*edges: tuple[Edge]` - edges which will be removed.
+<br /><br /> remove edges from the digraph (uses objects, no edge_ids).
+- `connect_nodes(self, *edge_ids: tuple[str])`
+  - `*edge_ids: tuple[str]` - pair or node ids for wchich edge will be created.
+<br /><br /> creates edges from pair of node_ids.
+- `remove_nodes(self, *nodes: tuple[Node])`
+  - `*nodes: tuple[Node]` - nodes which will be removed.
+<br /><br /> remove nodes from the digraph (uses objects, no edge_ids).
+- `add_nodes(self, *node_ids: tuple[str], diblob_id: str=None)`
+  - `*node_ids: tuple[str]` - node_ids which will be added.
+  - `diblob_id: str=None` - diblob_id of the diblob where nodes will be placed.
+<br /><br /> add nodes to the digraph (optionally diblob_id can be chosen. Set as root_id if not delivered).
+- `compress_edges(self)` - compress edges in the digraph (accumulates nodes with len(incoming_nodes) = len)outgoing_nodes) = 1):
   
 <img width="596" alt="image" src="https://github.com/Zeleczek-kodowniczek/Diblob/assets/72871011/e1447975-5ad3-49b0-96d9-d9c17131063e">
 
-- `decompress_edges` - reverse operation to compress_edges:
+- `decompress_edges(self)` - reverse operation to compress_edges:
   
 <img width="605" alt="image" src="https://github.com/Zeleczek-kodowniczek/Diblob/assets/72871011/4b066d0f-3e08-46e2-bd61-e0742ecf10d4">
 
-- `inject` - takes other DigraphManager and inject it to the digraph in place of the selected node:
+- `inject(self, digraph_manager: GraphManager, node_id: str)`
+  - `digraph_manager: DiraphManager` - dighraph which will be injected.
+  - `node_id` - node_id of the node which will be replaced by digraph.
+<br /><br /> takes other DigraphManager and inject it to the digraph in place of the selected node:
 
 <img width="915" alt="image" src="https://github.com/Zeleczek-kodowniczek/Diblob/assets/72871011/869d7c50-8791-4286-9f24-2964295f2c19">
 
-- `decouple_edges` - convert pseudograph to digraph by edge decoupling:
+- `decouple_edges(self)` - convert pseudograph to digraph by edge decoupling:
 
 <img width="814" alt="image" src="https://github.com/Zeleczek-kodowniczek/Diblob/assets/72871011/23f69820-fcc8-4b44-880c-b92c49c521b3">
 
-- `reverse_edges` - reverse selected edges (use object, not node_id).
-- `sorted` - sort all fields of the digraph structure.
+- `reverse_edges(self, *edges: tuple[Edge])`
+- `*edges: tuple[Edge]` - edges which will be reversed.
+<br /><br />  reverse selected edges (use object, not node_id).
+- `sorted(self)` - sort all fields of the digraph structure.
   
 GraphManager has also magic methods which enables comfortable work on the structure:
 - `__setitem__` enable during implementation new methods with easy components setting:
