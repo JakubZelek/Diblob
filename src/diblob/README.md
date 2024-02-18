@@ -80,6 +80,5 @@ graph_manager = GraphManager(digraph_dict)
 ```
 In effect, following digraph is created:
 
-<img width="542" alt="image" src="https://github.com/Zeleczek-kodowniczek/Diblob/assets/72871011/ad2e9df0-1d96-4ad7-bf4d-e4c0be6a6b83">
-
+<img width="551" alt="image" src="https://github.com/Zeleczek-kodowniczek/Diblob/assets/72871011/16aeb5fe-78ff-42d5-93a2-77e6d4a94a1f">
 
