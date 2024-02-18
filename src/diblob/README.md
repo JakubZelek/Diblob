@@ -88,3 +88,18 @@ In effect, following digraph has been created:
 - `edges` - dict where key, value equals node_id,  list of Edge objects respectively. List is used because multiple edges with the same  
             head and tail are enabled (keeps edges *AB*, *AF*, *BC*, *BD*, *BE*, *CD*, *DE*, *DF*, *DG*, *FB*, *FG*, *GA* in the picture above).
 - `root_diblob_id` - root blob_id which represents entire digraphs .Even if digraph doesn't have diblobs inside, entire graphs is treat as diblob. (*B0* in the picture above).
+
+### Methods
+For imformations about functions arguments, lets check out the code. 
+- `construct` - helper function used in __init__.
+- `get_diblobs_common_ancestor` - returns id of comon ancestor of diblobs (diblobs have tree structure).
+- `get_diblob_descendants` - returns set of diblob id's which are in the diblob subtree, where delivered node_id is the root.
+- `get_diblob_edges` - returns set of all edge ids, set of incoming edge ids, set of outgoing edge ids and set of diblob descendants with considered diblob_id as side effect.
+- `is_diblob_ancestor` - validates if diblob with id=potential_ancestors is the ancestor of the diblob with delivered diblob_id.
+- `flatten` - removes diblobs with delivered ids (removing diblob doesn't implify nodes deletion. Nodes are transfered to the diblob direct ancestor). Root diblob cannot be flattened.
+
+  <img width="813" alt="image" src="https://github.com/Zeleczek-kodowniczek/Diblob/assets/72871011/2a6e0532-34b7-4dd2-ae34-d16311aba2e1">
+
+- `gather` - accumulate nodes and diblobs in new diblob.
+  
+<img width="882" alt="image" src="https://github.com/Zeleczek-kodowniczek/Diblob/assets/72871011/132d9ba1-5a09-4e2d-8578-5ef550da6d74">
