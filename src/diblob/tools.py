@@ -3,7 +3,7 @@ Tools used in diblob.
 """
 import json
 
-def display_digraph_json(d: dict, indent=0):
+def display_digraph(d: dict, indent=0):
     """
     Print digraph json in the human friendly format
     """
@@ -24,9 +24,9 @@ def display_digraph_json(d: dict, indent=0):
     print('}')
 
 
-def cut_incoming_edges(digraph_manager, diblob_id: str):
+def cut_outgoing_edges(digraph_manager, diblob_id: str):
     """
-    Extract digraph from diblob and cut incoming edges. 
+    Extract digraph from diblob and cut outgoing edges. 
     Representation can be used for working with cleaned subgraphs.
     """
 

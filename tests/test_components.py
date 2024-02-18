@@ -1,3 +1,4 @@
+# pylint: disable=protected-access
 """
 Diblob component tests (components controlled by DigraphManager).
 """
@@ -25,11 +26,11 @@ def test_node():
     assert node.incoming_dim() == 4
     assert node.outgoing_dim() == 7
 
-    node.add_incoming('new_id')
-    node.rm_incoming('1')
+    node._add_incoming('new_id')
+    node._rm_incoming('1')
 
-    node.add_outgoing('new_id')
-    node.rm_outgoing('1')
+    node._add_outgoing('new_id')
+    node._rm_outgoing('1')
 
     assert node.incoming_nodes == ['2', '3', '3', 'new_id']
     assert node.outgoing_nodes == ['1', '2', '3', '4', '5', '6', 'new_id']
@@ -50,12 +51,12 @@ def test_edge():
 
     assert edge.get_tail_and_head() == ('1', '3')
 
-    edge.reverse()
+    edge._reverse()
 
     assert edge.get_tail_and_head() == ('3', '1')
     assert edge.get_id() == ('3', '1')
 
-    edge.reverse()
+    edge._reverse()
     assert edge.get_id() == ('1', '3')
 
 
@@ -69,8 +70,8 @@ def test_diblob():
                 children={'B1', 'B2', 'B3'},
                 parent_id='parent_diblob_id')
 
-    diblob.add_children('B4', 'B5')
-    diblob.add_nodes('4', '5', '6', '7')
+    diblob._add_children('B4', 'B5')
+    diblob._add_nodes('4', '5', '6', '7')
 
     assert diblob.children == {'B1', 'B2', 'B3', 'B4', 'B5'}
     assert diblob.nodes == {'1', '2', '3', '4', '5', '6', '7'}

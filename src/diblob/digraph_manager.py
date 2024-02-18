@@ -1,15 +1,17 @@
+# pylint: disable=protected-access
+
 from diblob.components import Edge, Node, Diblob
 from diblob.tools import list_groupby
 from diblob.exceptions import (CollisionException,
-                                  RemoveRootDiblobException,
-                                  DiblobKeyAlreadyExistsException,
-                                  InvalidDiblobId,
-                                  RootDiblobException,
-                                  DiblobGatherException,
-                                  EdgeAdditionException,
-                                  InvalidDigraphDictException,
-                                  InvalidConstructionJSON,
-                                  CommonResourcesInjection)
+                               RemoveRootDiblobException,
+                               DiblobKeyAlreadyExistsException,
+                               InvalidDiblobId,
+                               RootDiblobException,
+                               DiblobGatherException,
+                               EdgeAdditionException,
+                               InvalidDigraphDictException,
+                               InvalidConstructionJSON,
+                               CommonResourcesInjection)
 
 
 class DigraphManager:
@@ -37,7 +39,7 @@ class DigraphManager:
 
         if not isinstance(digraph_dict_representation[root_diblob_id], dict):
             raise InvalidDigraphDictException("Delivered dict should contains diblob_id\
-                                             which cover entire digraph!")
+                                             which cover entire graph!")
 
         self.diblobs = {}
         self.nodes = {}
@@ -118,14 +120,14 @@ class DigraphManager:
         return repr_dict
 
 
-    def construct(self, diblob_id, digraph_dict_representation,
-                  gather_dict, edges_to_connect):
+    def construct(self, diblob_id: str, graph_dict_representation: dict,
+                  gather_dict: dict, edges_to_connect: list[str]):
         """ 
-        Used in __init__. Constructs digraphs based on delivered dictionary.
+        Used in __init__. Constructs graphs based on delivered dictionary.
         """
         gather_dict[diblob_id] = []
 
-        sub_digraph_dict_representation = digraph_dict_representation[diblob_id]
+        sub_digraph_dict_representation = graph_dict_representation[diblob_id]
 
 
         for key in sub_digraph_dict_representation:
@@ -152,7 +154,7 @@ class DigraphManager:
 
 
 
-    def get_diblobs_common_ancestor(self, diblob_id1, diblob_id2):
+    def get_diblobs_common_ancestor(self, diblob_id1: str, diblob_id2: str):
         """
         Returns common ancestor diblob_id for diblob_id1 and diblob_id2.
         """
@@ -247,7 +249,7 @@ class DigraphManager:
         return False
 
 
-    def flatten(self, *diblob_ids: str):
+    def flatten(self, *diblob_ids: tuple[str]):
         """
         Removes diblobs from the digraph_manager and flat part of the digraph included in diblobs.
 
@@ -286,7 +288,7 @@ class DigraphManager:
             self.diblobs.pop(diblob_id)
 
 
-    def gather(self, new_diblob_id: str, node_ids: set):
+    def gather(self, new_diblob_id: str, node_ids: set[str]):
         """
         Creates new diblob based on delivered node_ids.
         node_ids must be inside in the same parent diblob.
@@ -328,7 +330,7 @@ class DigraphManager:
         parent_diblob.nodes -= node_ids
 
 
-    def compress_diblob(self, diblob_id):
+    def compress_diblob(self, diblob_id: str):
         """
         Compress diblob to node.
         """
@@ -363,14 +365,14 @@ class DigraphManager:
 
 
 
-    def merge_edges(self, edge_1, edge_2):
+    def merge_edges(self, edge_1: Edge, edge_2: Edge):
         """
         Merges two edges.
         """
 
         if edge_1.path != edge_2.path:
             if edge_1.path[-1] != edge_2.path[0]:
-                raise EdgeAdditionException(f"List is incompatible with the edge:\
+                raise EdgeAdditionException(f"Edges are incompatible:\
                                                 {edge_1.path}, {edge_2.path}")
             node_id = edge_1.path[-1]
 
@@ -393,7 +395,7 @@ class DigraphManager:
             self[(tail, head)] = Edge(path)
 
 
-    def get_multiple_edge_ids(self, *edge_ids):
+    def get_multiple_edge_ids(self, *edge_ids : tuple[str]):
         """
         Returns edge_ids as many times occurred in DigraphManager list of edges.
         """
@@ -403,9 +405,9 @@ class DigraphManager:
         return result
 
 
-    def remove_edges(self, *edges):
+    def remove_edges(self, *edges: tuple[Edge]):
         """
-        Removes edges from the digraph.
+        Removes edges from the graph.
         """
 
         for edge in edges:
@@ -419,9 +421,9 @@ class DigraphManager:
                 self.edges.pop((tail, head))
 
 
-    def connect_nodes(self, *edge_ids):
+    def connect_nodes(self, *edge_ids: tuple[str]):
         """
-        Adds edges in existing digraph structure.
+        Adds edges in existing graph structure.
         """
 
         for edge_id in edge_ids:
@@ -431,9 +433,9 @@ class DigraphManager:
             self[(tail,head)] = Edge(path=[tail, head])
 
 
-    def remove_nodes(self, *nodes):
+    def remove_nodes(self, *nodes: tuple[Node]):
         """
-        Removes nodes from the digraph.
+        Removes nodes from the graph.
         """
 
         for node in nodes:
@@ -449,9 +451,9 @@ class DigraphManager:
             self.nodes.pop(node_id)
 
 
-    def add_nodes(self, *node_ids, diblob_id=None):
+    def add_nodes(self, *node_ids: tuple[str], diblob_id: str=None):
         """
-        Adds nodes to the digraph structure.
+        Adds nodes to the graph structure.
         """
 
         if not diblob_id:
@@ -484,7 +486,7 @@ class DigraphManager:
 
     def decompress_edges(self):
         """
-        Reversed operation to compress_edges.
+        Reverse operation to compress_edges.
         """
 
         for edge_lst in list(self.edges.values()):
@@ -498,7 +500,7 @@ class DigraphManager:
 
 
 
-    def inject(self, digraph_manager, node_id):
+    def inject(self, digraph_manager, node_id: str):
         """
         Replace node by diblob.
         """
@@ -516,8 +518,8 @@ class DigraphManager:
         self.edges |= digraph_manager.edges
 
         self[injected_diblob_root_id].parent_id = node.diblob_id
-        self[node.diblob_id].add_children(injected_diblob_root_id)
-        self[node.diblob_id].add_nodes(injected_diblob_root_id)
+        self[node.diblob_id]._add_children(injected_diblob_root_id)
+        self[node.diblob_id]._add_nodes(injected_diblob_root_id)
 
 
         for injected_node_id in digraph_manager[injected_diblob_root_id].nodes:
@@ -552,7 +554,7 @@ class DigraphManager:
                     self.connect_nodes((tail, decouple_node_id), (decouple_node_id, head))
 
 
-    def reverse_edges(self, *edges):
+    def reverse_edges(self, *edges: tuple[Edge]):
         """
         reverse delivered edges (not edge_id because of pseudograph properties).
         """
@@ -565,7 +567,7 @@ class DigraphManager:
 
     def sorted(self):
         """
-        Sort components of the digraph structure.
+        Sort components of the graph structure.
         """
         self.edges = dict(sorted(self.edges.items()))
         self.nodes = dict(sorted(self.nodes.items()))

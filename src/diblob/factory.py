@@ -11,7 +11,9 @@ class DiblobFactory:
     """
 
     @staticmethod
-    def generate_edge_digraph(digraph_manager, reduce_value = 0, delimiter = '|'):
+    def generate_edge_digraph(digraph_manager: DigraphManager,
+                              reduce_value: int = 0,
+                              delimiter: str = '|'):
         """
         Generates L(G) based on delivered digraph_manager.
         """
@@ -75,7 +77,7 @@ class DiblobFactory:
 
 
     @staticmethod
-    def generate_bipartite_digraph(digraph_manager):
+    def generate_bipartite_digraph(digraph_manager: DigraphManager):
         """
         Generates BG(G) digraph (with directed arcs).
         """
