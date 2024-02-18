@@ -377,8 +377,38 @@ In the example default `delimiter` and `reduce_value` was used. Delimiter add se
 
 ## Aghoritms
 In order to working with diblob explanation, DFS, DFSA and Dijkstra algorithms are created. 
-For more details check out algorithms.py directly in the code.
 
+- DFS - Deep first search alghoritm.
+- DFSA - modification of the DFS (with the nodes visit time)
+- DijkstraAlgorithm - the shortes paths between node and the others.
+
+alghoritms use duck typing. We need deliver GraphManager instance during creation. Then use `run` methon on selected node_id (in DijkstraAlgorithm cost_function as a dict can be also delivered)
+
+Example of run:
+
+ <br><br>
+```python
+from diblob import DigraphManager
+from diblob.algorithms import DFS, DFSA, DijkstraAlgorithm
+
+digraph_dict = {"B0": {"A": ["B", "F"],
+                       "B": ["C", "D", "E"],
+                       "C": ["D"],
+                       "D": ["E", "F", "G"],
+                       "E": ["F", "A"],
+                       "F": ["G", "B"],
+                       "G": ["A", "D"]}}
+
+digraph_manager = DigraphManager(digraph_dict)
+
+dfs = DFS(digraph_manager)
+dfsa = DFSA(digraph_manager)
+da = DijkstraAlgorithm(digraph_manager)
+
+dfs.run('A')
+dfsa.run('B')
+da.run('C')
+```
 ## Tools
 Tools for diblob which are used for user friendly printing or cutting nodes in json. Tools don't interfere with diblob class, just working with output dict. 
 
