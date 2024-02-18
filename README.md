@@ -382,7 +382,7 @@ In order to working with diblob explanation, DFS, DFSA and Dijkstra algorithms a
 - DFSA - modification of the DFS (with the nodes visit time)
 - DijkstraAlgorithm - the shortes paths between node and the others.
 
-alghoritms use duck typing. We need deliver GraphManager instance during creation. Then use `run` methon on selected node_id (in DijkstraAlgorithm cost_function as a dict can be also delivered)
+alghoritms use duck typing. We need deliver GraphManager instance during creation. Then use `run` methon on selected node_id (in DijkstraAlgorithm `cost_function` as a dict can be also delivered)
 
 Example of run:
 
@@ -413,7 +413,7 @@ da.run('C')
 Tools for diblob which are used for user friendly printing or cutting nodes in json.
 Tools deliver following functions:
 - `display_digraph(d: dict, indent=0)` - enable printing dict in json format (work as print).
-- `cut_outgoing_edges(digraph_manager, diblob_id: str)` - cut from the dict outgoing nodes of the Digraph (can be used with GraphManager __call__)
+- `cut_outgoing_edges(digraph_manager, diblob_id: str)` - cut from the dict outgoing nodes of the Digraph (can be used with GraphManager `__call__`)
 - `sort_outgoing_nodes_in_dict_repr(node_lst: list)` - sort outgoing nodes.
 <br> Example: `['C', 'B', 'A', {'G1': ['A', 'C', 'B']}] -> ['A', 'B', 'C', {'G1': ['A', 'B', 'C']}]`
 - `list_groupby` - works like groupby from itertools (no need data to be sorted)
