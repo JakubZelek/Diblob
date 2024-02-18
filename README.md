@@ -190,7 +190,8 @@ graph_manager = GraphManager(digraph_dict)
 ```
 In effect, following digraph has been created:
 
-<img width="551" alt="image" src="https://github.com/Zeleczek-kodowniczek/Diblob/assets/72871011/16aeb5fe-78ff-42d5-93a2-77e6d4a94a1f">
+<img width="486" alt="image" src="https://github.com/Zeleczek-kodowniczek/Diblob/assets/72871011/72ecd1b0-d966-40be-96f3-80cbbcbbdaf0">
+
 
 ### Fields
 - `diblobs` - dict where key, value equals diblob_id, Diblob object respectively (keep `B0`, `B1`, `B2` in the picture above).
