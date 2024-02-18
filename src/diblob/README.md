@@ -2,15 +2,15 @@
 Diblob package consists of following modules:
 - `components` - used by graph manager (node, edge, diblob).
 - `digraph_manager` - core of the proposed data structure.
-- `factory` - exampes of graph_manager used for more complicated digraphs craetion.
-- `alghorimts` - examples of use diblob with basic digraphs alghoritms like DFS, DFSA (modified DFS) and Dijkstra alghorimt.
+- `factory` - examples of graph_manager used for more complicated digraphs creation.
+- `algorithms` - examples of use diblob with basic digraphs algorithms like DFS, DFSA (modified DFS) and Dijkstra algorithm.
 - `exceptions` - used in modules.
 - `tools` - for comfortable work with digraphs.
 
 In entire package methods started with '_' are used by GraphManager (indirectly).
 
 # Components
-Componenst are used by GraphManager for data structure creation. Data Structure consist of instances of classes `Node`, `Edge` and `Diblob`.
+Components are used by GraphManager for data structure creation. Data Structure consist of instances of classes `Node`, `Edge` and `Diblob`.
 
 ## `Node`
 Node representation in digraph.
@@ -32,7 +32,7 @@ Incoming / outgoing nodes can be redundant (pseudographs are also considered).
 - `_rm_outgoing(self, node_id: str)` - removes node_id from outgoing_nodes.
 
 ## `Edge`
-Edge representation in digraph. Enable treateing some kinds of paths as one edge.
+Edge representation in digraph. Enable to treat some kinds of paths as one edge.
 
 ### Fields
 
@@ -57,8 +57,8 @@ Diblob representation in digraph.
 - `_add_children(self, *child_ids: tuple[str])` - adds diblob_ids to the diblob.
 - `_add_nodes(self, *node_ids: tuple[str])` - adds node_ids to the diblob.
 # Digraph Manager
-Digraph Manager is responsible for data structure managment. Is the core of entire package. 
-DigrahmManager instance creation require digraph dict representation. For instance: 
+Digraph Manager is responsible for data structure management. Is the core of entire package. 
+DigraphManager instance creation require digraph dict representation. For instance: 
 ```python
 digraph_dict = {
                "B0": {
@@ -83,20 +83,19 @@ In effect, following digraph has been created:
 <img width="551" alt="image" src="https://github.com/Zeleczek-kodowniczek/Diblob/assets/72871011/16aeb5fe-78ff-42d5-93a2-77e6d4a94a1f">
 
 ### Fields
-- `diblobs` - dict where key, value equals diblob_id, Diblob object respecively (keep *B0*, *B1*, *B2* in the picture above).
+- `diblobs` - dict where key, value equals diblob_id, Diblob object respectively (keep *B0*, *B1*, *B2* in the picture above).
 - `nodes` - dict where key, value equals node_id,  Node object respectively (keep *A*, *B*, *C*, *D*, *E*, *F*, *G* in the picture above).
 - `edges` - dict where key, value equals node_id,  list of Edge objects respectively. List is used because multiple edges with the same  
             head and tail are enabled (keeps edges *AB*, *AF*, *BC*, *BD*, *BE*, *CD*, *DE*, *DF*, *DG*, *FB*, *FG*, *GA* in the picture above).
 - `root_diblob_id` - root blob_id which represents entire digraphs .Even if digraph doesn't have diblobs inside, entire graphs is treat as diblob. (*B0* in the picture above).
 
 ### Methods
-For imformations about functions arguments, lets check out the code. 
 - `construct` - helper function used in `__init__`.
-- `get_diblobs_common_ancestor` - returns id of comon ancestor of diblobs (diblobs have tree structure).
+- `get_diblobs_common_ancestor` - returns id of common ancestor of diblobs (diblobs have tree structure).
 - `get_diblob_descendants` - returns set of diblob id's which are in the diblob subtree, where delivered node_id is the root.
 - `get_diblob_edges` - returns set of all edge ids, set of incoming edge ids, set of outgoing edge ids and set of diblob descendants with considered diblob_id as side effect.
 - `is_diblob_ancestor` - validates if diblob with id=potential_ancestors is the ancestor of the diblob with delivered diblob_id.
-- `flatten` - removes diblobs with delivered ids (removing diblob doesn't implify nodes deletion. Nodes are transfered to the diblob direct ancestor). Root diblob cannot be flattened:
+- `flatten` - removes diblobs with delivered ids (removing diblob doesn't implies nodes deletion. Nodes are transferred to the diblob direct ancestor). Root diblob cannot be flattened:
 
   <img width="813" alt="image" src="https://github.com/Zeleczek-kodowniczek/Diblob/assets/72871011/2a6e0532-34b7-4dd2-ae34-d16311aba2e1">
 
@@ -109,11 +108,11 @@ For imformations about functions arguments, lets check out the code.
 <img width="947" alt="image" src="https://github.com/Zeleczek-kodowniczek/Diblob/assets/72871011/2bca3160-1a4d-45b7-9a5a-2fabcc08cc39">
 
 - `merge_edges` - merge edges if they are compatible (head of the first one should equals tail of the second one, and incoming / outgoing edges of the second one should equal 1)
-- `get_multiple_edge_ids` - returns list of edge_ids with every occurence.
+- `get_multiple_edge_ids` - returns list of edge_ids with every occurrence.
 - `remove_edges` - remove edges from the digraph (uses objects, no edge_ids)
 - `connect_nodes` - creates edges from pair of node_ids.
 - `remove_nodes` - remove nodes from the digraph (uses objects, no edge_ids).
-- `add_nodes` - add nodes to the digraph (optionally diblob_id can be choosen. Set as root_id if not delivered).
+- `add_nodes` - add nodes to the digraph (optionally diblob_id can be chosen. Set as root_id if not delivered).
 - `compress_edges` - compress edges in the digraph (accumulates nodes with len(incoming_nodes) = len)outgoing_nodes) = 1):
   
 <img width="596" alt="image" src="https://github.com/Zeleczek-kodowniczek/Diblob/assets/72871011/e1447975-5ad3-49b0-96d9-d9c17131063e">
@@ -133,13 +132,13 @@ For imformations about functions arguments, lets check out the code.
 - `reverse_edges` - reverse selected edges (use object, not node_id).
 - `sorted` - sort all fields of the digraph structure.
   
-GraphManager has also magic mathods which enables comfortable work on the structure:
+GraphManager has also magic methods which enables comfortable work on the structure:
 - `__setitem__` enable during implementation new methods with easy components setting:
   
 ```python
 """
-Note that structure maintaince is covered by other methods. __set_item__ is used just for methods implementation.
-For instance digraph_manager[('A', 'B')] = AB not implify that nodes 'A' and 'B' are connected in structure.
+Note that maintaining the structure is covered by other methods. __set_item__ is used just for methods implementation.
+For instance digraph_manager[('A', 'B')] = AB not implies that nodes 'A' and 'B' are connected in structure.
 Edge object is just registered by GraphManager.
 
 If you want to create correct edge use connect_nodes method  on structure without Edge.
@@ -203,17 +202,17 @@ Factory enables creation other types of digraphs based on delivered digraph. It'
 Edge digraph and Biparite digraph can be created just for digraphs with only root diblobs.
 
 ## methods:
-- `generate_edge_digraph` enable edge digraph creation (edges becase nodes):
+- `generate_edge_digraph` enable edge digraph creation (edges because nodes):
 <img width="993" alt="image" src="https://github.com/Zeleczek-kodowniczek/Diblob/assets/72871011/eb9e5376-f7c3-4788-a551-2738f8b5c26b">
 In the example default `delimiter` and `reduce_value` was used. Delimiter add separator between node_ids during node_id creation in edge graph, reduce value enable cutting delimiter (for example if we use generate_edge_digraph second time in the graph on the right in the picture, we get for example node with id = "A|C|C|B" with default reduce value = 0, but "A|C|B" if reduce_value = 1 is set).
 
-- `generate_bipartite_digraph` enable bipartitie digraph creation:
+- `generate_bipartite_digraph` enable bipartite digraph creation:
   
 <img width="862" alt="image" src="https://github.com/Zeleczek-kodowniczek/Diblob/assets/72871011/c79954a3-f357-4aaa-9aa2-cb4f29df7eaf">
 
 ## Aghoritms
-In order to working with diblob explanation, DFS, DFSA and Dikstra alghoritms are created. 
-For more details check out alghoritms.py directly in the code.
+In order to working with diblob explanation, DFS, DFSA and Dijkstra algorithms are created. 
+For more details check out algorithms.py directly in the code.
 
 ## Tools
-Tools for diblob which are used for user priendly printing or cutting nodes in json. Tools don't interfere with diblob class, justr working with output dict. 
+Tools for diblob which are used for user friendly printing or cutting nodes in json. Tools don't interfere with diblob class, just working with output dict. 

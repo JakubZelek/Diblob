@@ -2,12 +2,12 @@
 # Diblob
 
 Diblob is the package for digraphs (pseudographs) computations.
-Main assumption is enable easily operate on the json digraphs representations. Package enables treat subgraph as poin or subraphs extractation for future work. 
+Main assumption is enable easily operate on the json digraphs representations. Package enables treat subgraph as node or subraphs extraction for future work. 
 Package based on basic python structures (not depend on non-basic packages)
 
 # Installation
-- Packego can be installed with pip using `pip install diblob`.
-- Using requirements.txt (packages neccessary just for testing) by `pip install -r equirements.txt`.
+- Package can be installed with pip using `pip install diblob`.
+- Using requirements.txt (packages necessary just for testing) by `pip install -r equirements.txt`.
 
 # Data structure
 
