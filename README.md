@@ -226,14 +226,16 @@ In effect, following digraph has been created:
   - `*diblob_ids: tuple[str]` - blob_ids which will be flatten.
 <br /><br />  removes diblobs with delivered ids (removing diblob doesn't implies nodes deletion. Nodes are transferred to the diblob's direct ancestor). Root diblob cannot be flattened:
 
-  <img width="813" alt="image" src="https://github.com/Zeleczek-kodowniczek/Diblob/assets/72871011/2a6e0532-34b7-4dd2-ae34-d16311aba2e1">
+  <img width="1078" alt="image" src="https://github.com/Zeleczek-kodowniczek/Diblob/assets/72871011/7bc51cff-cecd-4fcc-ba41-80474fda9781">
+
 
 - `gather(self, new_diblob_id: str, node_ids: set[str])`
   - `new_diblob_id: str` - diblob_id of the diblob which will be created.
   - `node_ids: set[str]` - node_ids which will be placed in the new Diblob.
  <br /><br /> accumulate nodes and diblobs into new diblob:
   
-<img width="882" alt="image" src="https://github.com/Zeleczek-kodowniczek/Diblob/assets/72871011/132d9ba1-5a09-4e2d-8578-5ef550da6d74">
+<img width="1056" alt="image" src="https://github.com/Zeleczek-kodowniczek/Diblob/assets/72871011/96e93370-fc6f-4c0d-8002-d5f930dd8e0a">
+
 
 - `compress_diblob(self, diblob_id: str)`
   - `diblob_id: str` - diblob_id of Diblob which will be compressed.
