@@ -414,6 +414,7 @@ Tools for diblob which are used for user friendly printing or cutting nodes in j
 Tools deliver following functions:
 - `display_digraph(d: dict, indent=0)` - enable printing dict in json format (work as print).
 - `cut_outgoing_edges(digraph_manager, diblob_id: str)` - cut from the dict outgoing nodes of the Digraph (can be used with GraphManager __call__)
-- `sort_outgoing_nodes_in_dict_repr(node_lst: list)` - Example: `['C', 'B', 'A', {'G1': ['A', 'C', 'B']}] -> ['A', 'B', 'C', {'G1': ['A', 'B', 'C']}]`
+- `sort_outgoing_nodes_in_dict_repr(node_lst: list)` - sort outgoing nodes.
+<br> Example: `['C', 'B', 'A', {'G1': ['A', 'C', 'B']}] -> ['A', 'B', 'C', {'G1': ['A', 'B', 'C']}]`
 - `list_groupby` - works like groupby from itertools (no need data to be sorted)
 
