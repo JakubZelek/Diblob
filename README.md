@@ -6,8 +6,8 @@ The main assumption is to enable easy operations on JSON representations of digr
 It is based on basic Python structures and does not depend on external packages.
 
 # Installation
-- The package can be installed with pip using the command pip install diblob.
-- For installing packages necessary only for testing, use the command pip install -r requirements.txt.
+- The package can be installed with pip using the command `pip install diblob`.
+- For installing packages necessary only for testing, use the command `pip install -r requirements.txt`.
 
 # Data structure
 
