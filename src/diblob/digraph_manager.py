@@ -1,5 +1,6 @@
 # pylint: disable=protected-access
 
+import json
 from diblob.components import Edge, Node, Diblob
 from diblob.tools import list_groupby
 from diblob.exceptions import (CollisionException,
@@ -118,6 +119,32 @@ class DigraphManager:
                                               outgoing_nodes_grouped_by_diblob.items()
                                               if key != diblob_id]
         return repr_dict
+
+
+
+    def __repr__(self):
+        lines = []
+
+        def display(d, indent=0):
+            for key, value in d.items():
+                lines.append(' ' * indent + f'"{key}": ')
+
+                if isinstance(value, dict):
+                    lines.append('{\n')
+                    display(value, indent + 4)
+                    lines.append(' ' * indent + '},\n')
+
+                elif isinstance(value, list):
+                    lines.append(json.dumps(value) + ',\n')
+
+                else:
+                    lines.append(f'"{value}",\n')
+
+        lines.append('{\n')
+        display(self(self.root_diblob_id), 0)
+        lines.append('}\n')
+
+        return ''.join(lines)
 
 
     def construct(self, diblob_id: str, digraph_dict_representation: dict,
