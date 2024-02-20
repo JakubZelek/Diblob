@@ -197,7 +197,8 @@ graph_manager = GraphManager(digraph_dict)
 ```
 As a result, the following digraph has been created:
 
-<img width="486" alt="image" src="https://github.com/Zeleczek-kodowniczek/Diblob/assets/72871011/72ecd1b0-d966-40be-96f3-80cbbcbbdaf0">
+<img width="469" alt="image" src="https://github.com/Zeleczek-kodowniczek/Diblob/assets/72871011/642c8ca9-027b-47a3-acd2-6775bb359dd9">
+
 
 
 ### Fields
@@ -231,7 +232,8 @@ As a result, the following digraph has been created:
   - `*diblob_ids: tuple[str]`: IDs of the diblobs to be flattened.
 <br /><br /> Flattens the structure by removing diblobs with the provided IDs. Note that removing a diblob does not imply the deletion of its nodes; instead, nodes are transferred to the diblob's direct ancestor. The root diblob cannot be flattened.
 
-  <img width="1078" alt="image" src="https://github.com/Zeleczek-kodowniczek/Diblob/assets/72871011/7bc51cff-cecd-4fcc-ba41-80474fda9781">
+  <img width="966" alt="image" src="https://github.com/Zeleczek-kodowniczek/Diblob/assets/72871011/2fce8b1b-4668-48c6-afe3-1a9849700106">
+
 
 
 - `gather(self, new_diblob_id: str, node_ids: set[str])`
@@ -246,7 +248,7 @@ As a result, the following digraph has been created:
   - `diblob_id: str`: The ID of the Diblob that is to be compressed.
  <br /><br /> This method compresses the specified Diblob into a single node, effectively consolidating its structure for simplified representation:
 
-<img width="1061" alt="image" src="https://github.com/Zeleczek-kodowniczek/Diblob/assets/72871011/b212cd6a-dda5-4cbc-963a-d7b4d40cc054">
+<img width="939" alt="image" src="https://github.com/Zeleczek-kodowniczek/Diblob/assets/72871011/589d935f-0dab-49c7-aec3-22be0be92404">
 
 
 - `merge_edges(self, edge_1: Edge, edge_2: Edge)`
