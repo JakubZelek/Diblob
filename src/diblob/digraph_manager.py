@@ -1,6 +1,8 @@
 # pylint: disable=protected-access
 
 import json
+
+
 from diblob.components import Edge, Node, Diblob
 from diblob.tools import list_groupby
 from diblob.exceptions import (CollisionException,
@@ -33,6 +35,11 @@ class DigraphManager:
 
     def __init__(self, digraph_dict_representation: dict):
 
+        if not isinstance(digraph_dict_representation, dict):
+            raise InvalidDigraphDictException(f"digraph_dict_representation should\
+                                               be of dict type, not\
+                                              {type(digraph_dict_representation)}")
+
         if not digraph_dict_representation:
             raise InvalidDigraphDictException("Delivered dict cannot be empty!")
 
@@ -40,7 +47,7 @@ class DigraphManager:
 
         if not isinstance(digraph_dict_representation[root_diblob_id], dict):
             raise InvalidDigraphDictException("Delivered dict should contains diblob_id\
-                                             which cover entire graph!")
+                                               which cover entire digraph!")
 
         self.diblobs = {}
         self.nodes = {}
@@ -50,7 +57,7 @@ class DigraphManager:
         gather_dict = {}
         edges_to_connect = []
 
-        self.construct(self.root_diblob_id, digraph_dict_representation,
+        self._construct(self.root_diblob_id, digraph_dict_representation,
                        gather_dict, edges_to_connect)
         self.connect_nodes(*edges_to_connect)
 
@@ -67,7 +74,7 @@ class DigraphManager:
             self.gather(diblob_id, set(nodes))
 
 
-    def __setitem__(self, key: str | tuple[str], value: Diblob | Node | Edge) -> None:
+    def __setitem__(self, key: str | tuple[str, str], value: Diblob | Node | Edge) -> None:
 
         if key in set(self.diblobs) | set(self.nodes):
             raise CollisionException('Key should be unique over diblobs | nodes | edges')
@@ -80,9 +87,9 @@ class DigraphManager:
 
         elif isinstance(value, Edge) and isinstance(key, tuple):
 
-            if len(key) != 2 or not (isinstance(key[0], str) and  
+            if len(key) != 2 or not (isinstance(key[0], str) and
                                      isinstance(key[1], str)):
-                raise TypeError(f"The key of the Edge should be tuple[str, str],\
+                raise TypeError(f"The key of the Edge should be of type tuple[str, str],\
                                   not tuple[{type(key[0])},{type(key[1])}]!")
 
             self.edges.setdefault(key, []).append(value)
@@ -92,11 +99,11 @@ class DigraphManager:
                             Diblob, str: Node, tuple: Edge, not {type(key)}: {type(value)}!")
 
 
-    def __getitem__(self, key: str | tuple):
+    def __getitem__(self, key: str | tuple[str, str]):
         return (self.diblobs | self.nodes | self.edges)[key]
 
 
-    def __contains__(self, key: str | tuple):
+    def __contains__(self, key: str | tuple[str, str]):
         return key in set(self.diblobs | self.nodes | self.edges)
 
 
@@ -125,8 +132,8 @@ class DigraphManager:
     def __repr__(self):
         lines = []
 
-        def display(d, indent=0):
-            for key, value in d.items():
+        def display(digraph_dict, indent=0):
+            for key, value in digraph_dict.items():
                 lines.append(' ' * indent + f'"{key}": ')
 
                 if isinstance(value, dict):
@@ -147,21 +154,19 @@ class DigraphManager:
         return ''.join(lines)
 
 
-    def construct(self, diblob_id: str, digraph_dict_representation: dict,
+    def _construct(self, diblob_id: str, digraph_dict_representation: dict,
                   gather_dict: dict, edges_to_connect: list[str]):
         """ 
         Used in __init__. Constructs graphs based on delivered dictionary.
         """
         gather_dict[diblob_id] = []
-
         sub_digraph_dict_representation = digraph_dict_representation[diblob_id]
-
 
         for key in sub_digraph_dict_representation:
             value = sub_digraph_dict_representation[key]
 
             if isinstance(value, dict):
-                self.construct(key, {key: sub_digraph_dict_representation[key]},
+                self._construct(key, {key: sub_digraph_dict_representation[key]},
                                gather_dict, edges_to_connect)
 
             elif isinstance(value, list):
@@ -231,7 +236,7 @@ class DigraphManager:
         descendants_with_diblob_id = self.get_diblob_descendants(diblob_id)
         descendants_with_diblob_id.add(diblob_id)
 
-        edges = set()
+        inside_edges = set()
         incoming_edges = set()
         outgoing_edges = set()
 
@@ -243,7 +248,7 @@ class DigraphManager:
             if tail_diblob_id in descendants_with_diblob_id and\
                head_diblob_id in descendants_with_diblob_id:
 
-                edges.add(edge_id)
+                inside_edges.add(edge_id)
 
             elif tail_diblob_id in descendants_with_diblob_id:
                 outgoing_edges.add(edge_id)
@@ -251,7 +256,7 @@ class DigraphManager:
             elif head_diblob_id in descendants_with_diblob_id:
                 incoming_edges.add(edge_id)
 
-        return edges, incoming_edges, outgoing_edges, descendants_with_diblob_id
+        return inside_edges, incoming_edges, outgoing_edges, descendants_with_diblob_id
 
 
     def is_diblob_ancestor(self, potential_ancestors: set, diblob_id: str):
@@ -276,7 +281,7 @@ class DigraphManager:
         return False
 
 
-    def flatten(self, *diblob_ids: tuple[str]):
+    def flatten(self, *diblob_ids: tuple[str, ...]):
         """
         Removes diblobs from the digraph_manager and flat part of the digraph included in diblobs.
 
@@ -290,7 +295,7 @@ class DigraphManager:
 
         invalid_ids = set(diblob_ids) - set(self.diblobs)
         if invalid_ids:
-            raise InvalidDiblobId(f"cannot flat objects with id in {invalid_ids}")
+            raise InvalidDiblobId(f"Digraph doesn't contain diblobs with IDs in {invalid_ids} !")
 
 
         for diblob_id in diblob_ids:
@@ -422,7 +427,7 @@ class DigraphManager:
             self[(tail, head)] = Edge(path)
 
 
-    def get_multiple_edge_ids(self, *edge_ids : tuple[str]):
+    def get_multiple_edge_ids(self, *edge_ids : tuple[str, ...]):
         """
         Returns edge_ids as many times occurred in DigraphManager list of edges.
         """
@@ -432,7 +437,7 @@ class DigraphManager:
         return result
 
 
-    def remove_edges(self, *edges: tuple[Edge]):
+    def remove_edges(self, *edges: tuple[Edge, ...]):
         """
         Removes edges from the graph.
         """
@@ -448,7 +453,7 @@ class DigraphManager:
                 self.edges.pop((tail, head))
 
 
-    def connect_nodes(self, *edge_ids: tuple[str]):
+    def connect_nodes(self, *edge_ids: tuple[str, ...]):
         """
         Adds edges in existing graph structure.
         """
@@ -460,7 +465,7 @@ class DigraphManager:
             self[(tail,head)] = Edge(path=[tail, head])
 
 
-    def remove_nodes(self, *nodes: tuple[Node]):
+    def remove_nodes(self, *nodes: tuple[Node, ...]):
         """
         Removes nodes from the graph.
         """
@@ -511,6 +516,7 @@ class DigraphManager:
             self.merge_edges(self[(incoming_node_id, node_id)][0],
                              self[(node_id, outgoing_node_id)][0])
 
+
     def decompress_edges(self):
         """
         Reverse operation to compress_edges.
@@ -527,7 +533,7 @@ class DigraphManager:
 
 
 
-    def inject(self, digraph_manager, node_id: str):
+    def inject(self, digraph_manager: "DigraphManager", node_id: str):
         """
         Replace node by diblob.
         """
@@ -559,7 +565,6 @@ class DigraphManager:
         self.remove_nodes(node)
 
 
-
     def decouple_edges(self):
         """
         In pseudoghraph transforms multiple edges into different ones with point in the middle.
@@ -581,7 +586,7 @@ class DigraphManager:
                     self.connect_nodes((tail, decouple_node_id), (decouple_node_id, head))
 
 
-    def reverse_edges(self, *edges: tuple[Edge]):
+    def reverse_edges(self, *edges: tuple[Edge, ...]):
         """
         reverse delivered edges (not edge_id because of pseudograph properties).
         """

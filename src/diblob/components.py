@@ -104,13 +104,11 @@ class Edge:
 
         self.path = path
 
-
     def get_tail_and_head(self):
         """
         Returns tail and head of the edge.
         """
         return self.path[0], self.path[-1]
-
 
     def get_id(self):
         """
@@ -123,6 +121,7 @@ class Edge:
         Reverses path of the edge
         """
         self.path = self.path[::-1]
+
 
 class Diblob:
     """
@@ -145,13 +144,11 @@ class Diblob:
         self.children = children
         self.nodes = nodes
 
-
     def _add_children(self, *child_ids: tuple[str]):
         """
         Adds diblob_ids to the diblob.
         """
         self.children |= set(child_ids)
-
 
     def _add_nodes(self, *node_ids: tuple[str]):
         """

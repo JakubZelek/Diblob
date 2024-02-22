@@ -14,7 +14,7 @@ class DFSTemplate(ABC):
         self.nodes_to_visit = list(digraph_manager.nodes)
 
 
-    def exec(self, node_id):
+    def exec(self, node_id: str):
         """
         Executes DFS starting with node_id.
         Args:
@@ -32,7 +32,7 @@ class DFSTemplate(ABC):
                 node_id = self.nodes_to_visit[0]
 
     @abstractmethod
-    def run(self, node_id):
+    def run(self, node_id: str):
         """
         Abstract runner, used by exec method
         """
@@ -93,7 +93,8 @@ class DijkstraAlgorithm:
     def __init__(self, digraph_manager):
         self.digraph_manager = digraph_manager
 
-    def run(self, node_id, cost_function = None):
+
+    def run(self, node_id: str, cost_function: dict = None):
         """
         Dijkstra algorithm runner. 
         Args:
