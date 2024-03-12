@@ -185,7 +185,6 @@ class DigraphManager:
             gather_dict[diblob_id].append(key)
 
 
-
     def get_diblobs_common_ancestor(self, diblob_id1: str, diblob_id2: str):
         """
         Returns common ancestor diblob_id for diblob_id1 and diblob_id2.
@@ -396,7 +395,6 @@ class DigraphManager:
         self.connect_nodes(*outgoing_edges)
 
 
-
     def merge_edges(self, edge_1: Edge, edge_2: Edge):
         """
         Merges two edges.
@@ -462,7 +460,7 @@ class DigraphManager:
             tail, head = edge_id[0], edge_id[1]
             self[tail].outgoing_nodes.append(head)
             self[head].incoming_nodes.append(tail)
-            self[(tail,head)] = Edge(path=[tail, head])
+            self[(tail,head)] = Edge(path=[tail, head])        
 
 
     def remove_nodes(self, *nodes: tuple[Node, ...]):

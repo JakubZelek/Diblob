@@ -93,3 +93,36 @@ class DiblobFactory:
             bipartite_digraph_dict[digraph_manager.root_diblob_id][node.node_id + '`'] =\
                                 [node_id + '``' for node_id in sorted(node.outgoing_nodes)]
         return DigraphManager(bipartite_digraph_dict)
+
+
+    @staticmethod
+    def generate_flow_digraph(digraph_manager: DigraphManager):
+        """
+        Generates digraph with splitted nodes. Splitted node is divided 
+        to two connected nodes, where the first one and the second one inherit 
+        incoming_nodes and outgoing_nodes respectively.
+        """
+
+        root_diblob_id = digraph_manager.root_diblob_id
+        flow_graph_manager = DigraphManager({root_diblob_id: {}})
+        
+        node_ids = {node_id + '`' for node_id in digraph_manager.nodes} |\
+                   {node_id + '``' for node_id in digraph_manager.nodes}
+        flow_graph_manager.add_nodes(*node_ids)
+
+        edges_to_connect = set()
+
+        for node_id, node in digraph_manager.nodes.items():
+
+            node_split_tail = node_id + '`'
+            node_split_head = node_id + '``'
+
+            edges_to_connect |= {(incoming_node + '``', node_split_tail)
+                                 for incoming_node in node.incoming_nodes}
+            edges_to_connect |= {(node_split_head, outgoing_node + '`')
+                                 for outgoing_node in node.outgoing_nodes}
+
+            edges_to_connect.add((node_split_tail, node_split_head))
+
+        flow_graph_manager.connect_nodes(*edges_to_connect)
+        return flow_graph_manager

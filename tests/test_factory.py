@@ -163,3 +163,42 @@ def test_bipartite_digraph():
                                             'E`': ['A``', 'F``'], 
                                             'A``': [], 
                                             'A`': ['B``', 'F``']}}
+
+def test_flow_digraph():
+    """
+    test for flow digraph creation.
+    """
+    digraph_manager = DigraphManager({"B0": {"A": ["D"],
+                                             "B": ["D"],
+                                             "C": ["D"],
+                                             "D": ["E", "F"],
+                                             "E": ["G", "H"],
+                                             "F": ["H", "I"],
+                                             "G": ["J"],
+                                             "H": ["J"],
+                                             "I": ["J"],
+                                             "J": []}})
+
+    flow_digraph_manager = DiblobFactory.generate_flow_digraph(digraph_manager)
+    flow_digraph_manager.sorted()
+
+    assert flow_digraph_manager('B0') == {'B0': {'B``': ['D`'],
+                                                 'A``': ['D`'], 
+                                                 'C`': ['C``'], 
+                                                 'G`': ['G``'], 
+                                                 'I`': ['I``'], 
+                                                 'C``': ['D`'], 
+                                                 'F``': ['H`', 'I`'], 
+                                                 'F`': ['F``'], 
+                                                 'J`': ['J``'], 
+                                                 'H``': ['J`'], 
+                                                 'D``': ['E`', 'F`'], 
+                                                 'E``': ['G`', 'H`'], 
+                                                 'A`': ['A``'], 
+                                                 'D`': ['D``'], 
+                                                 'G``': ['J`'], 
+                                                 'I``': ['J`'], 
+                                                 'H`': ['H``'], 
+                                                 'B`': ['B``'], 
+                                                 'J``': [], 
+                                                 'E`': ['E``']}}
