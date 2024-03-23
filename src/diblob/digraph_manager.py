@@ -14,7 +14,9 @@ from diblob.exceptions import (CollisionException,
                                EdgeAdditionException,
                                InvalidDigraphDictException,
                                InvalidConstructionJSON,
-                               CommonResourcesInjection)
+                               CommonResourcesInjection,
+                               IllegalJoinException)
+
 
 
 class DigraphManager:
@@ -530,7 +532,6 @@ class DigraphManager:
                     self.connect_nodes(*list(zip(node_ids[:-1], node_ids[1:])))
 
 
-
     def inject(self, digraph_manager: "DigraphManager", node_id: str):
         """
         Replace node by diblob.
@@ -561,6 +562,23 @@ class DigraphManager:
                                for outgoing_node_id in node.outgoing_nodes])
 
         self.remove_nodes(node)
+
+
+    def join_diblobs(self, diblob_fst_id: str, diblob_snd_id: str, join_id: str):
+        """
+        Join two diblobs to diblob with join_id.
+        """
+
+        fst_diblob = self[diblob_fst_id]
+        snd_diblob = self[diblob_snd_id]
+
+        if fst_diblob.parent_id != snd_diblob.parent_id:
+            raise IllegalJoinException(f"Diblobs during joining must have the same parent_id:\
+                                       {fst_diblob.parent_id} != {snd_diblob.parent_id}")
+
+        join_node_ids = self[diblob_fst_id].nodes | self[diblob_snd_id].nodes
+        self.flatten(diblob_fst_id, diblob_snd_id)
+        self.gather(join_id, join_node_ids)
 
 
     def decouple_edges(self):

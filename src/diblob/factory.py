@@ -105,7 +105,7 @@ class DiblobFactory:
 
         root_diblob_id = digraph_manager.root_diblob_id
         flow_graph_manager = DigraphManager({root_diblob_id: {}})
-        
+
         node_ids = {node_id + '`' for node_id in digraph_manager.nodes} |\
                    {node_id + '``' for node_id in digraph_manager.nodes}
         flow_graph_manager.add_nodes(*node_ids)
