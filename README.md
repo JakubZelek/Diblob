@@ -251,6 +251,13 @@ As a result, the following digraph has been created:
 
 <img width="939" alt="image" src="https://github.com/Zeleczek-kodowniczek/Diblob/assets/72871011/589d935f-0dab-49c7-aec3-22be0be92404">
 
+- `join_diblobs(self, diblob_fst_id: str, diblob_snd_id: str, join_id: str)`
+  - `diblob_fst_id: str`: The ID of the first Diblob that is to be joined.
+  - `diblob_snd_id: str`: The ID of the second Diblob that is to be compressed.
+  - `join_id: str`: The ID of the joined Diblob.
+ <br /><br /> This method join two diblobs which have the same `parent_id`:
+
+<img width="1028" alt="image" src="https://github.com/JakubZelek/Diblob/assets/72871011/a74ecf81-bee4-4e81-b598-e890fa14ec21">
 
 - `merge_edges(self, edge_1: Edge, edge_2: Edge)`
   - `edge_1: Edge`: The first edge to be merged.
@@ -382,15 +389,20 @@ In the example default `delimiter` and `reduce_value` was used. Delimiter add se
 
 <img width="1028" alt="image" src="https://github.com/Zeleczek-kodowniczek/Diblob/assets/72871011/1f3a686e-c1ef-4a41-8fa2-58a67a83fd12">
 
+- `generate_flow_digraph(digraph_manager: DigraphManager)`
+  - `digraph_manager: DigraphManager` - DigraphManager which is the base for flow digraph contruction.
+ <br><br> enable flow digraph creation (commonly used in control flow algorithm like the Ford-Fulkerson algorithm):
 
-## Aghoritms
+<img width="944" alt="image" src="https://github.com/JakubZelek/Diblob/assets/72871011/9739207a-73d9-4ca4-98c8-e41116a17509">
+
+## Algorithms
 In order to working with diblob explanation, DFS, DFSA and Dijkstra algorithms are created. 
 
 - DFS - Deep first search alghoritm.
 - DFSA - modification of the DFS (with the nodes visit time)
 - DijkstraAlgorithm - the shortes paths between node and the others.
 
-Alghoritms use duck typing. GraphManager instance have to be delivered during creation. Then `run` methon can be used on selected node_id (in DijkstraAlgorithm `cost_function` as a dict can be also delivered)
+Algorithm use duck typing. GraphManager instance have to be delivered during creation. Then `run` methon can be used on selected node_id (in DijkstraAlgorithm `cost_function` as a dict can be also delivered)
 
 Example of run:
 
