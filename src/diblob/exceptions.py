@@ -65,3 +65,8 @@ class CommonResourcesInjection(Exception):
     """
     Raised when we use inject method with the same ids for both of digraphs.
     """
+
+class IllegalJoinException(Exception):
+    """
+    Raised when we try join blobs with different parent_ids.
+    """

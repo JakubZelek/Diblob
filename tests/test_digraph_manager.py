@@ -8,8 +8,9 @@ import json
 import pytest
 from diblob.digraph_manager import DigraphManager
 from diblob.exceptions import (InvalidDigraphDictException,
-                            RemoveRootDiblobException,
-                            CommonResourcesInjection)
+                               RemoveRootDiblobException,
+                               CommonResourcesInjection,
+                               IllegalJoinException)
 
 DIGRAPHS_PATH = 'tests/digraphs'
 
@@ -282,3 +283,26 @@ def test_digraph_injection(digraph_dict):
                                             'A': ['B'], 
                                             'D': [{'B0`': ['A`', 'B`', 'C`']}], 
                                             'G': ['A']}}
+
+
+def test_digraph_joining(digraph_dict):
+    """
+    test joining diblobs.
+    """
+    digraph_manager = DigraphManager(digraph_dict["g11_graph_with_diblobs"])
+    with pytest.raises(IllegalJoinException):
+        digraph_manager.join_diblobs(diblob_fst_id='B3', diblob_snd_id='B2', join_id='BJoin')
+
+    digraph_manager.join_diblobs(diblob_fst_id='B1', diblob_snd_id='B2', join_id='BJoin')
+    digraph_manager.sorted()
+
+    assert digraph_manager('B0') == {'B0': {'I': ['A', 'H', {'BJoin': ['C', 'G']}], 
+                                            'H': ['A', {'BJoin': ['B']}], 
+                                            'B3': {'BJoin': {'C': ['D'], 
+                                                             'D': [], 
+                                                             'B': ['D', {'B0': ['A']}], 
+                                                             'G': ['C', 'D', 'E', 'F'], 
+                                                             'E': ['B', 'D', {'B0': ['A']}], 
+                                                             'F': ['C', 'D', {'B0': ['H']}]}, 
+                                                    'J': [{'BJoin': ['D']}]}, 
+                                                    'A': [{'BJoin': ['B', 'C', 'D']}]}}
