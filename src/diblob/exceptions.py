@@ -70,3 +70,18 @@ class IllegalJoinException(Exception):
     """
     Raised when we try join blobs with different parent_ids.
     """
+
+class InvalidAdditionException(Exception):
+    """
+    Raised when we try add two digraphs with more than one diblob (with root_id).
+    """
+
+class RandomCycleException(Exception):
+    """
+    Raised when we try create cycle with node space < size of cycle in the generator.
+    """
+
+class RandomDAGException(Exception):
+    """
+    Raised when we try create random DAG with too many edges.
+    """
