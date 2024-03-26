@@ -10,7 +10,7 @@ setup(
     long_description_content_type='text/markdown',
     author='Jakub Zelek',
     author_email='jakub.zelek@doctoral.uj.edu.pl',
-    url='https://github.com/Zeleczek-kodowniczek/Diblob/tree/main',
+    url='https://github.com/JakubZelek/Diblob',
     license='MIT',
     install_requires=[],
     classifiers=[
