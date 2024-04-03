@@ -29,7 +29,8 @@ class RemoveRootDiblobException(Exception):
 
 class RootDiblobException(Exception):
     """
-    Raised when operation is forbidden for root diblob.
+    Raised when operation is forbidden for root diblob, or operations are 
+    available just for diblobs with only one root (root_diblob)
     """
 
 class EdgeAdditionException(Exception):
@@ -69,4 +70,29 @@ class CommonResourcesInjection(Exception):
 class IllegalJoinException(Exception):
     """
     Raised when we try join blobs with different parent_ids.
+    """
+
+class InvalidAdditionException(Exception):
+    """
+    Raised when we try add two digraphs with more than one diblob (with root_id).
+    """
+
+class RandomCycleException(Exception):
+    """
+    Raised when we try create cycle with node space < size of cycle in the generator.
+    """
+
+class RandomDAGException(Exception):
+    """
+    Raised when we try create random DAG with too many edges.
+    """
+
+class InvalidGeneratorParameterException(Exception):
+    """
+    Raised when we try create random digraph using impossible parameters.
+    """
+
+class RenamingException(Exception):
+    """
+    Raised when an component id try to be changed into occupied id.
     """
