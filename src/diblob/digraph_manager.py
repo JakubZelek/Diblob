@@ -15,8 +15,7 @@ from diblob.exceptions import (CollisionException,
                                InvalidDigraphDictException,
                                InvalidConstructionJSON,
                                CommonResourcesInjection,
-                               IllegalJoinException,
-                               RenamingException)
+                               IllegalJoinException)
 
 
 
