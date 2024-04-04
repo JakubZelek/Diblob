@@ -539,8 +539,8 @@ class DigraphManager:
         namespace = (set(digraph_manager.diblobs) & set(self.diblobs)) |\
                     (set(digraph_manager.nodes) & set(self.nodes))
         if namespace:
-            raise CommonResourcesInjection(f"Injection can be performed only with new id namespace.\
-                                           Common {namespace=}")
+            raise CommonResourcesInjection(f"Injection can be performed only with new ID\
+                                            (not occupied). Common {namespace=}")
 
         node = self[node_id]
 
@@ -556,10 +556,15 @@ class DigraphManager:
 
         for injected_node_id in digraph_manager[injected_diblob_root_id].nodes:
 
-            self.connect_nodes(*[(incoming_node_id, injected_node_id)
-                               for incoming_node_id in node.incoming_nodes])
-            self.connect_nodes(*[(injected_node_id, outgoing_node_id)
-                               for outgoing_node_id in node.outgoing_nodes])
+
+            if isinstance(digraph_manager[injected_node_id], Node):
+
+                self.connect_nodes(*[(incoming_node_id, injected_node_id)
+                                for incoming_node_id in node.incoming_nodes])
+
+                self.connect_nodes(*[(injected_node_id, outgoing_node_id)
+                                for outgoing_node_id in node.outgoing_nodes])
+
 
         self.remove_nodes(node)
 
