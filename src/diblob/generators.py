@@ -49,6 +49,14 @@ class RandomBase:
     def __str__(self) -> str:
         return str(self.digraph_manager)
 
+    def remove_isolated_nodes(self):
+        """
+        Removes isolated nodes.
+        """
+        occupied_nodes = set(edge[0] for edge in self.digraph_manager.nodes.keys()) |\
+                         set(edge[1] for edge in self.digraph_manager.nodes.keys())
+        self.digraph_manager.remove_nodes(self.digraph_manager.nodes.keys() - occupied_nodes)
+
 
 class RandomCycle(RandomBase):
     """
@@ -176,4 +184,4 @@ class RandomDigraph(RandomBase):
                                             if random.random() < injection_drop_probability])
 
         super().__init__(dag_digraph)
-
+ 
