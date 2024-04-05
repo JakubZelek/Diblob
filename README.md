@@ -438,3 +438,14 @@ Tools deliver following functions:
 <br> Example: `['C', 'B', 'A', {'G1': ['A', 'C', 'B']}] -> ['A', 'B', 'C', {'G1': ['A', 'B', 'C']}]`
 - `list_groupby`: Works like groupby from itertools (no need data to be sorted).
 
+  
+## Generators
+Random digraphs can be generated using generators module. 
+Digraphs which can be generated:
+- random cycle
+- random directed acyclic graph
+- random strongly connected graph (as a sum of cycles)
+- random graph as a combination of DAG and the others (injection)
+
+example of usage can be found in notebooks: 
+https://github.com/JakubZelek/Diblob/tree/main/notebooks
