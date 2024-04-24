@@ -4,3 +4,4 @@ __pycache__
 .pytest_cache
 diblob.egg-info
 build
+dist

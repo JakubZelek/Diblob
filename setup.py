@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='diblob',
-    version='1.0.8',
+    version='1.0.9',
     package_dir={'': 'src'},
     packages=find_packages(where='src'),
     description='A simple example package',
