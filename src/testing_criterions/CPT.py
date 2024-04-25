@@ -18,42 +18,65 @@ class WeightedDigraphManager(DigraphManager):
     def __init__(self, digraph_dict_representation: dict,
                  cost_function: dict,
                  default_cost: int=1):
+
+        self.cost_function = cost_function
+        self.default_cost = default_cost
+
         super().__init__(digraph_dict_representation)
 
-        self.cost_function = {edge_id: cost_function.get(edge_id, default_cost)
-                              for edge_id in self.edges}
-        self.spanning_tree = {edge_id: edge_id[1] for edge_id in self.edges}
-        self.least_cost_paths()
+        self._set_cost()
+        self._set_spanning_tree()
 
+
+    def _set_cost(self):
+        self.cost = {edge_id: self.cost_function.get(edge_id, self.default_cost)
+                              for edge_id in self.edges}
+
+    def _set_spanning_tree(self):
+        self.spanning_tree = {edge_id: edge_id[1] for edge_id in self.edges}
+
+
+    def connect_nodes(self, *edge_ids: tuple[str, ...]):
+        super().connect_nodes(*edge_ids)
+
+        self._set_cost()
+        self._set_spanning_tree()
+
+    def update_cost_function(self, cost_function: dict):
+        """
+        updates cost_function.
+        """
+        self.cost_function |= cost_function
 
     def least_cost_paths(self):
         """
-        Computes shortest path between pairs of nodes (based on cost function).
+        Computes shortest path between pairs of nodes (based on cost).
         """
-        cost_function =  self.cost_function
+        cost = self.cost
 
         for node_k, node_i in product(self.nodes, self.nodes):
-            if (node_i, node_k) in cost_function:
+            if (node_i, node_k) in cost:
                 for node_j in self.nodes:
 
-                    if (node_k, node_j) in cost_function\
-                        and ((node_i, node_j) not in cost_function or\
-                        cost_function[node_i, node_j] > cost_function[(node_i, node_k)]\
-                                                      + cost_function[(node_k, node_j)]):
+                    if (node_k, node_j) in cost\
+                        and ((node_i, node_j) not in cost or\
+                        cost[node_i, node_j] > cost[(node_i, node_k)]\
+                                                      + cost[(node_k, node_j)]):
 
                         self.spanning_tree[(node_i, node_j)] = self.spanning_tree[(node_i, node_k)]
-                        cost_function[(node_i, node_j)] = cost_function.get((node_i, node_k), 0) +\
-                                                              cost_function.get((node_k,node_j), 0)
+                        cost[(node_i, node_j)] = cost.get((node_i, node_k), 0) +\
+                                                              cost.get((node_k,node_j), 0)
 
 
-                        if node_i == node_j and cost_function[(node_i,node_j)] < 0:
+                        if node_i == node_j and cost[(node_i,node_j)] < 0:
                             return
 
     def check_if_digraph_is_strongly_connected(self):
         """
         Validates if graph is SSG.
         """
-        cost_function = self.cost_function
+        self.least_cost_paths()
+        cost_function = self.cost
 
         for tail_id, head_id in product(self.nodes, self.nodes):
             if (tail_id, head_id) not in cost_function:
@@ -70,17 +93,27 @@ class CPTDigraphManager(WeightedDigraphManager):
                  default_cost: int = 1):
         super().__init__(digraph_dict_representation, cost_function, default_cost)
 
-        self.basic_cost = sum(cost_function.get(edge_id, default_cost)
-                              for edge_id in self.edges)
-
-        self.delta = {node_id: node.outgoing_dim() - node.incoming_dim()
-                      for node_id, node in self.nodes.items()}
-
+        self._set_delta()
+        self._set_basic_cost()
         self.feasible = {}
         self.default_cost = default_cost
 
+    def _set_delta(self):
+        self.delta = {node_id: node.outgoing_dim() - node.incoming_dim()
+                      for node_id, node in self.nodes.items()}
 
-    def split_nodes_based_on_delta(self):
+    def _set_basic_cost(self):
+        self.basic_cost = sum(self.cost_function.get(edge_id, self.default_cost)
+                              for edge_id in self.edges)
+
+    def connect_nodes(self, *edge_ids: tuple[str, ...]):
+        super().connect_nodes(*edge_ids)
+
+        self._set_delta()
+        self._set_basic_cost()
+
+
+    def _split_nodes_based_on_delta(self):
         """
         Splits nodes based on incoming and outgoing nodes number (without equals)
         """
@@ -98,7 +131,7 @@ class CPTDigraphManager(WeightedDigraphManager):
         return delta_neq, delta_pos
 
 
-    def find_feasible(self, delta_neq, delta_pos):
+    def _find_feasible(self, delta_neq, delta_pos):
         """
         feasible - f function from the papier: 
         https://www3.cs.stonybrook.edu/~algorith/implement/cpp/distrib/SPAEcpp.pdf
@@ -116,46 +149,46 @@ class CPTDigraphManager(WeightedDigraphManager):
             delta[node_pos] -= feasible[(node_neq, node_pos)]
 
 
-    def get_residual_diblob_manager_for_cpt(self, delta_neq, delta_pos):
+    def _get_residual_diblob_manager_for_cpt(self, delta_neq, delta_pos):
         """
         - Creates residual digraph.
         - Creates residual cost function.
         """
 
-        cost_function = self.cost_function
+        cost= self.cost
         feasible = self.feasible
 
         residual_digraph = DigraphManager({"Res":{}})
         residual_digraph.add_nodes(*self.nodes)
 
-        residual_cost_function = {}
+        residual_cost = {}
 
         for node_neq, node_pos in product(delta_neq, delta_pos):
             residual_digraph.connect_nodes((node_neq, node_pos))
-            residual_cost_function[(node_neq, node_pos)] = cost_function[(node_neq, node_pos)]
+            residual_cost[(node_neq, node_pos)] = cost[(node_neq, node_pos)]
 
             if feasible[(node_neq, node_pos)] != 0:
 
                 residual_digraph.connect_nodes((node_pos, node_neq))
-                residual_cost_function[(node_pos, node_neq)] = -cost_function[(node_neq, node_pos)]
+                residual_cost[(node_pos, node_neq)] = -cost[(node_neq, node_pos)]
 
-        return CPTDigraphManager(dict(residual_digraph('Res')), 
-                                 residual_cost_function, self.default_cost)
+        return CPTDigraphManager(dict(residual_digraph('Res')),
+                                 residual_cost, self.default_cost)
 
 
-    def improvements(self, residual_cpt: 'CPTDigraphManager'):
+    def _improvements(self, residual_cpt: 'CPTDigraphManager'):
         """
         improvement in the algorithm: 
         https://www3.cs.stonybrook.edu/~algorith/implement/cpp/distrib/SPAEcpp.pdf
         """
 
-        cost_function = residual_cpt.cost_function
+        cost= residual_cpt.cost
         spanning_tree = residual_cpt.spanning_tree
         feasible = self.feasible
 
         for node_id in self.nodes:
 
-            if cost_function.get((node_id, node_id), 0) < 0:
+            if cost.get((node_id, node_id), 0) < 0:
                 k = 0
                 flag = True
                 u = node_id
@@ -163,7 +196,7 @@ class CPTDigraphManager(WeightedDigraphManager):
                 while True:  # Emulate a do-while loop to find k to cancel
                     v = spanning_tree[(u, node_id)]
 
-                    if cost_function[(u, v)] < 0 and (flag or k > feasible.get((v, u), 0)):
+                    if cost[(u, v)] < 0 and (flag or k > feasible.get((v, u), 0)):
                         k = feasible.get((v, u), 0)
                         flag = False
 
@@ -173,7 +206,7 @@ class CPTDigraphManager(WeightedDigraphManager):
 
                 while True:  # Emulate a do-while loop to cancel k along the cycle
                     v = spanning_tree[(u, node_id)]
-                    if cost_function[(u,v)] < 0:
+                    if cost[(u,v)] < 0:
 
                         feasible[(v, u)] = feasible.get((v, u), 0) - k
                     else:
@@ -186,21 +219,21 @@ class CPTDigraphManager(WeightedDigraphManager):
         return False
 
 
-    def get_cost(self):
+    def _get_cost(self):
         """
         returns the cost of the CPT.
         """
         phi = 0
-        cost_function = self.cost_function
+        cost = self.cost
         feasible = self.feasible
         nodes = self.nodes
 
         for tail_id, head_id in product(nodes, nodes):
-            phi += cost_function.get((tail_id, head_id),0) * -feasible.get((tail_id, head_id), 0)
+            phi += cost.get((tail_id, head_id),0) * -feasible.get((tail_id, head_id), 0)
         return phi + self.basic_cost
 
 
-    def find_path(self, frm, feasible):
+    def _find_path(self, frm, feasible):
         """
         finds path.
         """
@@ -208,7 +241,7 @@ class CPTDigraphManager(WeightedDigraphManager):
             if feasible.get((frm, node_id), 0) > 0:
                 return node_id
 
-    def get_cpt(self, start_node):
+    def _get_cpt(self, start_node):
         """
         returns cpt.
         """
@@ -219,7 +252,7 @@ class CPTDigraphManager(WeightedDigraphManager):
 
         while True:
             u = v
-            v = self.find_path(u, feasible)
+            v = self._find_path(u, feasible)
             if v is not None:
                 feasible[(u, v)] =- 1
 
@@ -251,12 +284,49 @@ class CPTDigraphManager(WeightedDigraphManager):
         if not self.check_if_digraph_is_strongly_connected():
             raise NotSCGException("Digraph is not strongly connected!")
 
-        delta_neq, delta_pos = self.split_nodes_based_on_delta()
-        self.find_feasible(delta_neq, delta_pos)
+        delta_neq, delta_pos = self._split_nodes_based_on_delta()
+        self._find_feasible(delta_neq, delta_pos)
 
-        residual_cpt = self.get_residual_diblob_manager_for_cpt(delta_neq, delta_pos)
+        residual_cpt = self._get_residual_diblob_manager_for_cpt(delta_neq, delta_pos)
 
-        while self.improvements(residual_cpt):
-            residual_cpt = self.get_residual_diblob_manager_for_cpt(delta_neq, delta_pos)
+        while self._improvements(residual_cpt):
+            residual_cpt = self._get_residual_diblob_manager_for_cpt(delta_neq, delta_pos)
 
-        return self.get_cpt(start_node), self.get_cost()
+        cpt, cost = self._get_cpt(start_node), self._get_cost()
+
+        self._set_cost()
+        self._set_spanning_tree()
+        self._set_delta()
+        self._set_basic_cost()
+        self.feasible = {}
+
+        return cpt, cost
+
+
+cpt_digraph_manager = CPTDigraphManager({"B0": {"2": ["3"],
+                                                "3": ["0"],
+                                                "0": ["1", "2"],
+                                                "1": ["2", "3"],}}, cost_function={})
+
+print(cpt_digraph_manager.compute_cpt('0'))
+cpt_test = CPTDigraphManager({"B0": {
+                                    "B": ["C"],
+                                    "D": ["t"],
+                                    "A": ["C"],
+                                    "E": ["t", "B"],
+                                    "t": ["s", "ts"],
+                                    "s": ["A", "B"],
+                                    "C": ["D", "E", "t"],
+                                    "ts": ["s"]
+                                },
+                                }, cost_function={("t", "s"): 20})
+print(cpt_test)
+print(cpt_test.compute_cpt('s'))
+
+cpt_test = CPTDigraphManager({"B0": {}}, cost_function={})
+
+cpt_test.add_nodes('A', 'B', 'C', 'D', 's', 't')
+cpt_test.connect_nodes(('A', 'B'), ('A', 'C'), ('B', 'D'), ('C', 'D'), ('s', 'A'), ('D', 't'), ('t', 's'))
+print(cpt_test.compute_cpt('s'))
+print(cpt_test.compute_cpt('s'))
+print(cpt_test.compute_cpt('s'))
