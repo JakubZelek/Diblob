@@ -61,7 +61,7 @@ class WeightedDigraphManager(DigraphManager):
 
             if node.incoming_dim() == 0:
                 minimal_elements.append(node_id)
-    
+
         return minimal_elements, maximal_elements
 
     def least_cost_paths(self):
@@ -156,8 +156,8 @@ class CPTDigraphManager(WeightedDigraphManager):
         delta = self.delta
         feasible = self.feasible
 
-        for node_neq, node_pos in product(delta_neq, delta_pos):
 
+        for node_neq, node_pos in product(delta_neq, delta_pos):
             feasible[(node_neq, node_pos)] = -delta[node_neq]\
                 if -delta[node_neq] < delta[node_pos] else delta[node_pos]
 
@@ -178,6 +178,7 @@ class CPTDigraphManager(WeightedDigraphManager):
         residual_digraph.add_nodes(*self.nodes)
 
         residual_cost = {}
+
 
         for node_neq, node_pos in product(delta_neq, delta_pos):
             residual_digraph.connect_nodes((node_neq, node_pos))
@@ -203,7 +204,7 @@ class CPTDigraphManager(WeightedDigraphManager):
         feasible = self.feasible
 
         for node_id in self.nodes:
-
+            
             if cost.get((node_id, node_id), 0) < 0:
                 k = 0
                 flag = True
@@ -219,11 +220,10 @@ class CPTDigraphManager(WeightedDigraphManager):
                     u = v
                     if u == node_id:
                         break
-
+                
                 while True:  # Emulate a do-while loop to cancel k along the cycle
                     v = spanning_tree[(u, node_id)]
                     if cost[(u,v)] < 0:
-
                         feasible[(v, u)] = feasible.get((v, u), 0) - k
                     else:
                         feasible[(u, v)] = feasible.get((u, v), 0) + k
@@ -245,7 +245,7 @@ class CPTDigraphManager(WeightedDigraphManager):
         nodes = self.nodes
 
         for tail_id, head_id in product(nodes, nodes):
-            phi += cost.get((tail_id, head_id),0) * -feasible.get((tail_id, head_id), 0)
+            phi += cost.get((tail_id, head_id), 0) * feasible.get((tail_id, head_id), 0)
         return phi + self.basic_cost
 
 
@@ -262,21 +262,23 @@ class CPTDigraphManager(WeightedDigraphManager):
         returns cpt.
         """
         v = start_node
-        feasible= self.feasible
+        feasible= dict(self.feasible)
         edges_will_not_be_processed = set()
         cpt = []
 
         while True:
+
             u = v
             v = self._find_path(u, feasible)
-            if v is not None:
-                feasible[(u, v)] =- 1
 
+            if v is not None:
+                feasible[(u, v)] -= 1
                 while u != v:
                     p = self.spanning_tree[(u,v)]
                     cpt.append((u, p))
                     u = p
             else:
+   
                 bridge_node = self.spanning_tree[(u,start_node)]
                 if (u, bridge_node) in edges_will_not_be_processed:
                     break
@@ -310,38 +312,10 @@ class CPTDigraphManager(WeightedDigraphManager):
         self._find_feasible(delta_neq, delta_pos)
 
         residual_cpt = self._get_residual_diblob_manager_for_cpt(delta_neq, delta_pos)
+        residual_cpt.least_cost_paths()
 
         while self._improvements(residual_cpt):
             residual_cpt = self._get_residual_diblob_manager_for_cpt(delta_neq, delta_pos)
 
         cpt, cost = self._get_cpt(start_node), self._get_cost()
-
         return cpt, cost
-
-
-cpt_digraph_manager = CPTDigraphManager({"B0": {"2": ["3"],
-                                                "3": ["0"],
-                                                "0": ["1", "2"],
-                                                "1": ["2", "3"],}}, cost_function={})
-
-print(cpt_digraph_manager.compute_cpt('0'))
-cpt_test = CPTDigraphManager({"B0": {
-                                    "B": ["C"],
-                                    "D": ["t"],
-                                    "A": ["C"],
-                                    "E": ["t", "B"],
-                                    "t": ["s", "ts"],
-                                    "s": ["A", "B"],
-                                    "C": ["D", "E", "t"],
-                                    "ts": ["s"]
-                                },
-                                }, cost_function={("t", "s"): 20})
-print(cpt_test)
-print(cpt_test.compute_cpt('s'))
-
-cpt_test = CPTDigraphManager({"B0": {}}, cost_function={})
-
-cpt_test.add_nodes('A', 'B', 'C', 'D', 's', 't')
-cpt_test.connect_nodes(('A', 'B'), ('A', 'C'), ('B', 'D'), ('C', 'D'), ('s', 'A'), ('D', 't'), ('t', 's'))
-print(cpt_test.compute_cpt('s'))
-
