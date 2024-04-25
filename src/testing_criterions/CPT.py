@@ -48,6 +48,22 @@ class WeightedDigraphManager(DigraphManager):
         """
         self.cost_function |= cost_function
 
+    def get_edge_elements(self):
+        """
+        returns minimal and maximal elements.
+        """
+        minimal_elements = []
+        maximal_elements = []
+
+        for node_id, node in self.nodes.items():
+            if node.outgoing_dim() == 0:
+                maximal_elements.append(node_id)
+
+            if node.incoming_dim() == 0:
+                minimal_elements.append(node_id)
+    
+        return minimal_elements, maximal_elements
+
     def least_cost_paths(self):
         """
         Computes shortest path between pairs of nodes (based on cost).
@@ -281,6 +297,12 @@ class CPTDigraphManager(WeightedDigraphManager):
         """
         compute cpt with the cost of cpt.
         """
+        self._set_cost()
+        self._set_spanning_tree()
+        self._set_delta()
+        self._set_basic_cost()
+        self.feasible = {}
+
         if not self.check_if_digraph_is_strongly_connected():
             raise NotSCGException("Digraph is not strongly connected!")
 
@@ -293,12 +315,6 @@ class CPTDigraphManager(WeightedDigraphManager):
             residual_cpt = self._get_residual_diblob_manager_for_cpt(delta_neq, delta_pos)
 
         cpt, cost = self._get_cpt(start_node), self._get_cost()
-
-        self._set_cost()
-        self._set_spanning_tree()
-        self._set_delta()
-        self._set_basic_cost()
-        self.feasible = {}
 
         return cpt, cost
 
@@ -328,5 +344,4 @@ cpt_test = CPTDigraphManager({"B0": {}}, cost_function={})
 cpt_test.add_nodes('A', 'B', 'C', 'D', 's', 't')
 cpt_test.connect_nodes(('A', 'B'), ('A', 'C'), ('B', 'D'), ('C', 'D'), ('s', 'A'), ('D', 't'), ('t', 's'))
 print(cpt_test.compute_cpt('s'))
-print(cpt_test.compute_cpt('s'))
-print(cpt_test.compute_cpt('s'))
+
