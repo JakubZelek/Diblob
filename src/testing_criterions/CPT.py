@@ -204,7 +204,7 @@ class CPTDigraphManager(WeightedDigraphManager):
         feasible = self.feasible
 
         for node_id in self.nodes:
-            
+
             if cost.get((node_id, node_id), 0) < 0:
                 k = 0
                 flag = True
@@ -220,7 +220,7 @@ class CPTDigraphManager(WeightedDigraphManager):
                     u = v
                     if u == node_id:
                         break
-                
+
                 while True:  # Emulate a do-while loop to cancel k along the cycle
                     v = spanning_tree[(u, node_id)]
                     if cost[(u,v)] < 0:
@@ -278,7 +278,7 @@ class CPTDigraphManager(WeightedDigraphManager):
                     cpt.append((u, p))
                     u = p
             else:
-   
+
                 bridge_node = self.spanning_tree[(u,start_node)]
                 if (u, bridge_node) in edges_will_not_be_processed:
                     break
