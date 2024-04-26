@@ -323,4 +323,3 @@ class CPTDigraphManager(WeightedDigraphManager):
 
         cpt, cost = self._get_cpt(start_node), self._get_cost()
         return cpt, cost
-
