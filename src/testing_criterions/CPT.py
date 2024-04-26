@@ -47,6 +47,7 @@ class WeightedDigraphManager(DigraphManager):
         updates cost_function.
         """
         self.cost_function |= cost_function
+        self._set_cost()
 
     def get_edge_elements(self):
         """
@@ -112,15 +113,16 @@ class CPTDigraphManager(WeightedDigraphManager):
         self._set_delta()
         self._set_basic_cost()
         self.feasible = {}
-        self.default_cost = default_cost
 
     def _set_delta(self):
         self.delta = {node_id: node.outgoing_dim() - node.incoming_dim()
                       for node_id, node in self.nodes.items()}
 
     def _set_basic_cost(self):
+
         self.basic_cost = sum(self.cost_function.get(edge_id, self.default_cost)
                               for edge_id in self.edges)
+
 
     def connect_nodes(self, *edge_ids: tuple[str, ...]):
         super().connect_nodes(*edge_ids)
@@ -223,7 +225,8 @@ class CPTDigraphManager(WeightedDigraphManager):
 
                 while True:  # Emulate a do-while loop to cancel k along the cycle
                     v = spanning_tree[(u, node_id)]
-                    if cost[(u,v)] < 0:
+
+                    if cost[(u, v)] < 0:
                         feasible[(v, u)] = feasible.get((v, u), 0) - k
                     else:
                         feasible[(u, v)] = feasible.get((u, v), 0) + k
@@ -274,7 +277,7 @@ class CPTDigraphManager(WeightedDigraphManager):
             if v is not None:
                 feasible[(u, v)] -= 1
                 while u != v:
-                    p = self.spanning_tree[(u,v)]
+                    p = self.spanning_tree[(u, v)]
                     cpt.append((u, p))
                     u = p
             else:
@@ -316,6 +319,8 @@ class CPTDigraphManager(WeightedDigraphManager):
 
         while self._improvements(residual_cpt):
             residual_cpt = self._get_residual_diblob_manager_for_cpt(delta_neq, delta_pos)
+            residual_cpt.least_cost_paths()
 
         cpt, cost = self._get_cpt(start_node), self._get_cost()
         return cpt, cost
+
