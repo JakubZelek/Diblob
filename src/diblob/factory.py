@@ -82,7 +82,7 @@ class DiblobFactory:
         Generates BG(G) digraph (with directed arcs).
         """
 
-        if len(digraph_manager.diblobs) > 1: 
+        if len(digraph_manager.diblobs) > 1:
             raise MultipleEdgeException("Bipartite can be computed only for digraph_manager\
                                          with only root_diblob!")
 

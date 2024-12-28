@@ -46,8 +46,10 @@ class RandomBase:
                                             for key in set(dict_x) | set(dict_y)}})
         return RandomBase(digraph_manager)
 
+
     def __str__(self) -> str:
         return str(self.digraph_manager)
+
 
     def remove_isolated_nodes(self):
         """
@@ -60,6 +62,11 @@ class RandomBase:
                            self.digraph_manager.nodes.keys() - occupied_nodes]
 
         self.digraph_manager.remove_nodes(*nodes_to_remove)
+
+
+    def get_digraph_manager(self):
+        """digraph manager getter"""
+        return self.digraph_manager
 
 
 class RandomCycle(RandomBase):
@@ -106,7 +113,7 @@ class RandomSCC(RandomBase):
         if not cycle_sizes:
             raise RandomCycleException("cycle_sizes cannot be empty!")
 
-        random_cycle = RandomCycle(node_space, cycle_sizes[0], random_diblob_id)
+        random_cycle = RandomCycle(node_space, len(node_space), random_diblob_id)
         for c_size in cycle_sizes[1:]:
             random_cycle = random_cycle + RandomCycle(node_space, c_size, random_diblob_id)
 
@@ -136,7 +143,7 @@ class RandomDAG(RandomBase):
 
         node_indexes = [(tail_idx, head_idx) for tail_idx in range(node_space_size)
                         for head_idx in range(tail_idx, node_space_size) if tail_idx < head_idx]
-        print(len(node_indexes), number_of_edges)
+    
         node_indexes = random.sample(node_indexes, k=number_of_edges)
 
         digraph_manager.connect_nodes(*[(node_space_order[tail_idx], node_space_order[head_idx])
@@ -145,7 +152,7 @@ class RandomDAG(RandomBase):
         super().__init__(digraph_manager)
 
 
-class RandomDigraph(RandomBase):
+class SemiRandomDigraph(RandomBase):
     """
     Generates random digraph by delivered list of digraphs injection.
     - uses dag as the base of the graph.
@@ -153,7 +160,7 @@ class RandomDigraph(RandomBase):
     """
 
     def __init__(self,
-                 dag_digraph: RandomDigraph,
+                 dag_digraph: SemiRandomDigraph,
                  inj_digraphs: list[RandomBase],
                  injection_drop_probability: float = 0.2):
 
@@ -188,3 +195,60 @@ class RandomDigraph(RandomBase):
                                             if random.random() < injection_drop_probability])
 
         super().__init__(dag_digraph)
+
+
+class RandomDigraph(RandomBase):
+    """
+    Random digraph.
+    """
+
+    def __init__(self, number_of_nodes, number_of_edges):
+        if number_of_edges > number_of_nodes * (number_of_nodes - 1):
+            raise InvalidGeneratorParameterException("Cannot create digraphs\
+                                                     with this number of edges!")
+
+        digraph = DigraphManager({'B0': {}})
+
+        elements = [str(number_of_node) for number_of_node in range(number_of_nodes)]
+        digraph.add_nodes(*elements)
+
+
+        edges = random.sample([(x, y) for x in elements
+                               for y in elements if x != y], number_of_edges)
+
+        digraph.connect_nodes(*edges)
+
+        super().__init__(digraph)
+
+
+class CycleBasedDigraph(RandomBase):
+    """
+    Random digraph.
+    """
+
+    def __init__(self, number_of_nodes, number_of_edges):
+        nodes_to_add_number = number_of_edges - number_of_nodes
+
+        if nodes_to_add_number < 0:
+            raise InvalidGeneratorParameterException("Cannot create cycle\
+                                                      with this number of edges!")
+
+        digraph = RandomCycle(node_space=[str(nr) for nr in range(1, number_of_nodes - 1)],
+                              cycle_size=number_of_nodes - 2)
+
+        edges_to_add_number = number_of_edges - number_of_nodes
+
+        digraph = digraph.get_digraph_manager()
+
+        node_indexes = [(str(tail_idx), str(head_idx)) for tail_idx in range(1, number_of_nodes - 1)
+                        for head_idx in range(1, number_of_nodes - 1) if tail_idx != head_idx and
+                        (str(tail_idx), str(head_idx)) not in digraph.edges]
+
+
+        node_indexes = random.sample(node_indexes, k=edges_to_add_number-2)
+
+        digraph.connect_nodes(*node_indexes)
+        digraph.add_nodes('0', f"{number_of_nodes - 1}")
+        digraph.connect_nodes(('0', '1'), (f"{number_of_nodes - 2}", f"{number_of_nodes - 1}"))
+
+        super().__init__(digraph)

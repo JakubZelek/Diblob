@@ -18,7 +18,7 @@ class DFSTemplate(ABC):
         """
         Executes DFS starting with node_id.
         Args:
-            - node_id (str): id ot the node where computation is started.
+            - node_id (str): id of the node where computation is started.
         """
         self.nodes_to_visit.remove(node_id)
 
@@ -58,6 +58,35 @@ class DFS(DFSTemplate):
         self.visitation_dict[node_id] |=  {"return_time": self.visit_time}
 
 
+class DFS_with_path(DFSTemplate):
+
+    def run(self, node_id):
+        test_cases = []
+
+        for node_id in self.nodes_to_visit:
+            
+            current_path = []
+            self.run_iter(node_id, current_path, test_cases)
+
+        return test_cases
+
+
+    def run_iter(self, node_id: str, current_path, test_cases):
+
+        self.visited_nodes.append(node_id)
+        self.nodes_to_visit.remove(node_id)
+        current_path.append(node_id)
+
+        flag = True
+        for outgoing_node_id in self.digraph_manager[node_id].outgoing_nodes:
+            if outgoing_node_id not in self.visited_nodes:
+                self.run_iter(outgoing_node_id, current_path, test_cases)
+                flag = False
+
+        if flag:
+            test_cases.append(list(current_path))
+        current_path.pop()
+
 class DFSA(DFS):
     """
     DFS modification enables compute time of nodes visitation.
@@ -94,7 +123,7 @@ class DijkstraAlgorithm:
         self.digraph_manager = digraph_manager
 
 
-    def run(self, node_id: str, cost_function: dict = None):
+    def run(self, node_id: str, cost_function = None):
         """
         Dijkstra algorithm runner. 
         Args:
