@@ -212,18 +212,3 @@ class TarjanSSC:
                 strong_connect(node_id)
 
         return result
-
-
-
-from diblob.digraph_manager import DigraphManager
-
-digraph_manager = DigraphManager({"B0": {}})
-digraph_manager.add_nodes('1', '2', '3', '4', '5', '6', '7', '8', '9')
-digraph_manager.connect_nodes(('1', '2'), ('2', '1'), ('1', '3'), ('3', '1'), ('2', '4'), ('3', '4'),
-                              ('4', '6'), ('6', '4'), ('5', '3'), ('5', '6'), ('5', '8'), ('7', '5'), ('8', '6'), ('8', '7'),
-                              ('9', '9'), ('9', '7'), ('9', '8'))
-
-t = TarianSSC(digraph_manager)
-
-result = t.run()
-print(result)
