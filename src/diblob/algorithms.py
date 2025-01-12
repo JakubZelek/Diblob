@@ -159,3 +159,71 @@ class DijkstraAlgorithm:
                     u["min_path"] = v["min_path"] + [edge_id]
 
         return min_distance_dict
+
+
+
+class TarjanSSC:
+    """
+    Extracts SSC's from the graph.
+    """
+    def __init__(self, digraph_manager):
+        self.digraph_manager = digraph_manager
+    
+    def run(self):
+        stack = []
+        defined = set()  # Tracks nodes that have been fully processed
+        on_stack = set()
+        low_links = {}
+        indices = {}
+        index = 0
+        result = []
+
+        def strong_connect(node_id):
+            nonlocal index
+            # Mark the node as visited
+            indices[node_id] = low_links[node_id] = index
+            index += 1
+            stack.append(node_id)
+            on_stack.add(node_id)
+            defined.add(node_id)  # Mark the node as fully defined/processed
+
+            # Traverse outgoing nodes
+            for out_node_id in self.digraph_manager[node_id].outgoing_nodes:
+                if out_node_id not in defined:  # Node not yet visited
+                    strong_connect(out_node_id)
+                    low_links[node_id] = min(low_links[node_id], low_links[out_node_id])
+                elif out_node_id in on_stack:  # Node is part of the current SCC
+                    low_links[node_id] = min(low_links[node_id], indices[out_node_id])
+
+            # Check if this node is the root of an SCC
+            if low_links[node_id] == indices[node_id]:
+                scc = set()
+                while True:
+                    w = stack.pop()
+                    on_stack.remove(w)
+                    scc.add(w)
+                    if w == node_id:
+                        break
+                result.append(scc)
+
+        # Start the Tarjan's algorithm
+        for node_id in self.digraph_manager.nodes:
+            if node_id not in defined:
+                strong_connect(node_id)
+
+        return result
+
+
+
+from diblob.digraph_manager import DigraphManager
+
+digraph_manager = DigraphManager({"B0": {}})
+digraph_manager.add_nodes('1', '2', '3', '4', '5', '6', '7', '8', '9')
+digraph_manager.connect_nodes(('1', '2'), ('2', '1'), ('1', '3'), ('3', '1'), ('2', '4'), ('3', '4'),
+                              ('4', '6'), ('6', '4'), ('5', '3'), ('5', '6'), ('5', '8'), ('7', '5'), ('8', '6'), ('8', '7'),
+                              ('9', '9'), ('9', '7'), ('9', '8'))
+
+t = TarianSSC(digraph_manager)
+
+result = t.run()
+print(result)
