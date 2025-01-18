@@ -161,7 +161,6 @@ class DijkstraAlgorithm:
         return min_distance_dict
 
 
-
 class TarjanSSC:
     """
     Extracts SSC's from the graph.
@@ -212,3 +211,75 @@ class TarjanSSC:
                 strong_connect(node_id)
 
         return result
+
+
+def normalize_cycle(cycle):
+    cycle = cycle[:-1]
+    min_index = cycle.index(min(cycle))
+    return cycle[min_index:] + cycle[:min_index]
+
+class JonsonForSingleSSC:
+    def __init__(self, digraph_manager):
+        self.digraph_manager = digraph_manager
+
+    def run(self, node_id):
+        cycles = set()
+        nodes = list(self.digraph_manager.nodes)
+        nodes.remove(node_id)
+        nodes = [node_id] + nodes 
+        blocked = {node_id: False for node_id in nodes}
+        block_map = {node_id: set() for node_id in nodes}
+        stack = []
+
+        def circuit(node_id, start):
+
+            stack.append(node_id)
+            blocked[node_id] = True
+            found_cycle = False
+
+            for outgoing_node_id in self.digraph_manager[node_id].outgoing_nodes:
+                if outgoing_node_id == start:
+                    cycle = normalize_cycle(stack + [start])
+                    cycles.add(tuple(cycle))
+                    found_cycle = True
+                elif not blocked[outgoing_node_id]:
+
+                    if circuit(outgoing_node_id, start):
+                        found_cycle = True
+
+            if found_cycle:
+                unblock(node_id)
+            else:
+                for outgoing_node_id in self.digraph_manager[node_id].outgoing_nodes:
+                    block_map[outgoing_node_id].add(node_id)
+
+            stack.pop()
+            return found_cycle
+
+        def unblock(node):
+            """
+            Unblocks a node and its dependent nodes recursively.
+            :param node: Node to unblock
+            """
+            blocked[node] = False
+            for dependent in block_map[node]:
+                if blocked[dependent]:
+                    unblock(dependent)
+            block_map[node].clear()
+
+        processed = set()
+
+        for start in self.digraph_manager.nodes:
+            if start in processed:
+                continue
+
+            circuit(start, start)
+            processed.add(start)  
+        return [list(cycle) for cycle in cycles]
+
+# from diblob.digraph_manager import DigraphManager
+# digraph_manager = DigraphManager({'B0':{}})
+# digraph_manager.add_nodes('a', 'b', 'c', 'd')
+# digraph_manager.connect_nodes(('a', 'b'), ('b', 'c'), ('c', 'd'), ('d', 'a'), ('b','a'), ('c', 'b'), ('d', 'c'), ('a', 'd'), ('b', 'd'))
+# cd = JonsonForSingleSSC(digraph_manager)
+# print(cd.run('a'))
