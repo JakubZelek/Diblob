@@ -96,3 +96,8 @@ class RenamingException(Exception):
     """
     Raised when an component id try to be changed into occupied id.
     """
+
+class CycleException(Exception):
+    """
+    Raised when cycle found in the DAG-focused algorithm.
+    """

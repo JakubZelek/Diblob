@@ -1,0 +1,71 @@
+from diblob import DigraphManager
+from diblob.algorithms import PrimePathsGenerator, GenerateDijkstraMatrix
+
+
+class SimplePathCoverage:
+    def __init__(self, digraph_manager) -> None:
+        self.digraph_manager = digraph_manager
+
+    def get_test_cases(self, max_number_of_cycles_in_single_test_case):
+
+        digraph_manager = self.digraph_manager
+        dijkstra_matrix = GenerateDijkstraMatrix.run(digraph_manager)
+
+
+        simple_path_iterator = 0
+        path = ['S']
+        skip_flag = False
+
+        while True:
+            ppg = PrimePathsGenerator(digraph_manager)
+            reversed_translation_dict = ppg.reversed_translation_dict
+            for simple_path in ppg.get_prime_paths_without_cycles():
+
+                simple_path_iterator += 1
+                potential_extension = dijkstra_matrix[
+                            (path[-1], reversed_translation_dict[simple_path[0]])
+                            ]
+
+
+                if potential_extension:
+                    trans_cycle = [reversed_translation_dict[sp] for sp in simple_path]
+                    path += potential_extension[1:-1] + trans_cycle
+
+
+                elif path[-1] == reversed_translation_dict[simple_path[0]]:
+                    trans_cycle = [reversed_translation_dict[sp] for sp in simple_path]
+                    path += potential_extension[1:-1] + trans_cycle
+
+ 
+                else:
+                    skip_flag = True
+
+
+                if skip_flag or simple_path_iterator == max_number_of_cycles_in_single_test_case:
+                    path += dijkstra_matrix[(path[-1], 'T')][1:]
+                    if path[1] == 'S':
+                        yield path[1:]
+                    else:        
+                        yield path
+                    simple_path_iterator = 0
+                    path = ['S']
+                    skip_flag = False
+
+            if path != ['S']:
+                path += dijkstra_matrix[(path[-1], 'T')][1:]
+                if path[1] == 'S':
+                    yield path[1:]
+                else:    
+                    yield path
+            break
+
+
+# from diblob.digraph_manager import DigraphManager
+# digraph_manager = DigraphManager({'B0':{}})
+# digraph_manager.add_nodes('S', '1', '2', '3', '4', '5', 'T')
+# digraph_manager.connect_nodes(('S', '1'), ('1', '2'), ('2', 'T'), ('1', '3'), ('3', '4'), ('4', '5'), ('5', '4'), ('4', '1'))
+
+ 
+# scc = SimplePathCoverage(digraph_manager)
+# for x in scc.get_test_cases(3):
+#     print(x)

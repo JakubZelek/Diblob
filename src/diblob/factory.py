@@ -2,7 +2,16 @@
 Functions for working with digraph_manager
 """
 from diblob.digraph_manager import DigraphManager
-from diblob.exceptions import MultipleEdgeException
+from diblob.exceptions import MultipleEdgeException, CycleException
+
+def add_outgoing(digraph_manager, node_id, outgoing_list):
+    outgoing_nodes = digraph_manager[node_id].outgoing_nodes
+    if len(outgoing_nodes) == 0:
+        return []
+
+    outgoing_list += [node_id for node_id in outgoing_nodes if node_id not in outgoing_list]
+    for outgoing_node_id in outgoing_nodes:
+        add_outgoing(digraph_manager, outgoing_node_id, outgoing_list)
 
 
 class DiblobFactory:
@@ -93,6 +102,30 @@ class DiblobFactory:
             bipartite_digraph_dict[digraph_manager.root_diblob_id][node.node_id + '`'] =\
                                 [node_id + '``' for node_id in sorted(node.outgoing_nodes)]
         return DigraphManager(bipartite_digraph_dict)
+
+
+    @staticmethod
+    def generate_order_bipartite_digraph(digraph_manager: DigraphManager):
+        """
+        Generates digraph for Dilworth's theorem.
+        """
+
+        if len(digraph_manager.diblobs) > 1:
+            raise MultipleEdgeException("Bipartite can be computed only for digraph_manager\
+                                         with only root_diblob!")
+
+        bipartite_digraph_dict = {}
+        try:
+            for node_id in digraph_manager.nodes:
+                node_list = []
+                add_outgoing(digraph_manager, node_id, node_list)
+                bipartite_digraph_dict[node_id] = node_list
+
+        except RecursionError as exc:
+            raise CycleException("This factory can be applied only for DAG!") from exc
+
+        return DigraphManager({digraph_manager.root_diblob_id: bipartite_digraph_dict})
+
 
 
     @staticmethod
