@@ -1,12 +1,23 @@
-from diblob import DigraphManager
 from diblob.algorithms import DFS_with_path, DijkstraAlgorithm
-
+from testing_criterions.decorators import validate_source, validate_sink, validate_reachability
 
 class NodeCoverage:
+    """
+    Node coverage criterion.
+    """
+    @validate_reachability()
+    @validate_source()
+    @validate_sink()
     def __init__(self, digraph_manager) -> None:
         self.digraph_manager = digraph_manager
 
-    def get_test_cases(self, starting_point, end_point, winnow_out = True):
+    def get_test_cases(self, winnow_out = True):
+        """
+        Returns test cases generated for node coverage.
+        """
+        starting_point = "S"
+        end_point = "T"
+
         digraph_manager = self.digraph_manager
         dfs = DFS_with_path(digraph_manager)
         test_cases = dfs.run(starting_point)
@@ -20,21 +31,10 @@ class NodeCoverage:
             node_id = test_case[-1]
             if node_id != end_point:
                 test_case += [elem[0] for elem in min_distance_dict[node_id]['min_path']][::-1]
-            
+
         if winnow_out:
             for idx, test_case in enumerate(test_cases):
                 cover = {element for tc in test_cases for element in tc if tc != test_case}
                 if set(test_case).issubset(cover):
                     test_cases.pop(idx)
         return test_cases
-
-
-digraph_manager = DigraphManager({"B0": {}})
-digraph_manager.add_nodes('S', 'T', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10')
-digraph_manager.connect_nodes(('S', '1'), ('1', '2'), ('1', '3'), ('1', '4'), ('2', '5'), ('3', '5'), ('4', '5'),
-                              ('5', '6'), ('6', '7'), ('7', '5'), ('6', '8'), ('8', '9'), ('9', '6'), ('9', '7'), ('7', '10'),
-                              ('10', '9'), ('8', 'T'), ('9', 'T'), ('10', 'T'))
-
-node_coverage = NodeCoverage(digraph_manager)
-test_cases = node_coverage.get_test_cases('S', 'T')
-print(test_cases)

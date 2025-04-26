@@ -73,12 +73,9 @@ class DFS(DFSTemplate):
 class DFS_with_path(DFSTemplate):
 
     def run(self, node_id):
-        test_cases = []
-
-        for node_id in self.nodes_to_visit:
-            
-            current_path = []
-            self.run_iter(node_id, current_path, test_cases)
+        test_cases = []   
+        current_path = []
+        self.run_iter(node_id, current_path, test_cases)
 
         return test_cases
 
