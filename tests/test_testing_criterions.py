@@ -4,6 +4,7 @@ Tests for testing criterions
 
 from diblob.digraph_manager import DigraphManager
 from testing_criterions.NodeCoverage import NodeCoverage
+from testing_criterions.EdgeCoverage import EdgeCoverage
 
 
 SIMPLE_GRAPH = {
@@ -49,6 +50,18 @@ def nodes_covered(test_cases, digraph):
     dig_nodes = set(digraph.nodes)
     return nodes == dig_nodes
 
+def edges_covered(test_cases, digraph):
+    """
+    return True if all nodes are covered in the graph.
+    """
+    edges = set()
+    for test_case in test_cases:
+        for node_x, node_y in zip(test_case, test_case[1:]):
+            edges.add((node_x, node_y))
+
+    dig_edges = set(digraph.edges)
+    return edges - dig_edges,  dig_edges - edges
+
 def test_node_coverage():
     """
     Tests Node Coverage.
@@ -73,8 +86,53 @@ def test_node_coverage():
     test_cases = node_coverage.get_test_cases()
 
     assert test_cases == [['S', '1', '2', '5', '6', '1', '2', '5', 'T'], 
-                         ['S', '1', '3', '5', 'T'], 
+                         ['S', '1', '3', '5', 'T'],
                          ['S', '1', '4', '5', 'T']]
     assert nodes_covered(test_cases, digraph_manager)
 
-test_node_coverage()
+def test_edge_coverage():
+    """
+    Tests Edge Coverage.
+    """
+     
+    digraph_manager = DigraphManager({"B0": ONLINE_SHOP_GRAPH})
+    edge_coverage = EdgeCoverage(digraph_manager)
+
+    test_cases = edge_coverage.get_test_cases_minimal_total_cost(
+        cost_function={('Payment', 'Blik'): 100}, default_cost=1)
+    dif_1, dif_2 = edges_covered(test_cases, digraph_manager)
+
+    assert not dif_1
+    assert not dif_2
+    test_cases = edge_coverage.get_test_cases_minimal_number_of_test_cases(
+        cost_function={('Payment', 'Blik'): 100}, default_cost=1)
+    edges_covered(test_cases, digraph_manager)
+    dif_1, dif_2 = edges_covered(test_cases, digraph_manager)
+
+    assert not dif_1
+    assert not dif_2
+
+    test_cases = edge_coverage.get_test_cases_set_number_of_test_cases(
+        k=4, cost_function={('Payment', 'Blik'): 100}, default_cost=1)
+    edges_covered(test_cases, digraph_manager)
+    dif_1, dif_2 = edges_covered(test_cases, digraph_manager)
+
+    assert not dif_1
+    assert not dif_2
+
+    digraph_manager = DigraphManager({"B0": SIMPLE_GRAPH})
+    edge_coverage = EdgeCoverage(digraph_manager)
+
+    test_cases = edge_coverage.get_test_cases_minimal_number_of_test_cases(
+        cost_function={('5', '6'): 10, ('6', '1'): 10}, default_cost=1)
+    assert len(test_cases) == 1
+
+    test_cases = edge_coverage.get_test_cases_minimal_total_cost(
+        cost_function={('5', '6'): 10, ('6', '1'): 10}, default_cost=1)
+    assert len(test_cases) == 2
+
+    test_cases = edge_coverage.get_test_cases_set_number_of_test_cases(
+        cost_function={('5', '6'): 10, ('6', '1'): 10}, default_cost=2, k=3)
+    assert len(test_cases) == 3
+
+test_edge_coverage()
