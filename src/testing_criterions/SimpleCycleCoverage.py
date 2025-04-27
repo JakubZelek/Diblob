@@ -67,16 +67,3 @@ class SimpleCycleCoverage:
         if path != ['S']:
             path += dijkstra_matrix[(path[-1], 'T')][1:]
             yield path
-            
-
-
-
-# from diblob.digraph_manager import DigraphManager
-# digraph_manager = DigraphManager({'B0':{}})
-# digraph_manager.add_nodes('S', '1', '2', '3', '4', '5', 'T')
-# digraph_manager.connect_nodes(('S', '1'), ('1', '2'), ('2', 'T'), ('1', '3'), ('3', '4'), ('4', '5'), ('5', '4'), ('4', '1'))
-
- 
-# scc = SimpleCycleCoverage(digraph_manager)
-# for x in scc.get_test_cases(3):
-#     print(x)

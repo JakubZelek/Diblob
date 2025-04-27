@@ -6,6 +6,18 @@ from diblob.digraph_manager import DigraphManager
 from testing_criterions.NodeCoverage import NodeCoverage
 from testing_criterions.EdgeCoverage import EdgeCoverage
 from testing_criterions.SimpleCycleCoverage import SimpleCycleCoverage
+from testing_criterions.SimplePathsCoverage import SimplePathsCoverage
+from testing_criterions.PrimePathCoverage import PrimePathCoverage
+
+PRIME_PATH_GRAPH = {
+    "5": ["4"],
+    "3": ["4"],
+    "2": ["T"],
+    "S": ["1"],
+    "1": ["2", "3"],
+    "4": ["5", "1"],
+    "T": [],
+}
 
 SIMPLE_GRAPH = {
     "S": ["1"],
@@ -69,25 +81,31 @@ def test_node_coverage():
     digraph_manager = DigraphManager({"B0": ONLINE_SHOP_GRAPH})
     node_coverage = NodeCoverage(digraph_manager)
 
-    test_cases = node_coverage.get_test_cases()
- 
-    assert test_cases == [['S', 'OpenShop', 'Login', 'AddToCard', 'CheckOut', 'Payment', 'OnlineTransfer', 'ValidatePayment',
-                           'InvalidPayment', 'Order', 'Login', 'Catalog', 'ViewProduct', 'ProductDetails', 'T'],
-                          ['S', 'OpenShop', 'Login', 'AddToCard', 'CheckOut', 'Payment', 'CreditCard', 'ValidatePayment', 'T'],
-                          ['S', 'OpenShop', 'Login', 'AddToCard', 'CheckOut', 'Payment', 'Blik', 'ValidatePayment', 'T'],
-                          ['S', 'OpenShop', 'Login', 'AddToCard', 'CheckOut', 'Payment', 'ShopCard', 'ValidatePayment', 'T'],
-                          ['S', 'OpenShop', 'SearchProduct', 'ProductDetails', 'T']]
+    test_cases = [test_case for test_case in node_coverage.get_test_cases()] 
+    assert test_cases == [
+            ['S', 'OpenShop', 'Login', 'AddToCard', 'CheckOut', 'Payment', 'OnlineTransfer', 'ValidatePayment', 'T'],
+            ['S', 'OpenShop', 'Login', 'AddToCard', 'CheckOut', 'Payment', 'OnlineTransfer', 'ValidatePayment', 'InvalidPayment', 'Order', 'Login', 'Catalog', 'ViewProduct', 'ProductDetails', 'T'],
+            ['S', 'OpenShop', 'Login', 'AddToCard', 'CheckOut', 'Payment', 'CreditCard', 'ValidatePayment', 'T'],
+            ['S', 'OpenShop', 'Login', 'AddToCard', 'CheckOut', 'Payment', 'Blik', 'ValidatePayment', 'T'],
+            ['S', 'OpenShop', 'Login', 'AddToCard', 'CheckOut', 'Payment', 'ShopCard', 'ValidatePayment', 'T'],
+            ['S', 'OpenShop', 'Login', 'Catalog', 'ViewProduct', 'ProductDetails', 'T'],
+            ['S', 'OpenShop', 'SearchProduct', 'ProductDetails', 'T']
+        ]
 
     assert nodes_covered(test_cases, digraph_manager)
 
     digraph_manager = DigraphManager({"B0": SIMPLE_GRAPH})
     node_coverage = NodeCoverage(digraph_manager)
 
-    test_cases = node_coverage.get_test_cases()
+    test_cases = [test_case for test_case in node_coverage.get_test_cases()] 
 
-    assert test_cases == [['S', '1', '2', '5', '6', '1', '2', '5', 'T'],
-                          ['S', '1', '3', '5', 'T'],
-                          ['S', '1', '4', '5', 'T']]
+    assert test_cases == [
+            ['S', '1', '2', '5', '6', '1', '2', '5', 'T'],
+            ['S', '1', '2', '5', 'T'],
+            ['S', '1', '3', '5', 'T'],
+            ['S', '1', '4', '5', 'T']
+        ]
+
     assert nodes_covered(test_cases, digraph_manager)
 
 def test_edge_coverage():
@@ -144,34 +162,48 @@ def test_cycle_coverage():
     simple_cycle = SimpleCycleCoverage(digraph_manager)
 
     test_cases = [test_case for test_case in simple_cycle.get_test_cases(1)]
-    assert test_cases == [['S', 'OpenShop', 'Login', 'AddToCard', 'CheckOut', 'Payment',
-                           'OnlineTransfer', 'ValidatePayment', 'InvalidPayment', 'Order', 
-                           'Login', 'AddToCard', 'CheckOut', 'Payment', 'Blik', 'ValidatePayment', 'T'],
-                          ['S', 'OpenShop', 'Login', 'AddToCard', 'CheckOut', 'Payment', 'CreditCard',
-                           'ValidatePayment', 'InvalidPayment', 'Order', 'Login', 'AddToCard', 'CheckOut', 
-                           'Payment', 'Blik', 'ValidatePayment', 'T'],
-                          ['S', 'OpenShop', 'Login', 'AddToCard', 'CheckOut', 'Payment', 'Blik',
-                           'ValidatePayment', 'InvalidPayment', 'Order', 'Login', 'AddToCard', 'CheckOut', 
-                           'Payment', 'Blik', 'ValidatePayment', 'T'],
-                          ['S', 'OpenShop', 'Login', 'AddToCard', 'CheckOut', 'Payment', 'ShopCard',
-                           'ValidatePayment', 'InvalidPayment', 'Order', 'Login', 'AddToCard', 'CheckOut',
-                           'Payment', 'Blik', 'ValidatePayment', 'T'],
-                          ['S', 'OpenShop', 'Catalog', 'ViewProduct', 'ProductDetails', 'Catalog',
-                           'ViewProduct', 'ProductDetails', 'T'],
-                          ['S', 'OpenShop', 'Catalog', 'ViewProduct', 'ProductDetails', 'Order',
-                           'Login', 'Catalog', 'ViewProduct', 'ProductDetails', 'T']]
+    assert test_cases == [
+            ['S', 'OpenShop', 'Login', 'AddToCard', 'CheckOut', 'Payment', 'OnlineTransfer',
+            'ValidatePayment', 'InvalidPayment', 'Order', 'Login', 'AddToCard', 'CheckOut',
+            'Payment', 'Blik', 'ValidatePayment', 'T'],
+            
+            ['S', 'OpenShop', 'Login', 'AddToCard', 'CheckOut', 'Payment', 'CreditCard',
+            'ValidatePayment', 'InvalidPayment', 'Order', 'Login', 'AddToCard', 'CheckOut',
+            'Payment', 'Blik', 'ValidatePayment', 'T'],
+            
+            ['S', 'OpenShop', 'Login', 'AddToCard', 'CheckOut', 'Payment', 'Blik',
+            'ValidatePayment', 'InvalidPayment', 'Order', 'Login', 'AddToCard', 'CheckOut',
+            'Payment', 'Blik', 'ValidatePayment', 'T'],
+            
+            ['S', 'OpenShop', 'Login', 'AddToCard', 'CheckOut', 'Payment', 'ShopCard',
+            'ValidatePayment', 'InvalidPayment', 'Order', 'Login', 'AddToCard', 'CheckOut',
+            'Payment', 'Blik', 'ValidatePayment', 'T'],
+            
+            ['S', 'OpenShop', 'Catalog', 'ViewProduct', 'ProductDetails', 'Catalog',
+            'ViewProduct', 'ProductDetails', 'T'],
+            
+            ['S', 'OpenShop', 'Catalog', 'ViewProduct', 'ProductDetails', 'Order',
+            'Login', 'Catalog', 'ViewProduct', 'ProductDetails', 'T']
+        ]
+
 
     test_cases = [test_case for test_case in simple_cycle.get_test_cases(5)]
-    assert test_cases == [['S', 'OpenShop', 'Login', 'AddToCard', 'CheckOut', 'Payment', 'OnlineTransfer',
-                           'ValidatePayment', 'InvalidPayment', 'Order', 'Login', 'AddToCard', 
-                           'CheckOut', 'Payment', 'CreditCard', 'ValidatePayment', 'InvalidPayment', 'Order', 
-                           'Login', 'AddToCard', 'CheckOut', 'Payment', 'Blik', 'ValidatePayment', 
-                           'InvalidPayment', 'Order', 'Login', 'AddToCard', 'CheckOut', 'Payment',
-                           'ShopCard', 'ValidatePayment', 'InvalidPayment', 'Order', 'Login', 'AddToCard', 'CheckOut',
-                           'Payment', 'Blik', 'ValidatePayment', 'InvalidPayment', 'Order', 'Login', 'Catalog',
-                           'ViewProduct', 'ProductDetails', 'Catalog', 'ViewProduct', 'ProductDetails', 'T'],
-                          ['S', 'OpenShop', 'Catalog', 'ViewProduct', 'ProductDetails', 'Order', 'Login', 'Catalog',
-                           'ViewProduct', 'ProductDetails', 'T']]
+    assert test_cases == [
+            [
+                'S', 'OpenShop', 'Login', 'AddToCard', 'CheckOut', 'Payment', 'OnlineTransfer',
+                'ValidatePayment', 'InvalidPayment', 'Order', 'Login', 'AddToCard', 'CheckOut', 'Payment',
+                'CreditCard', 'ValidatePayment', 'InvalidPayment', 'Order', 'Login', 'AddToCard', 'CheckOut',
+                'Payment', 'Blik', 'ValidatePayment', 'InvalidPayment', 'Order', 'Login', 'AddToCard', 'CheckOut',
+                'Payment', 'ShopCard', 'ValidatePayment', 'InvalidPayment', 'Order', 'Login', 'AddToCard', 'CheckOut',
+                'Payment', 'Blik', 'ValidatePayment', 'InvalidPayment', 'Order', 'Login', 'Catalog', 'ViewProduct',
+                'ProductDetails', 'Catalog', 'ViewProduct', 'ProductDetails', 'T'
+            ],
+            [
+                'S', 'OpenShop', 'Catalog', 'ViewProduct', 'ProductDetails', 'Order', 'Login',
+                'Catalog', 'ViewProduct', 'ProductDetails', 'T'
+            ]
+        ]
+
 
     digraph_manager = DigraphManager({"B0": SIMPLE_GRAPH})
     simple_cycle = SimpleCycleCoverage(digraph_manager)
@@ -185,3 +217,253 @@ def test_cycle_coverage():
     test_cases = [test_case for test_case in simple_cycle.get_test_cases(5)]
     assert test_cases == [['S', '1', '2', '5', '6', '1', '3', '5',
                            '6', '1', '4', '5', '6', '1', '2', '5', 'T']]
+
+def test_simple_path_coverage():
+    """
+    Tests Cycle Coverage.
+    """
+    digraph_manager = DigraphManager({"B0": ONLINE_SHOP_GRAPH})
+    simple_path = SimplePathsCoverage(digraph_manager)
+
+    test_cases = [test_case for test_case in simple_path.get_test_cases(5)]
+    assert test_cases == [
+        [
+            'S', 'OpenShop', 'Login', 'AddToCard', 'CheckOut', 'Payment', 'CreditCard',
+            'ValidatePayment', 'InvalidPayment', 'Order', 'Login', 'AddToCard', 'CheckOut',
+            'Payment', 'OnlineTransfer', 'ValidatePayment', 'InvalidPayment', 'Order', 'Login',
+            'AddToCard', 'CheckOut', 'Payment', 'CreditCard', 'ValidatePayment', 'InvalidPayment',
+            'Order', 'Login', 'AddToCard', 'CheckOut', 'Payment', 'Blik', 'ValidatePayment',
+            'InvalidPayment', 'Order', 'Login', 'AddToCard', 'CheckOut', 'Payment', 'CreditCard',
+            'ValidatePayment', 'InvalidPayment', 'Order', 'Login', 'AddToCard', 'CheckOut',
+            'Payment', 'ShopCard', 'ValidatePayment', 'InvalidPayment', 'Order', 'Login',
+            'AddToCard', 'CheckOut', 'Payment', 'OnlineTransfer', 'ValidatePayment', 'InvalidPayment',
+            'Order', 'Login', 'AddToCard', 'CheckOut', 'Payment', 'ShopCard', 'ValidatePayment',
+            'InvalidPayment', 'Order', 'Login', 'AddToCard', 'CheckOut', 'Payment', 'CreditCard',
+            'ValidatePayment', 'T'
+        ],
+        [
+            'S', 'OpenShop', 'Login', 'AddToCard', 'CheckOut', 'Payment', 'ShopCard',
+            'ValidatePayment', 'InvalidPayment', 'Order', 'Login', 'AddToCard', 'CheckOut',
+            'Payment', 'Blik', 'ValidatePayment', 'InvalidPayment', 'Order', 'Login', 'Catalog',
+            'ViewProduct', 'ProductDetails', 'Catalog', 'ViewProduct', 'ProductDetails', 'Order',
+            'Login', 'Catalog', 'ViewProduct', 'ProductDetails', 'Order', 'Login', 'AddToCard',
+            'CheckOut', 'Payment', 'Blik', 'ValidatePayment', 'InvalidPayment', 'Order', 'Login',
+            'AddToCard', 'CheckOut', 'Payment', 'OnlineTransfer', 'ValidatePayment', 'InvalidPayment',
+            'Order', 'Login', 'AddToCard', 'CheckOut', 'Payment', 'Blik', 'ValidatePayment',
+            'InvalidPayment', 'Order', 'Login', 'AddToCard', 'CheckOut', 'Payment', 'CreditCard',
+            'ValidatePayment', 'T'
+        ],
+        [
+            'S', 'OpenShop', 'Login', 'AddToCard', 'CheckOut', 'Payment', 'Blik',
+            'ValidatePayment', 'InvalidPayment', 'Order', 'Login', 'AddToCard', 'CheckOut',
+            'Payment', 'ShopCard', 'ValidatePayment', 'InvalidPayment', 'Order', 'Login',
+            'AddToCard', 'CheckOut', 'Payment', 'OnlineTransfer', 'ValidatePayment', 'T'
+        ],
+        [
+            'S', 'OpenShop', 'Login', 'AddToCard', 'CheckOut', 'Payment', 'Blik',
+            'ValidatePayment', 'InvalidPayment', 'Order', 'Login', 'AddToCard', 'CheckOut',
+            'Payment', 'Blik', 'ValidatePayment', 'T'
+        ],
+        [
+            'S', 'OpenShop', 'Login', 'AddToCard', 'CheckOut', 'Payment', 'OnlineTransfer',
+            'ValidatePayment', 'T'
+        ],
+        [
+            'S', 'OpenShop', 'Login', 'AddToCard', 'CheckOut', 'Payment', 'CreditCard',
+            'ValidatePayment', 'T'
+        ],
+        [
+            'S', 'OpenShop', 'Login', 'AddToCard', 'CheckOut', 'Payment', 'OnlineTransfer',
+            'ValidatePayment', 'InvalidPayment', 'Order', 'Login', 'Catalog', 'ViewProduct',
+            'ProductDetails', 'T'
+        ],
+        [
+            'S', 'OpenShop', 'Login', 'AddToCard', 'CheckOut', 'Payment', 'Blik',
+            'ValidatePayment', 'T'
+        ],
+        [
+            'S', 'OpenShop', 'Login', 'AddToCard', 'CheckOut', 'Payment', 'ShopCard',
+            'ValidatePayment', 'T'
+        ],
+        [
+            'S', 'OpenShop', 'Login', 'AddToCard', 'CheckOut', 'Payment', 'Blik',
+            'ValidatePayment', 'InvalidPayment', 'Order', 'Login', 'Catalog', 'ViewProduct',
+            'ProductDetails', 'T'
+        ],
+        [
+            'S', 'OpenShop', 'Login', 'Catalog', 'ViewProduct', 'ProductDetails', 'T'
+        ],
+        [
+            'S', 'OpenShop', 'Login', 'Catalog', 'ViewProduct', 'ProductDetails', 'Order',
+            'Login', 'Catalog', 'ViewProduct', 'ProductDetails', 'T'
+        ],
+        [
+            'S', 'OpenShop', 'SearchProduct', 'ProductDetails', 'Order', 'Login', 'AddToCard',
+            'CheckOut', 'Payment', 'OnlineTransfer', 'ValidatePayment', 'T'
+        ],
+        [
+            'S', 'OpenShop', 'SearchProduct', 'ProductDetails', 'Order', 'Login', 'AddToCard',
+            'CheckOut', 'Payment', 'CreditCard', 'ValidatePayment', 'T'
+        ],
+        [
+            'S', 'OpenShop', 'SearchProduct', 'ProductDetails', 'Order', 'Login', 'AddToCard',
+            'CheckOut', 'Payment', 'OnlineTransfer', 'ValidatePayment', 'InvalidPayment',
+            'Order', 'Login', 'Catalog', 'ViewProduct', 'ProductDetails', 'T'
+        ],
+        [
+            'S', 'OpenShop', 'SearchProduct', 'ProductDetails', 'Order', 'Login', 'AddToCard',
+            'CheckOut', 'Payment', 'Blik', 'ValidatePayment', 'T'
+        ],
+        [
+            'S', 'OpenShop', 'SearchProduct', 'ProductDetails', 'Order', 'Login', 'AddToCard',
+            'CheckOut', 'Payment', 'ShopCard', 'ValidatePayment', 'T'
+        ],
+        [
+            'S', 'OpenShop', 'SearchProduct', 'ProductDetails', 'Order', 'Login', 'AddToCard',
+            'CheckOut', 'Payment', 'Blik', 'ValidatePayment', 'InvalidPayment', 'Order',
+            'Login', 'Catalog', 'ViewProduct', 'ProductDetails', 'T'
+        ],
+        [
+            'S', 'OpenShop', 'SearchProduct', 'ProductDetails', 'T'
+        ],
+        [
+            'S', 'OpenShop', 'Catalog', 'ViewProduct', 'ProductDetails', 'Order', 'Login',
+            'AddToCard', 'CheckOut', 'Payment', 'OnlineTransfer', 'ValidatePayment', 'T'
+        ],
+        [
+            'S', 'OpenShop', 'SearchProduct', 'ProductDetails', 'Order', 'Login', 'Catalog',
+            'ViewProduct', 'ProductDetails', 'T'
+        ],
+        [
+            'S', 'OpenShop', 'Catalog', 'ViewProduct', 'ProductDetails', 'Order', 'Login',
+            'AddToCard', 'CheckOut', 'Payment', 'CreditCard', 'ValidatePayment', 'T'
+        ],
+        [
+            'S', 'OpenShop', 'Catalog', 'ViewProduct', 'ProductDetails', 'Order', 'Login',
+            'AddToCard', 'CheckOut', 'Payment', 'Blik', 'ValidatePayment', 'T'
+        ],
+        [
+            'S', 'OpenShop', 'Catalog', 'ViewProduct', 'ProductDetails', 'Order', 'Login',
+            'AddToCard', 'CheckOut', 'Payment', 'CreditCard', 'ValidatePayment', 'InvalidPayment',
+            'Order', 'Login', 'Catalog', 'ViewProduct', 'ProductDetails', 'T'
+        ],
+        [
+            'S', 'OpenShop', 'Catalog', 'ViewProduct', 'ProductDetails', 'Order', 'Login',
+            'AddToCard', 'CheckOut', 'Payment', 'ShopCard', 'ValidatePayment', 'T'
+        ],
+        [
+            'S', 'OpenShop', 'Catalog', 'ViewProduct', 'ProductDetails', 'T'
+        ],
+        [
+            'S', 'OpenShop', 'Catalog', 'ViewProduct', 'ProductDetails', 'Order', 'Login',
+            'AddToCard', 'CheckOut', 'Payment', 'ShopCard', 'ValidatePayment', 'InvalidPayment',
+            'Order', 'Login', 'AddToCard', 'CheckOut', 'Payment', 'OnlineTransfer',
+            'ValidatePayment', 'InvalidPayment', 'Order', 'Login', 'AddToCard', 'CheckOut',
+            'Payment', 'CreditCard', 'ValidatePayment', 'InvalidPayment', 'Order', 'Login',
+            'AddToCard', 'CheckOut', 'Payment', 'Blik', 'ValidatePayment', 'InvalidPayment',
+            'Order', 'Login', 'AddToCard', 'CheckOut', 'Payment', 'ShopCard', 'ValidatePayment',
+            'InvalidPayment', 'Order', 'Login', 'AddToCard', 'CheckOut', 'Payment', 'Blik',
+            'ValidatePayment', 'T'
+        ],
+        [
+            'S', 'OpenShop', 'Login', 'AddToCard', 'CheckOut', 'Payment', 'OnlineTransfer',
+            'ValidatePayment', 'InvalidPayment', 'Order', 'Login', 'AddToCard', 'CheckOut',
+            'Payment', 'CreditCard', 'ValidatePayment', 'InvalidPayment', 'Order', 'Login',
+            'AddToCard', 'CheckOut', 'Payment', 'OnlineTransfer', 'ValidatePayment', 'InvalidPayment',
+            'Order', 'Login', 'AddToCard', 'CheckOut', 'Payment', 'Blik', 'ValidatePayment',
+            'InvalidPayment', 'Order', 'Login', 'AddToCard', 'CheckOut', 'Payment', 'OnlineTransfer',
+            'ValidatePayment', 'InvalidPayment', 'Order', 'Login', 'AddToCard', 'CheckOut',
+            'Payment', 'ShopCard', 'ValidatePayment', 'InvalidPayment', 'Order', 'Login',
+            'AddToCard', 'CheckOut', 'Payment', 'OnlineTransfer', 'ValidatePayment', 'InvalidPayment',
+            'Order', 'Login', 'AddToCard', 'CheckOut', 'Payment', 'CreditCard', 'ValidatePayment',
+            'InvalidPayment', 'Order', 'Login', 'AddToCard', 'CheckOut', 'Payment', 'Blik',
+            'ValidatePayment', 'T'
+        ],
+        [
+            'S', 'OpenShop', 'Login', 'AddToCard', 'CheckOut', 'Payment', 'Blik',
+            'ValidatePayment', 'InvalidPayment', 'Order', 'Login', 'AddToCard', 'CheckOut',
+            'Payment', 'ShopCard', 'ValidatePayment', 'InvalidPayment', 'Order', 'Login',
+            'AddToCard', 'CheckOut', 'Payment', 'Blik', 'ValidatePayment', 'T'
+        ]
+    ]
+
+
+    edges_covered(test_cases, digraph_manager)
+    dif_1, dif_2 = edges_covered(test_cases, digraph_manager)
+    assert not dif_1
+    assert not dif_2
+
+    digraph_manager = DigraphManager({"B0": SIMPLE_GRAPH})
+    simple_path = SimplePathsCoverage(digraph_manager)
+
+    test_cases = [test_case for test_case in simple_path.get_test_cases(1)]  
+    assert test_cases == [
+            ['S', '1', '2', '5', '6', '1', '2', '5', 'T'],
+            ['S', '1', '2', '5', 'T'],
+            ['S', '1', '3', '5', '6', '1', '2', '5', 'T'],
+            ['S', '1', '3', '5', 'T'],
+            ['S', '1', '4', '5', '6', '1', '2', '5', 'T'],
+            ['S', '1', '4', '5', 'T'],
+            ['S', '1', '2', '5', '6', '1', '2', '5', 'T'],
+            ['S', '1', '2', '5', '6', '1', '3', '5', 'T'],
+            ['S', '1', '2', '5', '6', '1', '4', '5', 'T'],
+            ['S', '1', '4', '5', '6', '1', '2', '5', 'T'],
+            ['S', '1', '4', '5', '6', '1', '3', '5', 'T'],
+            ['S', '1', '3', '5', '6', '1', '2', '5', 'T'],
+            ['S', '1', '3', '5', '6', '1', '4', '5', 'T'],
+            ['S', '1', '2', '5', '6', '1', '3', '5', 'T'],
+            ['S', '1', '2', '5', '6', '1', '4', '5', 'T']
+        ]
+    dif_1, dif_2 = edges_covered(test_cases, digraph_manager)
+
+    assert not dif_1
+    assert not dif_2
+
+    test_cases = [test_case for test_case in simple_path.get_test_cases(5)] 
+    assert test_cases == [
+    ['S', '1', '2', '5', 'T'],
+    ['S', '1', '2', '5', '6', '1', '2', '5', 'T'],
+    ['S', '1', '3', '5', 'T'],
+    ['S', '1', '4', '5', 'T'],
+    ['S', '1', '4', '5', '6', '1', '2', '5', 'T'],
+    ['S', '1', '2', '5', '6', '1', '4', '5', 'T'],
+    [
+        'S', '1', '4', '5', '6', '1', '3', '5', '6', '1', '2', '5', '6', '1', '3', '5',
+        '6', '1', '4', '5', '6', '1', '2', '5', '6', '1', '3', '5', '6', '1', '2', '5',
+        '6', '1', '4', '5', 'T'
+    ]
+]
+    dif_1, dif_2 = edges_covered(test_cases, digraph_manager)
+
+    assert not dif_1
+    assert not dif_2
+    
+def test_prime_path_coverage(): 
+    digraph_manager = DigraphManager({"B0": PRIME_PATH_GRAPH})
+    prime_path = PrimePathCoverage(digraph_manager)
+
+    test_cases = [test_case for test_case in prime_path.get_test_cases(1)]
+    assert test_cases == [
+            ['S', '1', '3', '4', '1', '3', '4', '1', '2', 'T'],
+            ['S', '1', '3', '4', '5', '4', '5', '4', '1', '2', 'T'],
+            ['S', '1', '3', '4', '5', '4', '1', '2', 'T'],
+            ['S', '1', '3', '4', '5', '4', '1', '3', '4', '1', '2', 'T'],
+            ['S', '1', '3', '4', '1', '2', 'T'],
+            ['S', '1', '2', 'T'],
+            ['S', '1', '3', '4', '5', '4', '1', '2', 'T']
+        ]
+
+    test_cases = [test_case for test_case in prime_path.get_test_cases(5)]
+    assert test_cases == [
+            [
+                'S', '1', '3', '4', '1', '3', '4', '1', '3', '4',
+                '5', '4', '5', '4', '1', '2', 'T'
+            ],
+            ['S', '1', '3', '4', '5', '4', '1', '2', 'T'],
+            ['S', '1', '2', 'T'],
+            ['S', '1', '3', '4', '1', '2', 'T']
+        ]
+
+
+test_prime_path_coverage()
+test_simple_path_coverage()

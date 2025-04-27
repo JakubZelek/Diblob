@@ -409,7 +409,7 @@ class PrimePathsGenerator:
         extended_graph[1] = [node_id]
 
         for n_id in list(extended_graph):
-            if n_id != node_id and node_id not in extended_graph[n_id]:
+            if n_id != node_id:
                 extended_graph[n_id].append(1)
         return extended_graph
 
@@ -477,8 +477,10 @@ class PrimePathsGenerator:
     def get_prime_paths_without_cycles(self):
         for node_id in self.graph_dict:
             extended_graph = self.get_extended_graph(node_id)
+
             reversed_extended_graph = self.get_reversed_graph()
             self.blocked_dict = {n_id: [] for n_id in extended_graph}
+
             self.blocked_set = set()
             yield from self.dfs_part(1, extended_graph, reversed_extended_graph)
 

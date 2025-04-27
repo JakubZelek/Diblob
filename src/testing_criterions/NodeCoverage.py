@@ -11,7 +11,7 @@ class NodeCoverage:
     def __init__(self, digraph_manager) -> None:
         self.digraph_manager = digraph_manager
 
-    def get_test_cases(self, winnow_out = True):
+    def get_test_cases(self):
         """
         Returns test cases generated for node coverage.
         """
@@ -31,10 +31,5 @@ class NodeCoverage:
             node_id = test_case[-1]
             if node_id != end_point:
                 test_case += [elem[0] for elem in min_distance_dict[node_id]['min_path']][::-1]
-
-        if winnow_out:
-            for idx, test_case in enumerate(test_cases):
-                cover = {element for tc in test_cases for element in tc if tc != test_case}
-                if set(test_case).issubset(cover):
-                    test_cases.pop(idx)
-        return test_cases
+            yield test_case
+ 
