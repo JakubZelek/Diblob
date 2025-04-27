@@ -12,19 +12,20 @@ def create_digraph_json_from_test_case_list(test_case_list):
             prev_node_id = node_id
         digraph_dict.setdefault(prev_node_id, [])
 
-    return {'B0': digraph_dict}
+    return {"B0": digraph_dict}
 
 
 class TestCaseHead:
     def __init__(self) -> None:
         self.next = None
         self.cost = 0
-    
+
     def set_cost(self, cost):
         self.cost = cost
 
     def get_cost(self):
         return self.cost
+
 
 class TestCaseNode:
     def __init__(self, value) -> None:
@@ -32,7 +33,7 @@ class TestCaseNode:
         self.prev = None
         self.cost = 0
         self.value = value
-  
+
     def set_cost(self, cost):
         self.cost = cost
 
@@ -44,7 +45,6 @@ class Mutation:
         self.test_case_list = []
         self.cost_function = cost_function
 
-
     def create_mutation_resources(self):
         for test_case in self.test_cases:
             head = TestCaseHead()
@@ -54,25 +54,23 @@ class Mutation:
             test_case_cost = 0
             cost_function = self.cost_function
             for node_id in test_case:
-                
-                    test_case_node = TestCaseNode(node_id)
-                    test_case_node.prev = prev
-                    prev.next = test_case_node
-                    self.mutation_dict.setdefault(node_id, []).append(test_case_node)
-                    if prev_id is not None:
-                        
-                        node_cost = cost_function[(prev_id, node_id)]
-                        test_case_node.set_cost(node_cost)
-                        test_case_cost += node_cost
-                    prev_id = node_id
-                    prev = test_case_node
-    
+
+                test_case_node = TestCaseNode(node_id)
+                test_case_node.prev = prev
+                prev.next = test_case_node
+                self.mutation_dict.setdefault(node_id, []).append(test_case_node)
+                if prev_id is not None:
+
+                    node_cost = cost_function[(prev_id, node_id)]
+                    test_case_node.set_cost(node_cost)
+                    test_case_cost += node_cost
+                prev_id = node_id
+                prev = test_case_node
+
             head.set_cost(test_case_cost)
 
     def calculate_cost(self, prev, current):
         return cost_function[(prev, current)]
-          
-
 
     def compare_cost(self, test_case_node_1, test_case_node_2, avg=0):
         prev = test_case_node_1.prev
@@ -101,7 +99,6 @@ class Mutation:
         avg_difference_1 = abs(avg - cost_1) + abs(avg - cost_2)
         avg_difference_2 = abs(avg - potential_cost_1) + abs(avg - potential_cost_2)
 
-
         if avg_difference_1 > avg_difference_2:
             head_1.set_cost(potential_cost_1)
             head_2.set_cost(potential_cost_2)
@@ -118,15 +115,19 @@ class Mutation:
 
 
 import random
-def run_algorithm(test_cases, cost_function, iterations=1000000, threshold = 0, avg=None, pop = None):
+
+
+def run_algorithm(
+    test_cases, cost_function, iterations=1000000, threshold=0, avg=None, pop=None
+):
 
     m = Mutation(test_cases, cost_function)
     m.create_mutation_resources()
     dist = 0
 
-    cost = 0 
+    cost = 0
     for test_case in m.test_case_list:
-        cost += test_case.cost 
+        cost += test_case.cost
 
     print("COST", cost)
     print("AVG", avg)
@@ -136,15 +137,16 @@ def run_algorithm(test_cases, cost_function, iterations=1000000, threshold = 0, 
     if avg is None:
         avg = cost / len(m.test_case_list)
 
-
     for test_case in m.test_case_list:
         dist += abs(avg - test_case.cost)
 
-    iterator = 0 
+    iterator = 0
     if pop is not None:
         for i in pop:
             m.mutation_dict.pop(i)
-    m.mutation_dict = {key: value for key, value in m.mutation_dict.items() if len(value) > 1}
+    m.mutation_dict = {
+        key: value for key, value in m.mutation_dict.items() if len(value) > 1
+    }
 
     dist_values = []
     iter_values = []
@@ -164,34 +166,3 @@ def run_algorithm(test_cases, cost_function, iterations=1000000, threshold = 0, 
             dist_values.append(dist)
             iter_values.append(iterator)
     return m.test_case_list, dist_values, iter_values
-
-
-from GeneticTestCasesGenerator import generate_artificial_test_cases 
-
-test_len = 1001
-number_of_tests = 1001
-iterations = 10000
-test_cases, cost_function, avg = generate_artificial_test_cases(test_len, number_of_tests)
-
-res, dist_values, iter_values = run_algorithm(test_cases, cost_function, iterations=iterations, avg=avg, pop={'0', str(test_len-1)})
-
-print('#'*30)
-for elem in res:
-    print(elem.cost)
-
-
-import matplotlib.pyplot as plt
-def plot_fig(iterations, dist_values):
-    plt.figure(figsize=(8, 6))
-    plt.plot(iterations, dist_values)
-        
-    # Add labels and title
-    plt.xlabel("X-axis")
-    plt.ylabel("Y-axis")
-    plt.title("Plot of y vs. x")
-        
-    # Show the plot
-    plt.grid(True)
-    plt.show()
-
-plot_fig(iter_values, dist_values)

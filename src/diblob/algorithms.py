@@ -6,6 +6,7 @@ from copy import deepcopy
 START = "S"
 END = "T"
 
+
 def edges_to_path(edges):
     if not edges:
         return edges
@@ -14,17 +15,18 @@ def edges_to_path(edges):
         path.append(v)
     return path
 
+
 class DFSTemplate(ABC):
     """
     Abstract class for DFS. Used for DFS algorithms modifications.
     """
+
     def __init__(self, digraph_manager):
         self.visit_time = 0
         self.visited_nodes = []
         self.visitation_dict = {}
         self.digraph_manager = digraph_manager
         self.nodes_to_visit = list(digraph_manager.nodes)
-
 
     def exec(self, node_id: str):
         """
@@ -54,6 +56,7 @@ class DFS(DFSTemplate):
     """
     Basic DFS.
     """
+
     def run(self, node_id: str):
         """
         Basic DFS runner.
@@ -67,18 +70,17 @@ class DFS(DFSTemplate):
                 self.run(outgoing_node_id)
 
         self.visit_time += 1
-        self.visitation_dict[node_id] |=  {"return_time": self.visit_time}
+        self.visitation_dict[node_id] |= {"return_time": self.visit_time}
 
 
 class DFS_with_path(DFSTemplate):
 
     def run(self, node_id):
-        test_cases = []   
+        test_cases = []
         current_path = []
         self.run_iter(node_id, current_path, test_cases)
 
         return test_cases
-
 
     def run_iter(self, node_id: str, current_path, test_cases):
 
@@ -96,28 +98,30 @@ class DFS_with_path(DFSTemplate):
             test_cases.append(list(current_path))
         current_path.pop()
 
+
 class DFSA(DFS):
     """
     DFS modification enables compute time of nodes visitation.
     """
+
     def __init__(self, digraph_manager):
         super().__init__(digraph_manager)
         self.node_idx = len(self.digraph_manager.nodes)
         self.nodes_order_dict = {}
-
 
     @staticmethod
     def ordering_decorator(dfs_proc_func):
         """
         Decorator for runner enables visitation time computation.
         """
+
         def wrapper(self, node_id):
             result = dfs_proc_func(self, node_id)
             self.node_idx -= 1
             self.nodes_order_dict[self.node_idx] = node_id
             return result
-        return wrapper
 
+        return wrapper
 
     @ordering_decorator
     def run(self, node_id):
@@ -128,36 +132,44 @@ class DijkstraAlgorithm:
     """
     Dijkstra Algorithm
     """
+
     def __init__(self, digraph_manager):
         self.digraph_manager = digraph_manager
 
-
-    def run(self, node_id: str, cost_function = None):
+    def run(self, node_id: str, cost_function=None):
         """
-        Dijkstra algorithm runner. 
+        Dijkstra algorithm runner.
         Args:
             - node_id (str): starting node id.
             - cost_function (dict): enable edge weighting.
         """
         if cost_function is None:
-            cost_function = {edge_id : 1 for edge_id in self.digraph_manager.edges}
+            cost_function = {edge_id: 1 for edge_id in self.digraph_manager.edges}
 
         nodes = sorted(list(self.digraph_manager.nodes))
 
-        min_distance_dict = {dest_node_id: {"distance": float('inf') if dest_node_id != node_id\
-                                                                     else 0,
-                                            "min_path": []} for dest_node_id in nodes}
+        min_distance_dict = {
+            dest_node_id: {
+                "distance": float("inf") if dest_node_id != node_id else 0,
+                "min_path": [],
+            }
+            for dest_node_id in nodes
+        }
 
         while nodes:
 
-            min_node_id = min(nodes, key=lambda dest_node_id:
-                              min_distance_dict[dest_node_id]["distance"])
+            min_node_id = min(
+                nodes,
+                key=lambda dest_node_id: min_distance_dict[dest_node_id]["distance"],
+            )
 
             v = min_distance_dict[min_node_id]
             min_distance = v["distance"]
             nodes.remove(min_node_id)
 
-            for neigh_id in set(self.digraph_manager[min_node_id].outgoing_nodes) & set(nodes):
+            for neigh_id in set(self.digraph_manager[min_node_id].outgoing_nodes) & set(
+                nodes
+            ):
 
                 u = min_distance_dict[neigh_id]
                 edge_id = (min_node_id, neigh_id)
@@ -174,9 +186,10 @@ class TarjanSSC:
     """
     Extracts SSC's from the graph.
     """
+
     def __init__(self, digraph_manager):
         self.digraph_manager = digraph_manager
-    
+
     def run(self):
         stack = []
         defined = set()  # Tracks nodes that have been fully processed
@@ -226,6 +239,7 @@ def normalize_cycle(cycle):
     cycle = cycle[:-1]
     min_index = cycle.index(min(cycle))
     return cycle[min_index:] + cycle[:min_index]
+
 
 class JonsonForSimpleSSC:
     def __init__(self, digraph_manager):
@@ -289,22 +303,27 @@ class JonsonForSimpleSSC:
 
 
 class HopcroftKarp:
-    
+
     @staticmethod
     def run(digraph_manager):
         pair_u = {node_id: None for node_id in digraph_manager.nodes}
-        pair_v = {outgoing_node_id: None for node_id in digraph_manager.nodes
-                  for outgoing_node_id in digraph_manager[node_id].outgoing_nodes}
+        pair_v = {
+            outgoing_node_id: None
+            for node_id in digraph_manager.nodes
+            for outgoing_node_id in digraph_manager[node_id].outgoing_nodes
+        }
         dist = {}
         matching = 0
         while HopcroftKarp.bfs_part(digraph_manager, pair_u, pair_v, dist):
             for node_id in digraph_manager.nodes:
                 if pair_u[node_id] is None:
-                    if HopcroftKarp.dfs_part(digraph_manager, node_id, pair_u, pair_v, dist):
+                    if HopcroftKarp.dfs_part(
+                        digraph_manager, node_id, pair_u, pair_v, dist
+                    ):
                         matching += 1
-    
+
         return matching, pair_u, pair_v
-    
+
     @staticmethod
     def bfs_part(digraph_manager, pair_u, pair_v, dist):
         queue = deque()
@@ -313,34 +332,36 @@ class HopcroftKarp:
                 dist[node_id] = 0
                 queue.append(node_id)
             else:
-                dist[node_id] = float('inf')
-        dist[None] = float('inf')
-        
+                dist[node_id] = float("inf")
+        dist[None] = float("inf")
+
         while queue:
             node_id = queue.popleft()
             if dist[node_id] < dist[None]:
                 for outgoing_node_id in digraph_manager[node_id].outgoing_nodes:
-                    if dist[pair_v[outgoing_node_id]] == float('inf'):
+                    if dist[pair_v[outgoing_node_id]] == float("inf"):
                         dist[pair_v[outgoing_node_id]] = dist[node_id] + 1
                         queue.append(pair_v[outgoing_node_id])
-        return dist[None] != float('inf')
+        return dist[None] != float("inf")
 
     @staticmethod
     def dfs_part(digraph_manager, node_id, pair_u, pair_v, dist):
         if node_id is not None:
             for outgoing_node_id in digraph_manager[node_id].outgoing_nodes:
                 if dist[pair_v[outgoing_node_id]] == dist[node_id] + 1:
-                    if HopcroftKarp.dfs_part(digraph_manager, pair_v[outgoing_node_id], pair_u, pair_v, dist):
+                    if HopcroftKarp.dfs_part(
+                        digraph_manager, pair_v[outgoing_node_id], pair_u, pair_v, dist
+                    ):
                         pair_v[outgoing_node_id] = node_id
                         pair_u[node_id] = outgoing_node_id
                         return True
-            dist[node_id] = float('inf')
+            dist[node_id] = float("inf")
             return False
         return True
-    
+
     @staticmethod
     def construct_path_cover(digraph_manager):
-        
+
         _, pair_u, _ = HopcroftKarp.run(digraph_manager)
         visited = set()
         paths = []
@@ -373,12 +394,13 @@ class ShortestPathBetween2Nodes:
         while queue:
             current, path = queue.popleft()
             if current == target:
-                return path 
+                return path
             if current not in visited:
                 visited.add(current)
                 for neighbor in digraph_manager[current].outgoing_nodes:
                     queue.append((neighbor, path + [neighbor]))
         return None
+
 
 class GenerateDijkstraMatrix:
 
@@ -389,20 +411,23 @@ class GenerateDijkstraMatrix:
         for node_id in digraph_manager.nodes:
             dijkstra_dict = dijkstra.run(node_id)
             for key in dijkstra_dict:
-                dijkstra_matrix[(node_id, key)] = edges_to_path(dijkstra_dict[key]['min_path'])
+                dijkstra_matrix[(node_id, key)] = edges_to_path(
+                    dijkstra_dict[key]["min_path"]
+                )
 
         return dijkstra_matrix
-    
+
 
 class PrimePathsGenerator:
     def __init__(self, digraph_manager):
 
-        self.graph_dict, self.reversed_translation_dict = self.digraph_manager_to_graph_dict(digraph_manager)
-        
+        self.graph_dict, self.reversed_translation_dict = (
+            self.digraph_manager_to_graph_dict(digraph_manager)
+        )
+
         self.blocked_set = set()
         self.stack = []
         self.blocked_dict = {}
-
 
     def get_extended_graph(self, node_id):
         extended_graph = deepcopy(self.graph_dict)
@@ -413,7 +438,6 @@ class PrimePathsGenerator:
                 extended_graph[n_id].append(1)
         return extended_graph
 
-
     def get_reversed_graph(self):
         reversed_graph = {node_id: [] for node_id in self.graph_dict}
 
@@ -422,23 +446,24 @@ class PrimePathsGenerator:
                 reversed_graph[outgoing_node_id].append(node_id)
 
         return reversed_graph
-    
 
     def dfs_part(self, node_id, graph, reversed_graph):
         found_cycle = False
 
         self.stack.append(node_id)
         self.blocked_set.add(node_id)
-        
+
         for outgoing_node_id in graph[node_id]:
             if outgoing_node_id == 1:
-               
+
                 outgoing_nodes = graph[node_id]
                 incoming_nodes_to_start = reversed_graph[graph[1][0]]
 
                 cannot_be_extend_forward = not (set(outgoing_nodes) - set(self.stack))
-                cannot_be_extend_backward = not (set(incoming_nodes_to_start) - set(self.stack))
-                
+                cannot_be_extend_backward = not (
+                    set(incoming_nodes_to_start) - set(self.stack)
+                )
+
                 if cannot_be_extend_forward and cannot_be_extend_backward:
 
                     yield list(self.stack[1:])
@@ -464,7 +489,6 @@ class PrimePathsGenerator:
         self.stack.pop()
         return
 
-
     def unblock(self, node_id):
         self.blocked_set.remove(node_id)
 
@@ -472,7 +496,6 @@ class PrimePathsGenerator:
             self.blocked_dict[node_id].remove(blocked_outgoing_id)
             if blocked_outgoing_id in self.blocked_set:
                 self.unblock(blocked_outgoing_id)
-
 
     def get_prime_paths_without_cycles(self):
         for node_id in self.graph_dict:
@@ -487,8 +510,11 @@ class PrimePathsGenerator:
     def get_cycles(self):
         s = 2
         while s < len(self.graph_dict) + 1:
-            graph = {node_id: [w for w in self.graph_dict[node_id] if w >= s] 
-                     for node_id in self.graph_dict if node_id >= s}
+            graph = {
+                node_id: [w for w in self.graph_dict[node_id] if w >= s]
+                for node_id in self.graph_dict
+                if node_id >= s
+            }
             if len(graph) != 0:
                 s = min(graph.keys())
                 self.blocked_dict = {n_id: [] for n_id in graph}
@@ -501,13 +527,16 @@ class PrimePathsGenerator:
     def digraph_manager_to_graph_dict(digraph_manager):
         keys = sorted(digraph_manager.nodes)
         translation_dict = {key: index + 2 for index, key in enumerate(keys)}
-        
-        reversed_translation_dict = {value:key for key, value in translation_dict.items()}
+
+        reversed_translation_dict = {
+            value: key for key, value in translation_dict.items()
+        }
         result_dictionary = {}
 
         for node_id in digraph_manager.nodes:
             result_dictionary[translation_dict[node_id]] = [
                 translation_dict[outgoing_node_id]
-                for outgoing_node_id in digraph_manager[node_id].outgoing_nodes]
-            
+                for outgoing_node_id in digraph_manager[node_id].outgoing_nodes
+            ]
+
         return result_dictionary, reversed_translation_dict

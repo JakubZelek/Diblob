@@ -1,6 +1,10 @@
 from testing_criterions.SimpleCycleCoverage import SimpleCycleCoverage
 from testing_criterions.SimplePathsCoverage import SimplePathsCoverage
-from testing_criterions.decorators import validate_source, validate_sink, validate_reachability
+from testing_criterions.decorators import (
+    validate_source,
+    validate_sink,
+    validate_reachability,
+)
 
 
 class PrimePathCoverage:
@@ -14,8 +18,9 @@ class PrimePathCoverage:
         scc = SimpleCycleCoverage(self.digraph_manager)
         spc = SimplePathsCoverage(self.digraph_manager)
 
-        for test_case in scc.get_test_cases(max_number_of_cycles_in_single_test_case, 
-                                            double_cycle=True):
+        for test_case in scc.get_test_cases(
+            max_number_of_cycles_in_single_test_case, double_cycle=True
+        ):
             yield test_case
         for test_case in spc.get_test_cases(max_number_of_cycles_in_single_test_case):
             yield test_case

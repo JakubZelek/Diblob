@@ -1,8 +1,12 @@
 from diblob import DigraphManager
 from copy import deepcopy
 from diblob.tools import cut_outgoing_edges
-from diblob.algorithms import  TarjanSSC, PrimePathsGenerator, GenerateDijkstraMatrix
-from testing_criterions.decorators import validate_source, validate_sink, validate_reachability
+from diblob.algorithms import TarjanSSC, PrimePathsGenerator, GenerateDijkstraMatrix
+from testing_criterions.decorators import (
+    validate_source,
+    validate_sink,
+    validate_reachability,
+)
 
 
 class SimpleCycleCoverage:
@@ -12,7 +16,9 @@ class SimpleCycleCoverage:
     def __init__(self, digraph_manager) -> None:
         self.digraph_manager = digraph_manager
 
-    def get_test_cases(self, max_number_of_cycles_in_single_test_case, double_cycle=False):
+    def get_test_cases(
+        self, max_number_of_cycles_in_single_test_case, double_cycle=False
+    ):
 
         digraph_manager = self.digraph_manager
         digraph_manager_to_compress = deepcopy(digraph_manager)
@@ -23,7 +29,7 @@ class SimpleCycleCoverage:
 
         blob_id = 1
         cycle_iterator = 0
-        path = ['S']
+        path = ["S"]
 
         for scc in sc_components:
             if len(scc) > 1:
@@ -39,7 +45,7 @@ class SimpleCycleCoverage:
                     cycle_iterator += 1
                     potential_extension = dijkstra_matrix[
                         (path[-1], reversed_translation_dict[cycle[0]])
-                        ]
+                    ]
 
                     if potential_extension:
 
@@ -59,11 +65,11 @@ class SimpleCycleCoverage:
 
                     if cycle_iterator == max_number_of_cycles_in_single_test_case:
 
-                        path += dijkstra_matrix[(path[-1], 'T')][1:]
+                        path += dijkstra_matrix[(path[-1], "T")][1:]
                         yield path
                         cycle_iterator = 0
-                        path = ['S']
-                        
-        if path != ['S']:
-            path += dijkstra_matrix[(path[-1], 'T')][1:]
+                        path = ["S"]
+
+        if path != ["S"]:
+            path += dijkstra_matrix[(path[-1], "T")][1:]
             yield path

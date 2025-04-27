@@ -1,10 +1,16 @@
 from diblob.algorithms import DFS_with_path, DijkstraAlgorithm
-from testing_criterions.decorators import validate_source, validate_sink, validate_reachability
+from testing_criterions.decorators import (
+    validate_source,
+    validate_sink,
+    validate_reachability,
+)
+
 
 class NodeCoverage:
     """
     Node coverage criterion.
     """
+
     @validate_reachability()
     @validate_source()
     @validate_sink()
@@ -22,7 +28,9 @@ class NodeCoverage:
         dfs = DFS_with_path(digraph_manager)
         test_cases = dfs.run(starting_point)
 
-        digraph_manager.reverse_edges(*[edge[0] for edge in digraph_manager.edges.values()])
+        digraph_manager.reverse_edges(
+            *[edge[0] for edge in digraph_manager.edges.values()]
+        )
 
         dijkstra = DijkstraAlgorithm(digraph_manager)
         min_distance_dict = dijkstra.run(end_point)
@@ -30,6 +38,7 @@ class NodeCoverage:
         for test_case in test_cases:
             node_id = test_case[-1]
             if node_id != end_point:
-                test_case += [elem[0] for elem in min_distance_dict[node_id]['min_path']][::-1]
+                test_case += [
+                    elem[0] for elem in min_distance_dict[node_id]["min_path"]
+                ][::-1]
             yield test_case
- 

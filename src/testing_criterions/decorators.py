@@ -1,13 +1,16 @@
 import inspect
 from functools import wraps
 from diblob.algorithms import DFS
-from testing_criterions.exceptions import (LackOfSourceException,
-                                           NotSingleSourceException,
-                                           InvalidNodeException,
-                                           LackOfSinkException,
-                                           NotSingleSinkException,
-                                           NodeNotReachableException,
-                                           ForbiddenCostFunctionKeyException)
+from testing_criterions.exceptions import (
+    LackOfSourceException,
+    NotSingleSourceException,
+    InvalidNodeException,
+    LackOfSinkException,
+    NotSingleSinkException,
+    NodeNotReachableException,
+    ForbiddenCostFunctionKeyException,
+)
+
 
 def validate_source(param_name="digraph_manager"):
     """
@@ -25,19 +28,21 @@ def validate_source(param_name="digraph_manager"):
             bound_args.apply_defaults()
             digraph_manager = bound_args.arguments.get(param_name)
 
-            if 'S' not in digraph_manager.nodes:
+            if "S" not in digraph_manager.nodes:
                 raise LackOfSourceException("Cannot find the source S in the digraph.")
 
-            if 's_cpt' in digraph_manager.nodes:
+            if "s_cpt" in digraph_manager.nodes:
                 raise InvalidNodeException("s_cpt is forbidden as node_id.")
 
             for node_id in digraph_manager.nodes:
-                if node_id!='S' and len(digraph_manager[node_id].incoming_nodes) == 0:
+                if node_id != "S" and len(digraph_manager[node_id].incoming_nodes) == 0:
                     raise NotSingleSourceException(
                         f"Source should be the only one source, other source: {node_id}."
-                        )
+                    )
             return func(*args, **kwargs)
+
         return wrapper
+
     return decorator
 
 
@@ -57,19 +62,21 @@ def validate_sink(param_name="digraph_manager"):
             bound_args.apply_defaults()
             digraph_manager = bound_args.arguments.get(param_name)
 
-            if 'T' not in digraph_manager.nodes:
+            if "T" not in digraph_manager.nodes:
                 raise LackOfSinkException("Cannot find the sink T in the digraph.")
 
-            if 't_cpt' in digraph_manager.nodes:
+            if "t_cpt" in digraph_manager.nodes:
                 raise InvalidNodeException("t_cpt is forbidden as node_id.")
 
             for node_id in digraph_manager.nodes:
-                if node_id!='T' and len(digraph_manager[node_id].outgoing_nodes) == 0:
+                if node_id != "T" and len(digraph_manager[node_id].outgoing_nodes) == 0:
                     raise NotSingleSinkException(
                         f"Sink should be the only one source, other source: {node_id}."
-                        )
+                    )
             return func(*args, **kwargs)
+
         return wrapper
+
     return decorator
 
 
@@ -87,14 +94,18 @@ def validate_reachability(param_name="digraph_manager"):
             digraph_manager = bound_args.arguments.get(param_name)
 
             dfs = DFS(digraph_manager)
-            dfs.run('S')
+            dfs.run("S")
             not_reachable = set(digraph_manager.nodes) - set(dfs.visitation_dict.keys())
 
             if not_reachable:
-                raise NodeNotReachableException(f"The following nodes are not reachable from S: {sorted(list(not_reachable))}")
+                raise NodeNotReachableException(
+                    f"The following nodes are not reachable from S: {sorted(list(not_reachable))}"
+                )
 
             return func(*args, **kwargs)
+
         return wrapper
+
     return decorator
 
 
@@ -114,9 +125,18 @@ def validate_cost_function(param_name="cost_function"):
             if cost_function is not None:
                 for edge_id in cost_function:
                     start, end = edge_id
-                    if start == 'T' or end == 'S' or start in {'t_cpt', 's_cpt'} or end in {'t_cpt', 's_cpt'}:
-                        raise ForbiddenCostFunctionKeyException(f"Forbidden value in key, edge: {edge_id}")
-                        
+                    if (
+                        start == "T"
+                        or end == "S"
+                        or start in {"t_cpt", "s_cpt"}
+                        or end in {"t_cpt", "s_cpt"}
+                    ):
+                        raise ForbiddenCostFunctionKeyException(
+                            f"Forbidden value in key, edge: {edge_id}"
+                        )
+
             return func(*args, **kwargs)
+
         return wrapper
+
     return decorator
