@@ -6,7 +6,6 @@ from diblob.digraph_manager import DigraphManager
 from testing_criterions.NodeCoverage import NodeCoverage
 from testing_criterions.EdgeCoverage import EdgeCoverage
 from testing_criterions.SimpleCycleCoverage import SimpleCycleCoverage
-from testing_criterions.SimplePathsCoverage import SimplePathsCoverage
 
 SIMPLE_GRAPH = {
     "S": ["1"],
@@ -186,4 +185,3 @@ def test_cycle_coverage():
     test_cases = [test_case for test_case in simple_cycle.get_test_cases(5)]
     assert test_cases == [['S', '1', '2', '5', '6', '1', '3', '5',
                            '6', '1', '4', '5', '6', '1', '2', '5', 'T']]
-test_cycle_coverage()
