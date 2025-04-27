@@ -746,5 +746,55 @@ With the result as a combination of  Simple Paths Coverage and Simple Cycle Cove
 ['S', '1', '2', '5', '6', '1', '3', '5', 'T'],
 ['S', '1', '2', '5', '6', '1', '4', '5', 'T']
 ```
-
+Note, that the test_cases are also get from generator (there is no need to generate entire test_suit at one)
 ## NPaths Coverage
+The NPath Coverage is a metric, that enable to have in simple path:
+- Cycles with common node for n=2
+- Cycles with common edge for n=3
+- and so on.
+
+The algorithm is as follows:
+- generate new digraph with `DiblobFactory.generate_edge_digraph` recursivelly (run `n-1` times), in effect, if we enable common nodes for n=2, we remove them with operation and just looking for Simple Paths (and so on)
+- Run Simple Path Criterion.
+
+The example usage is as follows:
+
+```python
+from diblob.digraph_manager import DigraphManager
+from testing_criterions.NPathCoverage import NPathCoverage
+
+digraph_manager = DigraphManager({"B0": {"S": ["1"],
+                                         "1": ["2", "3", "4"],
+                                         "T": [],
+                                         "6": ["1"],
+                                         "4": ["5"],
+                                         "3": ["5"],
+                                         "5": ["6", "T"],
+                                         "2": ["5"],
+                                     }})
+n_paths = NPathCoverage(digraph_manager)
+
+for test_case in n_paths.get_test_cases(1):
+   print(test_cases)
+
+```
+
+The result is as follows:
+
+```python
+['S', '1', '2', '5', '6', '1', '2', '5', '6', '1', '2', '5', 'T']
+['S', '1', '2', '5', '6', '1', '3', '5', '6', '1', '2', '5', 'T']
+['S', '1', '2', '5', '6', '1', '4', '5', '6', '1', '2', '5', 'T']
+['S', '1', '2', '5', '6', '1', '2', '5', 'T']
+['S', '1', '3', '5', '6', '1', '3', '5', 'T']
+['S', '1', '4', '5', '6', '1', '4', '5', 'T']
+['S', '1', '2', '5', 'T']
+['S', '1', '2', '5', '6', '1', '3', '5', 'T']
+['S', '1', '2', '5', '6', '1', '4', '5', 'T']
+['S', '1', '3', '5', 'T']
+['S', '1', '3', '5', '6', '1', '2', '5', 'T']
+['S', '1', '3', '5', '6', '1', '4', '5', 'T']
+['S', '1', '4', '5', '6', '1', '2', '5', 'T']
+['S', '1', '4', '5', '6', '1', '3', '5', 'T']
+['S', '1', '4', '5', 'T']
+```
