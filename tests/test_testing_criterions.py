@@ -1197,7 +1197,3 @@ def test_prime_path_coverage():
         ["S", "1", "2", "T"],
         ["S", "1", "3", "4", "1", "2", "T"],
     ]
-
-
-test_prime_path_coverage()
-test_simple_path_coverage()
