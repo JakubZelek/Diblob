@@ -6,6 +6,7 @@ from testing_criterions.decorators import (
     validate_sink,
     validate_reachability,
     validate_cost_function,
+    validate_diblob,
 )
 from testing_criterions.exceptions import InvalidNSwitchException
 
@@ -116,6 +117,7 @@ class NSwitchCoverage:
     @validate_reachability()
     @validate_source()
     @validate_sink()
+    @validate_diblob()
     def __init__(self, digraph_manager) -> None:
         self.digraph_manager = digraph_manager
 

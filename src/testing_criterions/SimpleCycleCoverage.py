@@ -6,6 +6,7 @@ from testing_criterions.decorators import (
     validate_source,
     validate_sink,
     validate_reachability,
+    validate_diblob,
 )
 
 
@@ -13,6 +14,7 @@ class SimpleCycleCoverage:
     @validate_reachability()
     @validate_source()
     @validate_sink()
+    @validate_diblob()
     def __init__(self, digraph_manager) -> None:
         self.digraph_manager = digraph_manager
 

@@ -36,3 +36,11 @@ class ForbiddenCostFunctionKeyException(Exception):
 
 class InvalidNSwitchException(Exception):
     """Raised when invalid value for NSwitch is delivered."""
+
+
+class InvalidNPathException(Exception):
+    """Raised when invalid value for NPath is delivered."""
+
+
+class MultipleDiblobException(Exception):
+    """Raised when operation enable to use jus one Diblob in the method (not subdiblob)."""

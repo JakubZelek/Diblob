@@ -140,3 +140,25 @@ def validate_cost_function(param_name="cost_function"):
         return wrapper
 
     return decorator
+
+
+def validate_diblob(param_name="digraph_manager"):
+    """
+    Validates if the diblob has only one diblob_id.
+    """
+
+    def decorator(func):
+        @wraps(func)
+        def wrapper(*args, **kwargs):
+
+            bound_args = inspect.signature(func).bind(*args, **kwargs)
+            bound_args.apply_defaults()
+            digraph_manager = bound_args.arguments.get(param_name)
+
+            if len(digraph_manager.diblobs) > 1:
+                pass
+            return func(*args, **kwargs)
+
+        return wrapper
+
+    return decorator

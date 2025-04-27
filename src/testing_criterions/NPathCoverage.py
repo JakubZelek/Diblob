@@ -1,9 +1,11 @@
 from testing_criterions.SimplePathsCoverage import SimplePathsCoverage
 from diblob.factory import DiblobFactory
+from testing_criterions.exceptions import InvalidNPathException
 from testing_criterions.decorators import (
     validate_source,
     validate_sink,
     validate_reachability,
+    validate_diblob,
 )
 
 
@@ -11,7 +13,12 @@ class NPathCoverage:
     @validate_reachability()
     @validate_source()
     @validate_sink()
+    @validate_diblob()
     def __init__(self, digraph_manager, n_paths) -> None:
+        if n_paths < 2:
+            raise InvalidNPathException(
+                "n_path argument should be at least equals to 2."
+            )
 
         for reduce in range(n_paths - 1):
             digraph_manager = DiblobFactory.generate_edge_digraph(
