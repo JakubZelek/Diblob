@@ -468,16 +468,15 @@ To generate test cuit that cover all nodes in the graph, let's use `NodeCoverage
 from diblob.digraph_manager import DigraphManager
 from testing_criterions.NodeCoverage import NodeCoverage
 
-digraph_manager = DigraphManager({"B0": {
-              "S": ["1"],
-              "1": ["2", "3", "4"],
-              "T": [],
-              "6": ["1"],
-              "4": ["5"],
-              "3": ["5"],
-              "5": ["6", "T"],
-              "2": ["5"],
-          }})
+digraph_manager = DigraphManager({"B0": {"S": ["1"],
+                                         "1": ["2", "3", "4"],
+                                         "T": [],
+                                         "6": ["1"],
+                                         "4": ["5"],
+                                         "3": ["5"],
+                                         "5": ["6", "T"],
+                                         "2": ["5"],
+                                     }})
 node_coverage = NodeCoverage(digraph_manager)
 for test_case in node_coverage.get_test_cases():
    print(test_case)
@@ -497,5 +496,110 @@ The algorithm working as follows:
 
 `node_coverage.get_test_cases()` is a generator. In effect, there is no need to generate entire test_suit at once.
 Note that the test case `["S", "1", "2", "5", "T"]` has all nodes from `["S", "1", "2", "5", "6", "1", "2", "5", "T"]`. In effect, it would be removed from test suit and node coverage criterion would be met. It could be easily done by the user accumulating test_cases and them removing overlapping ones, but then the user lose the effect of generator (generatiing test case one by one).
+
+## Edge Coverage
+Edge coverage use Chinese Postman Tour algorithm to generate optimal test suit for the following criterions:
+- Minimal total cost of the test suit.
+- Minimal number of test cases.
+- Set number of test cases, minimalize the cost.
+
+Criterions are described in the following [papier](https://www.sciencedirect.com/science/article/pii/S0957417425008383?dgcid=author).
+The example of the usage is as follows:
+
+```python
+from diblob.digraph_manager import DigraphManager
+from testing_criterions.NodeCoverage import NodeCoverage
+
+digraph_manager = DigraphManager({"B0": {"S": ["1"],
+                                         "1": ["2", "3", "4"],
+                                         "T": [],
+                                         "6": ["1"],
+                                         "4": ["5"],
+                                         "3": ["5"],
+                                         "5": ["6", "T"],
+                                         "2": ["5"],
+                                     }})
+edge_coverage = EdgeCoverage(digraph_manager)
+
+test_cases = edge_coverage.get_test_cases_minimal_number_of_test_cases(
+    cost_function={("5", "6"): 10, ("6", "1"): 10}, default_cost=1
+)
+
+test_cases = edge_coverage.get_test_cases_minimal_total_cost(
+    cost_function={("5", "6"): 10, ("6", "1"): 10}, default_cost=1
+)
+
+test_cases = edge_coverage.get_test_cases_set_number_of_test_cases(
+    cost_function={("5", "6"): 10, ("6", "1"): 10}, default_cost=1, k=3
+)
+```
+The results are as follows:
+
+```python
+#minimal_number_of_test_cases
+[['S', '1', '3', '5', '6', '1', '2', '5', '6', '1', '4', '5', 'T']]
+#minimal_total_cost
+[['S', '1', '3', '5', 'T'], ['S', '1', '4', '5', '6', '1', '2', '5', 'T']]
+#set_number_of_test_cases
+[['S', '1', '4', '5', 'T'], ['S', '1', '2', '5', 'T'], ['S', '1', '3', '5', '6', '1', '2', '5', 'T']]
+```
+Note the argument applied to the functions:
+- `default_cost`: the default cost of all edges
+- `cost_function`: the costs of the edges (dict), override the `default_cost`
+- `k`: number of the test_cases in `get_test_cases_set_number_of_test_cases` method
+
+## NSwitch Coverage
+NSwitch coverage is a software testing criterion that requires tests to cover all possible sequences of exactly N transitions between states in a system's control flow or state machine.
+For example:
+- 1-Switch coverage ensures that every individual transition is tested (equivalent to edge coverage),
+- 2-Switch coverage ensures that every possible pair of consecutive transitions is tested,
+- and so on.
+- 
+The algorithm uses mechanism described in the same [papier](https://www.sciencedirect.com/science/article/pii/S0957417425008383?dgcid=author).
+The strategy is as follows:
+-For choosen `n` create `DiblobFactory.generate_edge_digraph` recursivelly (n-1 times) and accumulate costs of edges
+-Add 'S' and 'T' to keep the graph requirements, set the cost of the new edges to `default_cost`
+-Run EdgeCoverage algorithm for the generated digraph
+
+There is the following usage:
+
+```python
+from diblob.digraph_manager import DigraphManager
+from testing_criterions.NodeCoverage import NodeCoverage
+
+digraph_manager = DigraphManager({"B0": {"S": ["1"],
+                                         "1": ["2", "3", "4"],
+                                         "T": [],
+                                         "6": ["1"],
+                                         "4": ["5"],
+                                         "3": ["5"],
+                                         "5": ["6", "T"],
+                                         "2": ["5"],
+                                     }})
+node_coverage = NSwitchCoverage(digraph_manager)
+
+test_cases = edge_coverage.get_test_cases_minimal_number_of_test_cases(
+    cost_function={("5", "6"): 10, ("6", "1"): 10}, default_cost=1
+)
+
+test_cases = edge_coverage.get_test_cases_minimal_total_cost(
+    cost_function={("5", "6"): 10, ("6", "1"): 10}, default_cost=1
+)
+
+test_cases = edge_coverage.get_test_cases_set_number_of_test_cases(
+    cost_function={("5", "6"): 10, ("6", "1"): 10}, default_cost=1, k=3
+)
+```
+Note, that is the same like for Edge coverage. The result is as follows:
+```python
+#minimal_number_of_test_cases
+[['S', '1', '2', '5', '6', '1', '2', '5', 'T'], ['S', '1', '3', '5', '6', '1', '3', '5', 'T'], ['S', '1', '4', '5', '6', '1', '4', '5', 'T']]
+#minimal_total_cost
+[['S', '1', '2', '5', '6', '1', '2', '5', 'T'], ['S', '1', '3', '5', '6', '1', '3', '5', 'T'], ['S', '1', '4', '5', '6', '1', '4', '5', 'T']]
+#set_number_of_test_cases
+[['S', '1', '2', '5', '6', '1', '2', '5', 'T'], ['S', '1', '3', '5', '6', '1', '3', '5', 'T'], ['S', '1', '4', '5', 'T'], ['S', '1', '4', '5', '6', '1', '4', '5', 'T']]
+```
+
+
 
 
