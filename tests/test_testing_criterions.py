@@ -5,7 +5,8 @@ Tests for testing criterions
 from diblob.digraph_manager import DigraphManager
 from testing_criterions.NodeCoverage import NodeCoverage
 from testing_criterions.EdgeCoverage import EdgeCoverage
-
+from testing_criterions.SimpleCycleCoverage import SimpleCycleCoverage
+from testing_criterions.SimplePathsCoverage import SimplePathsCoverage
 
 SIMPLE_GRAPH = {
     "S": ["1"],
@@ -82,19 +83,19 @@ def test_node_coverage():
 
     digraph_manager = DigraphManager({"B0": SIMPLE_GRAPH})
     node_coverage = NodeCoverage(digraph_manager)
-    
+
     test_cases = node_coverage.get_test_cases()
 
-    assert test_cases == [['S', '1', '2', '5', '6', '1', '2', '5', 'T'], 
-                         ['S', '1', '3', '5', 'T'],
-                         ['S', '1', '4', '5', 'T']]
+    assert test_cases == [['S', '1', '2', '5', '6', '1', '2', '5', 'T'],
+                          ['S', '1', '3', '5', 'T'],
+                          ['S', '1', '4', '5', 'T']]
     assert nodes_covered(test_cases, digraph_manager)
 
 def test_edge_coverage():
     """
     Tests Edge Coverage.
     """
-     
+
     digraph_manager = DigraphManager({"B0": ONLINE_SHOP_GRAPH})
     edge_coverage = EdgeCoverage(digraph_manager)
 
@@ -135,4 +136,54 @@ def test_edge_coverage():
         cost_function={('5', '6'): 10, ('6', '1'): 10}, default_cost=2, k=3)
     assert len(test_cases) == 3
 
-test_edge_coverage()
+
+def test_cycle_coverage():
+    """
+    Tests Cycle Coverage.
+    """
+    digraph_manager = DigraphManager({"B0": ONLINE_SHOP_GRAPH})
+    simple_cycle = SimpleCycleCoverage(digraph_manager)
+
+    test_cases = [test_case for test_case in simple_cycle.get_test_cases(1)]
+    assert test_cases == [['S', 'OpenShop', 'Login', 'AddToCard', 'CheckOut', 'Payment',
+                           'OnlineTransfer', 'ValidatePayment', 'InvalidPayment', 'Order', 
+                           'Login', 'AddToCard', 'CheckOut', 'Payment', 'Blik', 'ValidatePayment', 'T'],
+                          ['S', 'OpenShop', 'Login', 'AddToCard', 'CheckOut', 'Payment', 'CreditCard',
+                           'ValidatePayment', 'InvalidPayment', 'Order', 'Login', 'AddToCard', 'CheckOut', 
+                           'Payment', 'Blik', 'ValidatePayment', 'T'],
+                          ['S', 'OpenShop', 'Login', 'AddToCard', 'CheckOut', 'Payment', 'Blik',
+                           'ValidatePayment', 'InvalidPayment', 'Order', 'Login', 'AddToCard', 'CheckOut', 
+                           'Payment', 'Blik', 'ValidatePayment', 'T'],
+                          ['S', 'OpenShop', 'Login', 'AddToCard', 'CheckOut', 'Payment', 'ShopCard',
+                           'ValidatePayment', 'InvalidPayment', 'Order', 'Login', 'AddToCard', 'CheckOut',
+                           'Payment', 'Blik', 'ValidatePayment', 'T'],
+                          ['S', 'OpenShop', 'Catalog', 'ViewProduct', 'ProductDetails', 'Catalog',
+                           'ViewProduct', 'ProductDetails', 'T'],
+                          ['S', 'OpenShop', 'Catalog', 'ViewProduct', 'ProductDetails', 'Order',
+                           'Login', 'Catalog', 'ViewProduct', 'ProductDetails', 'T']]
+
+    test_cases = [test_case for test_case in simple_cycle.get_test_cases(5)]
+    assert test_cases == [['S', 'OpenShop', 'Login', 'AddToCard', 'CheckOut', 'Payment', 'OnlineTransfer',
+                           'ValidatePayment', 'InvalidPayment', 'Order', 'Login', 'AddToCard', 
+                           'CheckOut', 'Payment', 'CreditCard', 'ValidatePayment', 'InvalidPayment', 'Order', 
+                           'Login', 'AddToCard', 'CheckOut', 'Payment', 'Blik', 'ValidatePayment', 
+                           'InvalidPayment', 'Order', 'Login', 'AddToCard', 'CheckOut', 'Payment',
+                           'ShopCard', 'ValidatePayment', 'InvalidPayment', 'Order', 'Login', 'AddToCard', 'CheckOut',
+                           'Payment', 'Blik', 'ValidatePayment', 'InvalidPayment', 'Order', 'Login', 'Catalog',
+                           'ViewProduct', 'ProductDetails', 'Catalog', 'ViewProduct', 'ProductDetails', 'T'],
+                          ['S', 'OpenShop', 'Catalog', 'ViewProduct', 'ProductDetails', 'Order', 'Login', 'Catalog',
+                           'ViewProduct', 'ProductDetails', 'T']]
+
+    digraph_manager = DigraphManager({"B0": SIMPLE_GRAPH})
+    simple_cycle = SimpleCycleCoverage(digraph_manager)
+
+    test_cases = [test_case for test_case in simple_cycle.get_test_cases(1)]
+
+    assert test_cases == [['S', '1', '2', '5', '6', '1', '2', '5', 'T'],
+                          ['S', '1', '3', '5', '6', '1', '2', '5', 'T'],
+                          ['S', '1', '4', '5', '6', '1', '2', '5', 'T']]
+
+    test_cases = [test_case for test_case in simple_cycle.get_test_cases(5)]
+    assert test_cases == [['S', '1', '2', '5', '6', '1', '3', '5',
+                           '6', '1', '4', '5', '6', '1', '2', '5', 'T']]
+test_cycle_coverage()
