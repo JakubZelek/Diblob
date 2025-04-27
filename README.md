@@ -508,7 +508,7 @@ The example of the usage is as follows:
 
 ```python
 from diblob.digraph_manager import DigraphManager
-from testing_criterions.NodeCoverage import NodeCoverage
+from testing_criterions.EdgeCoverage import EdgeCoverage
 
 digraph_manager = DigraphManager({"B0": {"S": ["1"],
                                          "1": ["2", "3", "4"],
@@ -554,7 +554,7 @@ For example:
 - 1-Switch coverage ensures that every individual transition is tested (equivalent to edge coverage),
 - 2-Switch coverage ensures that every possible pair of consecutive transitions is tested,
 - and so on.
-- 
+
 The algorithm uses mechanism described in the same [papier](https://www.sciencedirect.com/science/article/pii/S0957417425008383?dgcid=author).
 The strategy is as follows:
 -For choosen `n` create `DiblobFactory.generate_edge_digraph` recursivelly (n-1 times) and accumulate costs of edges
@@ -565,7 +565,7 @@ There is the following usage:
 
 ```python
 from diblob.digraph_manager import DigraphManager
-from testing_criterions.NodeCoverage import NodeCoverage
+from testing_criterions.NSwitchCoverage import NSwitchCoverage
 
 digraph_manager = DigraphManager({"B0": {"S": ["1"],
                                          "1": ["2", "3", "4"],
@@ -599,7 +599,152 @@ Note, that is the same like for Edge coverage. The result is as follows:
 #set_number_of_test_cases
 [['S', '1', '2', '5', '6', '1', '2', '5', 'T'], ['S', '1', '3', '5', '6', '1', '3', '5', 'T'], ['S', '1', '4', '5', 'T'], ['S', '1', '4', '5', '6', '1', '4', '5', 'T']]
 ```
+## Simple Cycle Coverage
+
+The implementation uses [Johnson Algorithm](https://arxiv.org/pdf/2105.10094) for cycles. The strategy is as follows:
+- Decompose the digraph into strongly connected components using Tarjan algorithm
+- Starting from 'S' go to the next cycle (in one of strongly connected components)
+- Try accumulate cycles until reach `maksimal_number_of_cycles` going from the one to another connecting them with the shortes path between starting points of the cycles.
+- Go to 'T' if next cycle cannot be reached or `maksimal_number_of_cycles` is achieved
+
+In effect, the solution gives the generator for test cases as in the Node Coverage criterion.
+The example usage is as follows:
+
+```python
+from diblob.digraph_manager import DigraphManager
+from testing_criterions.SimpleCycleCoverage import SimpleCycleCoverage
+
+digraph_manager = DigraphManager({"B0": {"S": ["1"],
+                                         "1": ["2", "3", "4"],
+                                         "T": [],
+                                         "6": ["1"],
+                                         "4": ["5"],
+                                         "3": ["5"],
+                                         "5": ["6", "T"],
+                                         "2": ["5"],
+                                     }})
+simple_cycle = SimpleCycleCoverage(digraph_manager)
+
+for test_case in simple_cycle.get_test_cases(maksimal_number_of_cycles=1):
+   print(test_case)
+
+for test_case in simple_cycle.get_test_cases(maksimal_number_of_cycles=5):
+   print(test_case)
+
+```
+
+The results are as follows:
+
+```python
+#maksimal_number_of_cycles=1
+["S", "1", "2", "5", "6", "1", "2", "5", "T"],
+["S", "1", "3", "5", "6", "1", "2", "5", "T"],
+["S", "1", "4", "5", "6", "1", "2", "5", "T"]
+
+#maksimal_number_of_cycles=5
+["S", "1", "2", "5", "6", "1", "3", "5", "6", "1", "4", "5", "6", "1", "2", "5", "T"]
+```
+  
+In the first scenario, where algorithm find the cycle, immediatelly go to the 'T', In the second scenatio, it try accumulate 5 cycles,
+because in the graph there is just 3 and entire graph call be covered with the single test_case, the one test_case is returned.
+
+## Simple Paths Coverage
+
+The Algorith uses [Johnson Algorithm](https://arxiv.org/pdf/2105.10094) for cycles on the modified graph (just first iteration) and remove appropriate nodes from the results.
+The strategy is as follows:
+- Start one iteration of the Johnson Algorithm (without removing nodes) adding artificial node artificial_node_id, and connecting it with (node_id, artificial_node_id) and (artificial_node_id, other_node_id) for every node_id, where node_id!=other_node_id.
+- Run the algorithm for `Cycle Coverage` and remove artificial_node_id from test_cases.
+
+In effect we obtained the generator for Simple Paths.
+The example usage is as follows:
+```python
+from diblob.digraph_manager import DigraphManager
+from testing_criterions.SimplePathsCoverage import SimplePathsCoverage
+
+digraph_manager = DigraphManager({"B0": {"S": ["1"],
+                                         "1": ["2", "3", "4"],
+                                         "T": [],
+                                         "6": ["1"],
+                                         "4": ["5"],
+                                         "3": ["5"],
+                                         "5": ["6", "T"],
+                                         "2": ["5"],
+                                     }})
+simple_path = SimplePathsCoverage(digraph_manager)
+
+for test_case in simple_path.get_test_cases(maksimal_number_of_cycles=1):
+   print(test_case)
 
 
 
+```
+The result is as follows:
 
+```python
+["S", "1", "2", "5", "6", "1", "2", "5", "T"],
+["S", "1", "2", "5", "T"],
+["S", "1", "3", "5", "6", "1", "2", "5", "T"],
+["S", "1", "3", "5", "T"],
+["S", "1", "4", "5", "6", "1", "2", "5", "T"],
+["S", "1", "4", "5", "T"],
+["S", "1", "2", "5", "6", "1", "2", "5", "T"],
+["S", "1", "2", "5", "6", "1", "3", "5", "T"],
+["S", "1", "2", "5", "6", "1", "4", "5", "T"],
+["S", "1", "4", "5", "6", "1", "2", "5", "T"],
+["S", "1", "4", "5", "6", "1", "3", "5", "T"],
+["S", "1", "3", "5", "6", "1", "2", "5", "T"],
+["S", "1", "3", "5", "6", "1", "4", "5", "T"],
+["S", "1", "2", "5", "6", "1", "3", "5", "T"],
+["S", "1", "2", "5", "6", "1", "4", "5", "T"]
+    
+```
+
+## Prime Paths Coverage
+The Prime Path Coverage criterion is described in the following [papier](https://arxiv.org/abs/1809.08446).
+This is the combination of Simple Paths Coverage and Simple Cycle Coverage.
+
+The example usage is as follows:
+
+```python
+from diblob.digraph_manager import DigraphManager
+from testing_criterions.PrimePathCoverage import PrimePathCoverage
+
+digraph_manager = DigraphManager({"B0": {"S": ["1"],
+                                         "1": ["2", "3", "4"],
+                                         "T": [],
+                                         "6": ["1"],
+                                         "4": ["5"],
+                                         "3": ["5"],
+                                         "5": ["6", "T"],
+                                         "2": ["5"],
+                                     }})
+prime_path = PrimePathCoverage(digraph_manager)
+
+for test_case in prime_path.get_test_cases(1):
+   print(test_cases)
+
+```
+With the result as a combination of  Simple Paths Coverage and Simple Cycle Coverage:
+
+```python
+['S', '1', '2', '5', '6', '1', '2', '5', '6', '1', '2', '5', 'T'],
+['S', '1', '3', '5', '6', '1', '3', '5', '6', '1', '2', '5', 'T'],
+['S', '1', '4', '5', '6', '1', '4', '5', '6', '1', '2', '5', 'T'],
+['S', '1', '2', '5', '6', '1', '2', '5', 'T'],
+['S', '1', '2', '5', 'T'],
+['S', '1', '3', '5', '6', '1', '2', '5', 'T'],
+['S', '1', '3', '5', 'T'],
+['S', '1', '4', '5', '6', '1', '2', '5', 'T'],
+['S', '1', '4', '5', 'T'],
+['S', '1', '2', '5', '6', '1', '2', '5', 'T'],
+['S', '1', '2', '5', '6', '1', '3', '5', 'T'],
+['S', '1', '2', '5', '6', '1', '4', '5', 'T'],
+['S', '1', '4', '5', '6', '1', '2', '5', 'T'],
+['S', '1', '4', '5', '6', '1', '3', '5', 'T'],
+['S', '1', '3', '5', '6', '1', '2', '5', 'T'],
+['S', '1', '3', '5', '6', '1', '4', '5', 'T'],
+['S', '1', '2', '5', '6', '1', '3', '5', 'T'],
+['S', '1', '2', '5', '6', '1', '4', '5', 'T']
+```
+
+## NPaths Coverage
