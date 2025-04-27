@@ -4,6 +4,7 @@ Module created for CPT.
 
 from itertools import product
 from diblob import DigraphManager
+from decimal import Decimal
 
 
 class NotSCGException(Exception):
@@ -29,7 +30,7 @@ class WeightedDigraphManager(DigraphManager):
 
 
     def _set_cost(self):
-        self.cost = {edge_id: self.cost_function.get(edge_id, self.default_cost)
+        self.cost = {edge_id: Decimal(str(self.cost_function.get(edge_id, self.default_cost)))
                               for edge_id in self.edges}
 
     def _set_spanning_tree(self):
@@ -77,16 +78,17 @@ class WeightedDigraphManager(DigraphManager):
 
                     if (node_k, node_j) in cost\
                         and ((node_i, node_j) not in cost or\
-                        cost[node_i, node_j] > cost[(node_i, node_k)]\
+                        cost[(node_i, node_j)] > cost[(node_i, node_k)]\
                                                       + cost[(node_k, node_j)]):
-
+                       
                         self.spanning_tree[(node_i, node_j)] = self.spanning_tree[(node_i, node_k)]
                         cost[(node_i, node_j)] = cost.get((node_i, node_k), 0) +\
-                                                              cost.get((node_k,node_j), 0)
+                                                              cost.get((node_k, node_j), 0)
 
 
                         if node_i == node_j and cost[(node_i,node_j)] < 0:
                             return
+        
 
     def check_if_digraph_is_strongly_connected(self):
         """
@@ -120,8 +122,8 @@ class CPTDigraphManager(WeightedDigraphManager):
 
     def _set_basic_cost(self):
 
-        self.basic_cost = sum(self.cost_function.get(edge_id, self.default_cost)
-                              for edge_id in self.edges)
+        self.basic_cost = Decimal(str(sum(self.cost_function.get(edge_id, self.default_cost)
+                              for edge_id in self.edges)))
 
 
     def connect_nodes(self, *edge_ids: tuple[str, ...]):
@@ -211,8 +213,10 @@ class CPTDigraphManager(WeightedDigraphManager):
                 k = 0
                 flag = True
                 u = node_id
-
+                counter = 0
                 while True:  # Emulate a do-while loop to find k to cancel
+                    
+                    counter += 1
                     v = spanning_tree[(u, node_id)]
 
                     if cost[(u, v)] < 0 and (flag or k > feasible.get((v, u), 0)):
@@ -242,7 +246,7 @@ class CPTDigraphManager(WeightedDigraphManager):
         """
         returns the cost of the CPT.
         """
-        phi = 0
+        phi = Decimal(str(0))
         cost = self.cost
         feasible = self.feasible
         nodes = self.nodes
