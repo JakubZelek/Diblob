@@ -70,14 +70,3 @@ class SimplePathsCoverage:
                 yield path[1:]
             else:
                 yield path
-
-
-# from diblob.digraph_manager import DigraphManager
-# digraph_manager = DigraphManager({'B0':{}})
-# digraph_manager.add_nodes('S', '1', '2', '3', '4', '5', 'T')
-# digraph_manager.connect_nodes(('S', '1'), ('1', '2'), ('2', 'T'), ('1', '3'), ('3', '4'), ('4', '5'), ('5', '4'), ('4', '1'))
-
-
-# scc = SimplePathsCoverage(digraph_manager)
-# for x in scc.get_test_cases(7):
-#     print(x)
