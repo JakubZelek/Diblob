@@ -449,3 +449,53 @@ Digraphs which can be generated:
 
 example of usage can be found in notebooks: 
 https://github.com/JakubZelek/Diblob/tree/main/notebooks
+
+# Testing Criterions
+The package enables to generate test suits for digraphs, based on the specific criterions. Solution consists of the following:
+- Node coverage
+- Edge coverage (three variants)
+- NSwitch coverage (three variants)
+- Simple cycle coverage
+- Simple paths coverage
+- Prime paths coverage
+- NPath coverage
+
+To enable the user working with the particular criterion, every criterion will be discussed based on the following digraph:
+<img width="800" alt="image" src="https://github.com/user-attachments/assets/c8b5b7c5-e823-4522-a4eb-0015082c8846">
+## Node Coverage
+To generate test cuit that cover all nodes in the graph, let's use `NodeCoverage` from `testing_criterions`. The example usage is as follows (basen on graph above): 
+```python
+from diblob.digraph_manager import DigraphManager
+from testing_criterions.NodeCoverage import NodeCoverage
+
+digraph_manager = DigraphManager({"B0": {
+              "S": ["1"],
+              "1": ["2", "3", "4"],
+              "T": [],
+              "6": ["1"],
+              "4": ["5"],
+              "3": ["5"],
+              "5": ["6", "T"],
+              "2": ["5"],
+          }})
+node_coverage = NodeCoverage(digraph_manager)
+for test_case in node_coverage.get_test_cases():
+   print(test_case)
+
+```
+Thats generate the following output:
+```python
+ ["S", "1", "2", "5", "6", "1", "2", "5", "T"],
+ ["S", "1", "2", "5", "T"],
+ ["S", "1", "3", "5", "T"],
+ ["S", "1", "4", "5", "T"]
+```
+The algorithm working as follows:
+- run DFS on 'S'
+- run DijkstraAlgorithm on reversed graph on 'T'
+- connect paths generathed from the first and second step appriopriatelly
+
+`node_coverage.get_test_cases()` is a generator. In effect, there is no need to generate entire test_suit at once.
+Note that the test case `["S", "1", "2", "5", "T"]` has all nodes from `["S", "1", "2", "5", "6", "1", "2", "5", "T"]`. In effect, it would be removed from test suit and node coverage criterion would be met. It could be easily done by the user accumulating test_cases and them removing overlapping ones, but then the user lose the effect of generator (generatiing test case one by one).
+
+
