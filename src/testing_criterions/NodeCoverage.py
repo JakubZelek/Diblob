@@ -1,4 +1,5 @@
 from diblob.algorithms import DFS_with_path, DijkstraAlgorithm
+from copy import deepcopy
 from testing_criterions.decorators import (
     validate_source,
     validate_sink,
@@ -26,7 +27,7 @@ class NodeCoverage:
         starting_point = "S"
         end_point = "T"
 
-        digraph_manager = self.digraph_manager
+        digraph_manager = deepcopy(self.digraph_manager)
         dfs = DFS_with_path(digraph_manager)
         test_cases = dfs.run(starting_point)
 

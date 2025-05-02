@@ -35,7 +35,7 @@ class SimpleCycleCoverage:
 
         for scc in sc_components:
             if len(scc) > 1:
-                str_blob_id = f"B{blob_id}"
+                str_blob_id = f"SubBlob{blob_id}"
                 digraph_manager_to_compress.gather(str_blob_id, scc)
                 ssc_dict = cut_outgoing_edges(digraph_manager_to_compress, str_blob_id)
                 ssc_digraph_manager = DigraphManager(ssc_dict)

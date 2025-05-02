@@ -2,10 +2,10 @@ from setuptools import setup, find_packages
 
 setup(
     name="diblob",
-    version="1.0.9",
+    version="2.0.1",
     package_dir={"": "src"},
     packages=find_packages(where="src"),
-    description="A simple example package",
+    description="Diblob Package, that enable working with directed graphs (multigraphs) as well as generate testing criterions based on graph-based model of the system.",
     long_description=open("README.md").read(),
     long_description_content_type="text/markdown",
     author="Jakub Zelek",
