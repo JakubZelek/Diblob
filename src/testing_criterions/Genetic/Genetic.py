@@ -69,9 +69,6 @@ class Mutation:
 
             head.set_cost(test_case_cost)
 
-    def calculate_cost(self, prev, current):
-        return cost_function[(prev, current)]
-
     def compare_cost(self, test_case_node_1, test_case_node_2, avg=0):
         prev = test_case_node_1.prev
         test_case_node_1_prev_cost = test_case_node_1.cost
@@ -166,3 +163,39 @@ def run_algorithm(
             dist_values.append(dist)
             iter_values.append(iterator)
     return m.test_case_list, dist_values, iter_values
+
+
+
+from diblob.digraph_manager import DigraphManager
+from testing_criterions.EdgeCoverage import EdgeCoverage
+
+digraph_manager = DigraphManager({
+    "G1": {
+        "S": ["DataCollectedBySensors"],
+        "DataCollectedBySensors": ["TimeToSync1"],
+        "TimeToSync1": ["DataSentToBridgeApp", "T"],
+        "DataSentToBridgeApp": ["BridgeAppDataCollection"],
+        "BridgeAppDataCollection": ["TransferToMobileSystem"],
+        "TransferToMobileSystem": ["SavedCorrectlyToFilesystem", "T"],
+        "SavedCorrectlyToFilesystem": ["DataCollectedBySensors", "TimeToSync2"],
+        "TimeToSync2": ["DataReadByConnectorApp", "ManualSync", "T"],
+        "ManualSync": ["DataReadByConnectorApp"],
+        "DataReadByConnectorApp": ["SendToServer"],
+        "SendToServer": ["DataSentToServerUsingApi"],
+        "DataSentToServerUsingApi": ["SaveToDb"],
+        "SaveToDb": ["SavedCorrectlyToDb"],
+        "SavedCorrectlyToDb": ["SendToServer", "NotifyUser"],
+        "NotifyUser": ["ConfirmTheBridgeApp"],
+        "ConfirmTheBridgeApp": ["BridgeAppDataCollection"],
+        "T": []
+    }
+})
+
+edge_coverage = EdgeCoverage(digraph_manager)
+
+test_cases, cost_function = edge_coverage.get_test_cases_minimal_total_cost(
+    cost_function={}, default_cost=1, return_cf=True
+)
+
+print(len(test_cases))
+print(cost_function)

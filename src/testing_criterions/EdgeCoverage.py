@@ -1,3 +1,4 @@
+from math import ceil
 from testing_criterions.CPTTestCasesGenerator import TestCasesGenerator
 from testing_criterions.decorators import (
     validate_source,
@@ -40,13 +41,12 @@ class EdgeCoverage:
     def get_cost(self, cost_function):
         criterion_edge_multiplier = 0
         for value in cost_function.values():
-            if value > 1:
-                criterion_edge_multiplier += value - 1
+            criterion_edge_multiplier += ceil(value)
         return criterion_edge_multiplier
 
     @validate_cost_function()
     def get_test_cases_minimal_total_cost(
-        self, cost_function=None, default_cost=1, cost_function_multiplier=1
+        self, cost_function=None, default_cost=1, cost_function_multiplier=1, return_cf=False
     ):
 
         cost_function = self.fulfill_cost_function(
@@ -56,6 +56,7 @@ class EdgeCoverage:
 
         multiplier = criterion_edge_multiplier * (criterion_edge_multiplier + 1) / 2
 
+        print("S1", multiplier, criterion_edge_multiplier)
         cost_function = {
             key: value * multiplier for key, value in cost_function.items()
         }
@@ -66,11 +67,15 @@ class EdgeCoverage:
             sink="t_cpt",
             cost_function=cost_function,
         )
+
+        print(cost_function)
+        if return_cf:
+            return tcs.generate_test_cases(k=1, sink_source_cost=1), cost_function
         return tcs.generate_test_cases(k=1, sink_source_cost=1)
 
     @validate_cost_function()
     def get_test_cases_minimal_number_of_test_cases(
-        self, cost_function=None, default_cost=1, cost_function_multiplier=1
+        self, cost_function=None, default_cost=1, cost_function_multiplier=1, return_cf=False
     ):
 
         cost_function = self.fulfill_cost_function(
@@ -82,17 +87,20 @@ class EdgeCoverage:
             criterion_edge_multiplier * (criterion_edge_multiplier + 3) / 2
         ) ** 3
 
+        print(cost_function)
         tcs = TestCasesGenerator(
             self.digraph_manager,
             source="s_cpt",
             sink="t_cpt",
             cost_function=cost_function,
         )
+        if return_cf:
+            return tcs.generate_test_cases(k=1, sink_source_cost=multiplier), cost_function
         return tcs.generate_test_cases(k=1, sink_source_cost=multiplier)
 
     @validate_cost_function()
     def get_test_cases_set_number_of_test_cases(
-        self, cost_function=None, default_cost=1, k=1, cost_function_multiplier=1
+        self, cost_function=None, default_cost=1, k=1, cost_function_multiplier=1, return_cf=False
     ):
 
         cost_function = self.fulfill_cost_function(
@@ -109,4 +117,6 @@ class EdgeCoverage:
             sink="t_cpt",
             cost_function=cost_function,
         )
+        if return_cf:
+            return tcs.generate_test_cases(k=1, sink_source_cost=multiplier), cost_function
         return tcs.generate_test_cases(k=k, sink_source_cost=multiplier)
