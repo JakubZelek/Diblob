@@ -505,6 +505,21 @@ class DigraphManager:
             self[head].incoming_nodes.append(tail)
             self[(tail, head)] = Edge(path=[tail, head])
 
+
+    def get_max_nodes(self):
+        max_elements = set()
+        for node_id in self.nodes:
+            if len(self[node_id].outgoing_nodes) == 0:
+                max_elements.add(node_id)
+        return max_elements
+
+    def get_min_nodes(self): 
+        min_elements = set()
+        for node_id in self.nodes:
+            if len(self[node_id].incoming_nodes):
+                min_elements.add(node_id)
+        return min_elements
+
     def remove_nodes(self, *nodes: tuple[Node, ...]):
         """
         Removes nodes from the graph.
