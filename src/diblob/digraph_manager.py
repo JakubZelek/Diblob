@@ -5,42 +5,45 @@ import json
 
 from diblob.components import Edge, Node, Diblob
 from diblob.tools import list_groupby
-from diblob.exceptions import (CollisionException,
-                               RemoveRootDiblobException,
-                               DiblobKeyAlreadyExistsException,
-                               InvalidDiblobId,
-                               RootDiblobException,
-                               DiblobGatherException,
-                               EdgeAdditionException,
-                               InvalidDigraphDictException,
-                               InvalidConstructionJSON,
-                               CommonResourcesInjection,
-                               IllegalJoinException)
-
+from diblob.exceptions import (
+    CollisionException,
+    RemoveRootDiblobException,
+    DiblobKeyAlreadyExistsException,
+    InvalidDiblobId,
+    RootDiblobException,
+    DiblobGatherException,
+    EdgeAdditionException,
+    InvalidDigraphDictException,
+    InvalidConstructionJSON,
+    CommonResourcesInjection,
+    IllegalJoinException,
+)
 
 
 class DigraphManager:
     """
-    DigraphManager operates on Node, Edge and Diblob class. 
+    DigraphManager operates on Node, Edge and Diblob class.
     All operations on the digraph are managed indirectly by manager.
 
     Arg:
         digraph_dict_representation (dict): representation of the digraph in dictionary form.
-    
-    Assumptions: 
+
+    Assumptions:
         - Digraphs_dict_representation should contain diblob_id which covers entire digraphs.
-        - Every id in the digraph (diblob_id, node_id, edge_id) is unique 
+        - Every id in the digraph (diblob_id, node_id, edge_id) is unique
           over diblob_id | node_id | edge_id.
-        - If intersection of two diblobs is nonempty implies one of them is 
+        - If intersection of two diblobs is nonempty implies one of them is
           the ancestor of the other.
     """
 
     def __init__(self, digraph_dict_representation: dict):
 
         if not isinstance(digraph_dict_representation, dict):
-            raise InvalidDigraphDictException(f"digraph_dict_representation should\
+            raise InvalidDigraphDictException(
+                f"digraph_dict_representation should\
                                                be of dict type, not\
-                                              {type(digraph_dict_representation)}")
+                                              {type(digraph_dict_representation)}"
+            )
 
         if not digraph_dict_representation:
             raise InvalidDigraphDictException("Delivered dict cannot be empty!")
@@ -48,8 +51,10 @@ class DigraphManager:
         root_diblob_id = list(digraph_dict_representation)[0]
 
         if not isinstance(digraph_dict_representation[root_diblob_id], dict):
-            raise InvalidDigraphDictException("Delivered dict should contains diblob_id\
-                                               which cover entire digraph!")
+            raise InvalidDigraphDictException(
+                "Delivered dict should contains diblob_id\
+                                               which cover entire digraph!"
+            )
 
         self.diblobs = {}
         self.nodes = {}
@@ -59,27 +64,39 @@ class DigraphManager:
         gather_dict = {}
         edges_to_connect = []
 
-        self._construct(self.root_diblob_id, digraph_dict_representation,
-                       gather_dict, edges_to_connect)
+        self._construct(
+            self.root_diblob_id,
+            digraph_dict_representation,
+            gather_dict,
+            edges_to_connect,
+        )
         self.connect_nodes(*edges_to_connect)
 
-        root_nodes = {node_id for gather_lst in gather_dict.values()
-                      for node_id in gather_lst if node_id not in gather_dict}
+        root_nodes = {
+            node_id
+            for gather_lst in gather_dict.values()
+            for node_id in gather_lst
+            if node_id not in gather_dict
+        }
 
         gather_dict.pop(self.root_diblob_id)
         root_children = set(gather_dict)
 
-
-        self[self.root_diblob_id] = Diblob(self.root_diblob_id, root_children, root_nodes)
+        self[self.root_diblob_id] = Diblob(
+            self.root_diblob_id, root_children, root_nodes
+        )
 
         for diblob_id, nodes in reversed(gather_dict.items()):
             self.gather(diblob_id, set(nodes))
 
-
-    def __setitem__(self, key: str | tuple[str, str], value: Diblob | Node | Edge) -> None:
+    def __setitem__(
+        self, key: str | tuple[str, str], value: Diblob | Node | Edge
+    ) -> None:
 
         if key in set(self.diblobs) | set(self.nodes):
-            raise CollisionException('Key should be unique over diblobs | nodes | edges')
+            raise CollisionException(
+                "Key should be unique over diblobs | nodes | edges"
+            )
 
         if isinstance(value, Diblob) and isinstance(key, str):
             self.diblobs[key] = value
@@ -89,25 +106,27 @@ class DigraphManager:
 
         elif isinstance(value, Edge) and isinstance(key, tuple):
 
-            if len(key) != 2 or not (isinstance(key[0], str) and
-                                     isinstance(key[1], str)):
-                raise TypeError(f"The key of the Edge should be of type tuple[str, str],\
-                                  not tuple[{type(key[0])},{type(key[1])}]!")
+            if len(key) != 2 or not (
+                isinstance(key[0], str) and isinstance(key[1], str)
+            ):
+                raise TypeError(
+                    f"The key of the Edge should be of type tuple[str, str],\
+                                  not tuple[{type(key[0])},{type(key[1])}]!"
+                )
 
             self.edges.setdefault(key, []).append(value)
 
         else:
-            raise TypeError(f"Key: value pair should be one of str:\
-                            Diblob, str: Node, tuple: Edge, not {type(key)}: {type(value)}!")
-
+            raise TypeError(
+                f"Key: value pair should be one of str:\
+                            Diblob, str: Node, tuple: Edge, not {type(key)}: {type(value)}!"
+            )
 
     def __getitem__(self, key: str | tuple[str, str]):
         return (self.diblobs | self.nodes | self.edges)[key]
 
-
     def __contains__(self, key: str | tuple[str, str]):
         return key in set(self.diblobs | self.nodes | self.edges)
-
 
     def __call__(self, diblob_id: str):
         repr_dict = {diblob_id: {}}
@@ -119,46 +138,55 @@ class DigraphManager:
             if isinstance(node, Diblob):
                 repr_dict[diblob_id][node_id] = self(node_id)[node_id]
             else:
-                outgoing_nodes_grouped_by_diblob = list_groupby(node.outgoing_nodes,
-                                    map_dict={node_id: self[node_id].diblob_id
-                                    for node_id in node.outgoing_nodes})
+                outgoing_nodes_grouped_by_diblob = list_groupby(
+                    node.outgoing_nodes,
+                    map_dict={
+                        node_id: self[node_id].diblob_id
+                        for node_id in node.outgoing_nodes
+                    },
+                )
 
-                repr_dict[diblob_id][node_id] = outgoing_nodes_grouped_by_diblob.get(diblob_id, [])\
-                                              + [{key: value} for key, value in \
-                                              outgoing_nodes_grouped_by_diblob.items()
-                                              if key != diblob_id]
+                repr_dict[diblob_id][node_id] = outgoing_nodes_grouped_by_diblob.get(
+                    diblob_id, []
+                ) + [
+                    {key: value}
+                    for key, value in outgoing_nodes_grouped_by_diblob.items()
+                    if key != diblob_id
+                ]
         return repr_dict
-
-
 
     def __repr__(self):
         lines = []
 
         def display(digraph_dict, indent=0):
             for key, value in digraph_dict.items():
-                lines.append(' ' * indent + f'"{key}": ')
+                lines.append(" " * indent + f'"{key}": ')
 
                 if isinstance(value, dict):
-                    lines.append('{\n')
+                    lines.append("{\n")
                     display(value, indent + 4)
-                    lines.append(' ' * indent + '},\n')
+                    lines.append(" " * indent + "},\n")
 
                 elif isinstance(value, list):
-                    lines.append(json.dumps(value) + ',\n')
+                    lines.append(json.dumps(value) + ",\n")
 
                 else:
                     lines.append(f'"{value}",\n')
 
-        lines.append('{\n')
+        lines.append("{\n")
         display(self(self.root_diblob_id), 0)
-        lines.append('}\n')
+        lines.append("}\n")
 
-        return ''.join(lines)
+        return "".join(lines)
 
-
-    def _construct(self, diblob_id: str, digraph_dict_representation: dict,
-                  gather_dict: dict, edges_to_connect: list[str]):
-        """ 
+    def _construct(
+        self,
+        diblob_id: str,
+        digraph_dict_representation: dict,
+        gather_dict: dict,
+        edges_to_connect: list[str],
+    ):
+        """
         Used in __init__. Constructs graphs based on delivered dictionary.
         """
         gather_dict[diblob_id] = []
@@ -168,8 +196,12 @@ class DigraphManager:
             value = sub_digraph_dict_representation[key]
 
             if isinstance(value, dict):
-                self._construct(key, {key: sub_digraph_dict_representation[key]},
-                               gather_dict, edges_to_connect)
+                self._construct(
+                    key,
+                    {key: sub_digraph_dict_representation[key]},
+                    gather_dict,
+                    edges_to_connect,
+                )
 
             elif isinstance(value, list):
                 self[key] = Node(key, self.root_diblob_id, [], [])
@@ -182,10 +214,9 @@ class DigraphManager:
                     else:
                         edges_to_connect.append((key, head))
             else:
-                raise InvalidConstructionJSON('Invalid json delivered!')
+                raise InvalidConstructionJSON("Invalid json delivered!")
 
             gather_dict[diblob_id].append(key)
-
 
     def get_diblobs_common_ancestor(self, diblob_id1: str, diblob_id2: str):
         """
@@ -213,7 +244,6 @@ class DigraphManager:
 
         return common_ancestor
 
-
     def get_diblob_descendants(self, diblob_id: str):
         """
         Returns diblob_ids which are descendants of the diblob.
@@ -227,10 +257,9 @@ class DigraphManager:
             descendants |= self.get_diblob_descendants(child_id)
         return descendants
 
-
     def get_diblob_edges(self, diblob_id: str):
         """
-        Returns edge_ids, incoming edge_ids, outgoing edge_ids, 
+        Returns edge_ids, incoming edge_ids, outgoing edge_ids,
         descendants_with_diblob_id of the diblob.
         """
 
@@ -246,8 +275,10 @@ class DigraphManager:
             tail_diblob_id = self[edge_id[0]].diblob_id
             head_diblob_id = self[edge_id[1]].diblob_id
 
-            if tail_diblob_id in descendants_with_diblob_id and\
-               head_diblob_id in descendants_with_diblob_id:
+            if (
+                tail_diblob_id in descendants_with_diblob_id
+                and head_diblob_id in descendants_with_diblob_id
+            ):
 
                 inside_edges.add(edge_id)
 
@@ -259,10 +290,9 @@ class DigraphManager:
 
         return inside_edges, incoming_edges, outgoing_edges, descendants_with_diblob_id
 
-
     def is_diblob_ancestor(self, potential_ancestors: set, diblob_id: str):
         """
-        Checks the diblob has ancestors with id present in potential_ancestors. 
+        Checks the diblob has ancestors with id present in potential_ancestors.
 
         Args:
             potential_ancestor_diblob_id (str): id of potential ancestor diblob.
@@ -281,23 +311,25 @@ class DigraphManager:
 
         return False
 
-
     def flatten(self, *diblob_ids: tuple[str, ...]):
         """
         Removes diblobs from the digraph_manager and flat part of the digraph included in diblobs.
 
         Args:
-            diblob_ids (str): id of the diblobs will be flattened. 
+            diblob_ids (str): id of the diblobs will be flattened.
         """
 
         if self.root_diblob_id in diblob_ids:
-            raise RemoveRootDiblobException(f'diblob with id = {self.root_diblob_id} is the\
-                                          root of the digraph. Cannot be removed!')
+            raise RemoveRootDiblobException(
+                f"diblob with id = {self.root_diblob_id} is the\
+                                          root of the digraph. Cannot be removed!"
+            )
 
         invalid_ids = set(diblob_ids) - set(self.diblobs)
         if invalid_ids:
-            raise InvalidDiblobId(f"Digraph doesn't contain diblobs with IDs in {invalid_ids} !")
-
+            raise InvalidDiblobId(
+                f"Digraph doesn't contain diblobs with IDs in {invalid_ids} !"
+            )
 
         for diblob_id in diblob_ids:
             diblob = self[diblob_id]
@@ -320,7 +352,6 @@ class DigraphManager:
 
             self.diblobs.pop(diblob_id)
 
-
     def gather(self, new_diblob_id: str, node_ids: set[str]):
         """
         Creates new diblob based on delivered node_ids.
@@ -332,16 +363,20 @@ class DigraphManager:
         """
 
         if new_diblob_id in self:
-            raise DiblobKeyAlreadyExistsException(f"id = {new_diblob_id} is already occupied!")
-
+            raise DiblobKeyAlreadyExistsException(
+                f"id = {new_diblob_id} is already occupied!"
+            )
 
         node = self[list(node_ids)[0]]
-        parent_diblob = self[node.parent_id] if isinstance(node, Diblob) else self[node.diblob_id]
+        parent_diblob = (
+            self[node.parent_id] if isinstance(node, Diblob) else self[node.diblob_id]
+        )
 
         if node_ids - parent_diblob.nodes:
-            raise DiblobGatherException('All nodes should have the same \
-                                        diblob_id during gathering!')
-
+            raise DiblobGatherException(
+                "All nodes should have the same \
+                                        diblob_id during gathering!"
+            )
 
         diblob_children = set()
         parent_id = parent_diblob.diblob_id
@@ -355,13 +390,13 @@ class DigraphManager:
                 diblob_children.add(node_id)
                 node.parent_id = new_diblob_id
 
-
-        self[new_diblob_id] = Diblob(new_diblob_id, diblob_children, node_ids, parent_id)
+        self[new_diblob_id] = Diblob(
+            new_diblob_id, diblob_children, node_ids, parent_id
+        )
 
         parent_diblob.nodes.add(new_diblob_id)
         parent_diblob.children.add(new_diblob_id)
         parent_diblob.nodes -= node_ids
-
 
     def compress_diblob(self, diblob_id: str):
         """
@@ -369,10 +404,11 @@ class DigraphManager:
         """
 
         if self.root_diblob_id == diblob_id:
-            raise RootDiblobException('Root diblob cannot be compressed!')
+            raise RootDiblobException("Root diblob cannot be compressed!")
 
-        _, diblob_incoming_edges,\
-        diblob_outgoing_edges, descendants =  self.get_diblob_edges(diblob_id)
+        _, diblob_incoming_edges, diblob_outgoing_edges, descendants = (
+            self.get_diblob_edges(diblob_id)
+        )
 
         descendants.remove(diblob_id)
         self.flatten(*descendants)
@@ -381,11 +417,15 @@ class DigraphManager:
 
         nodes_to_remove = [self[node_id] for node_id in diblob.nodes]
 
-        incoming_edges = [(tail, diblob_id) for tail, _ in
-                          self.get_multiple_edge_ids(*diblob_incoming_edges)]
+        incoming_edges = [
+            (tail, diblob_id)
+            for tail, _ in self.get_multiple_edge_ids(*diblob_incoming_edges)
+        ]
 
-        outgoing_edges = [(diblob_id, head) for _, head in
-                          self.get_multiple_edge_ids(*diblob_outgoing_edges)]
+        outgoing_edges = [
+            (diblob_id, head)
+            for _, head in self.get_multiple_edge_ids(*diblob_outgoing_edges)
+        ]
 
         self.remove_nodes(*nodes_to_remove)
 
@@ -396,7 +436,6 @@ class DigraphManager:
         self.connect_nodes(*incoming_edges)
         self.connect_nodes(*outgoing_edges)
 
-
     def merge_edges(self, edge_1: Edge, edge_2: Edge):
         """
         Merges two edges.
@@ -404,17 +443,22 @@ class DigraphManager:
 
         if edge_1.path != edge_2.path:
             if edge_1.path[-1] != edge_2.path[0]:
-                raise EdgeAdditionException(f"Edges are incompatible:\
-                                                {edge_1.path}, {edge_2.path}")
+                raise EdgeAdditionException(
+                    f"Edges are incompatible:\
+                                                {edge_1.path}, {edge_2.path}"
+                )
             node_id = edge_1.path[-1]
 
-            if len(self[node_id].incoming_nodes) != 1 or\
-            len(self[node_id].outgoing_nodes) != 1:
+            if (
+                len(self[node_id].incoming_nodes) != 1
+                or len(self[node_id].outgoing_nodes) != 1
+            ):
 
-                raise EdgeAdditionException("Only edges where common node with\
+                raise EdgeAdditionException(
+                    "Only edges where common node with\
                                             len(incoming_nodes) == len(outgoing_nodes) == 1\
-                                            can be added!")
-
+                                            can be added!"
+                )
 
             path = edge_1.path[:-1] + edge_2.path
             tail, head = path[0], path[-1]
@@ -426,8 +470,7 @@ class DigraphManager:
 
             self[(tail, head)] = Edge(path)
 
-
-    def get_multiple_edge_ids(self, *edge_ids : tuple[str, ...]):
+    def get_multiple_edge_ids(self, *edge_ids: tuple[str, ...]):
         """
         Returns edge_ids as many times occurred in DigraphManager list of edges.
         """
@@ -435,7 +478,6 @@ class DigraphManager:
         for edge_id in edge_ids:
             result += [edge_id] * len(self[edge_id])
         return result
-
 
     def remove_edges(self, *edges: tuple[Edge, ...]):
         """
@@ -452,7 +494,6 @@ class DigraphManager:
             if not self.edges[(tail, head)]:
                 self.edges.pop((tail, head))
 
-
     def connect_nodes(self, *edge_ids: tuple[str, ...]):
         """
         Adds edges in existing graph structure.
@@ -462,8 +503,22 @@ class DigraphManager:
             tail, head = edge_id[0], edge_id[1]
             self[tail].outgoing_nodes.append(head)
             self[head].incoming_nodes.append(tail)
-            self[(tail,head)] = Edge(path=[tail, head])        
+            self[(tail, head)] = Edge(path=[tail, head])
 
+
+    def get_max_nodes(self):
+        max_elements = set()
+        for node_id in self.nodes:
+            if len(self[node_id].outgoing_nodes) == 0:
+                max_elements.add(node_id)
+        return max_elements
+
+    def get_min_nodes(self): 
+        min_elements = set()
+        for node_id in self.nodes:
+            if len(self[node_id].incoming_nodes):
+                min_elements.add(node_id)
+        return min_elements
 
     def remove_nodes(self, *nodes: tuple[Node, ...]):
         """
@@ -482,8 +537,7 @@ class DigraphManager:
             self[node.diblob_id].nodes.remove(node_id)
             self.nodes.pop(node_id)
 
-
-    def add_nodes(self, *node_ids: tuple[str], diblob_id: str=None):
+    def add_nodes(self, *node_ids: tuple[str], diblob_id: str = None):
         """
         Adds nodes to the graph structure.
         """
@@ -496,14 +550,16 @@ class DigraphManager:
 
         self[diblob_id].nodes |= set(node_ids)
 
-
     def compress_edges(self):
         """
         Compress edges by gathering them to paths.
         """
-        nodes_to_compress = {node_id for node_id in self.nodes if
-                             len(self[node_id].incoming_nodes) == 1 and
-                             len(self[node_id].outgoing_nodes) == 1}
+        nodes_to_compress = {
+            node_id
+            for node_id in self.nodes
+            if len(self[node_id].incoming_nodes) == 1
+            and len(self[node_id].outgoing_nodes) == 1
+        }
 
         while nodes_to_compress:
 
@@ -513,9 +569,10 @@ class DigraphManager:
             incoming_node_id = node.incoming_nodes[0]
             outgoing_node_id = node.outgoing_nodes[0]
 
-            self.merge_edges(self[(incoming_node_id, node_id)][0],
-                             self[(node_id, outgoing_node_id)][0])
-
+            self.merge_edges(
+                self[(incoming_node_id, node_id)][0],
+                self[(node_id, outgoing_node_id)][0],
+            )
 
     def decompress_edges(self):
         """
@@ -531,16 +588,18 @@ class DigraphManager:
                     self.add_nodes(*node_ids[1:-1])
                     self.connect_nodes(*list(zip(node_ids[:-1], node_ids[1:])))
 
-
     def inject(self, digraph_manager: "DigraphManager", node_id: str):
         """
         Replace node by diblob.
         """
-        namespace = (set(digraph_manager.diblobs) & set(self.diblobs)) |\
-                    (set(digraph_manager.nodes) & set(self.nodes))
+        namespace = (set(digraph_manager.diblobs) & set(self.diblobs)) | (
+            set(digraph_manager.nodes) & set(self.nodes)
+        )
         if namespace:
-            raise CommonResourcesInjection(f"Injection can be performed only with new ID\
-                                            (not occupied). Common {namespace=}")
+            raise CommonResourcesInjection(
+                f"Injection can be performed only with new ID\
+                                            (not occupied). Common {namespace=}"
+            )
 
         node = self[node_id]
 
@@ -553,21 +612,25 @@ class DigraphManager:
         self[node.diblob_id]._add_children(injected_diblob_root_id)
         self[node.diblob_id]._add_nodes(injected_diblob_root_id)
 
-
         for injected_node_id in digraph_manager[injected_diblob_root_id].nodes:
-
 
             if isinstance(digraph_manager[injected_node_id], Node):
 
-                self.connect_nodes(*[(incoming_node_id, injected_node_id)
-                                for incoming_node_id in node.incoming_nodes])
+                self.connect_nodes(
+                    *[
+                        (incoming_node_id, injected_node_id)
+                        for incoming_node_id in node.incoming_nodes
+                    ]
+                )
 
-                self.connect_nodes(*[(injected_node_id, outgoing_node_id)
-                                for outgoing_node_id in node.outgoing_nodes])
-
+                self.connect_nodes(
+                    *[
+                        (injected_node_id, outgoing_node_id)
+                        for outgoing_node_id in node.outgoing_nodes
+                    ]
+                )
 
         self.remove_nodes(node)
-
 
     def join_diblobs(self, diblob_fst_id: str, diblob_snd_id: str, join_id: str):
         """
@@ -578,13 +641,14 @@ class DigraphManager:
         snd_diblob = self[diblob_snd_id]
 
         if fst_diblob.parent_id != snd_diblob.parent_id:
-            raise IllegalJoinException(f"Diblobs during joining must have the same parent_id:\
-                                       {fst_diblob.parent_id} != {snd_diblob.parent_id}")
+            raise IllegalJoinException(
+                f"Diblobs during joining must have the same parent_id:\
+                                       {fst_diblob.parent_id} != {snd_diblob.parent_id}"
+            )
 
         join_node_ids = self[diblob_fst_id].nodes | self[diblob_snd_id].nodes
         self.flatten(diblob_fst_id, diblob_snd_id)
         self.gather(join_id, join_node_ids)
-
 
     def decouple_edges(self):
         """
@@ -597,15 +661,17 @@ class DigraphManager:
             if len(edge_lst) > 1:
 
                 tail, head = edge_id[0], edge_id[1]
-                diblob_id = self.get_diblobs_common_ancestor(self[tail].diblob_id,
-                                                         self[head].diblob_id)
+                diblob_id = self.get_diblobs_common_ancestor(
+                    self[tail].diblob_id, self[head].diblob_id
+                )
 
                 for idx, edge in enumerate(list(edge_lst)[:-1]):
                     self.remove_edges(edge)
                     decouple_node_id = f"dec{idx + 1}({tail},{head})"
                     self.add_nodes(decouple_node_id, diblob_id=diblob_id)
-                    self.connect_nodes((tail, decouple_node_id), (decouple_node_id, head))
-
+                    self.connect_nodes(
+                        (tail, decouple_node_id), (decouple_node_id, head)
+                    )
 
     def reverse_edges(self, *edges: tuple[Edge, ...]):
         """
@@ -616,7 +682,6 @@ class DigraphManager:
             tail, head = edge.get_tail_and_head()
             self.remove_edges(edge)
             self.connect_nodes((head, tail))
-
 
     def sorted(self):
         """
