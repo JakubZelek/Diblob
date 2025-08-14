@@ -433,9 +433,16 @@ class PrimePathsGenerator:
         extended_graph = deepcopy(self.graph_dict)
         extended_graph[1] = [node_id]
 
+        append_counter = 0
         for n_id in list(extended_graph):
-            if n_id != node_id:
+            
+            if n_id != node_id and node_id not in extended_graph[n_id]:
+                append_counter += 1
                 extended_graph[n_id].append(1)
+        
+        if append_counter == 0:
+            return False
+
         return extended_graph
 
     def get_reversed_graph(self):
@@ -454,25 +461,26 @@ class PrimePathsGenerator:
         self.blocked_set.add(node_id)
 
         for outgoing_node_id in graph[node_id]:
-            if outgoing_node_id == 1:
 
-                outgoing_nodes = graph[node_id]
-                incoming_nodes_to_start = reversed_graph[graph[1][0]]
 
-                cannot_be_extend_forward = not (set(outgoing_nodes) - set(self.stack))
-                cannot_be_extend_backward = not (
-                    set(incoming_nodes_to_start) - set(self.stack)
-                )
+            if self.stack[0] == outgoing_node_id:
+                if outgoing_node_id == 1:
+                    outgoing_nodes = graph[node_id]
 
-                if cannot_be_extend_forward and cannot_be_extend_backward:
+                    incoming_nodes_to_start = reversed_graph[graph[1][0]]
 
-                    yield list(self.stack[1:])
+                    cannot_be_extend_forward = not (set(outgoing_nodes) - set(self.stack))
+                    cannot_be_extend_backward = not (
+                        set(incoming_nodes_to_start) - set(self.stack)
+                    )
                     found_cycle = True
-
-            elif outgoing_node_id != 1 and self.stack[0] == outgoing_node_id:
-
-                yield list(self.stack + [outgoing_node_id])
-                found_cycle = True
+                    if cannot_be_extend_forward and cannot_be_extend_backward:
+                        yield list(self.stack[1:])        
+                    else:
+                        yield []
+                else:
+                    yield list(self.stack + [outgoing_node_id])
+                    found_cycle = True
 
             elif outgoing_node_id not in self.blocked_set:
                 for result in self.dfs_part(outgoing_node_id, graph, reversed_graph):
@@ -483,17 +491,19 @@ class PrimePathsGenerator:
             self.unblock(node_id)
         else:
             for outgoing_node_id in graph[node_id]:
-                if node_id not in self.blocked_dict[outgoing_node_id]:
+                if node_id not in list(self.blocked_dict[outgoing_node_id]):
                     self.blocked_dict[outgoing_node_id].append(node_id)
 
         self.stack.pop()
         return
 
     def unblock(self, node_id):
+
         self.blocked_set.remove(node_id)
 
-        for blocked_outgoing_id in self.blocked_dict[node_id]:
+        for blocked_outgoing_id in list(self.blocked_dict[node_id]):
             self.blocked_dict[node_id].remove(blocked_outgoing_id)
+            
             if blocked_outgoing_id in self.blocked_set:
                 self.unblock(blocked_outgoing_id)
 
@@ -501,11 +511,14 @@ class PrimePathsGenerator:
         for node_id in self.graph_dict:
             extended_graph = self.get_extended_graph(node_id)
 
-            reversed_extended_graph = self.get_reversed_graph()
-            self.blocked_dict = {n_id: [] for n_id in extended_graph}
+            if extended_graph:
+  
+                reversed_extended_graph = self.get_reversed_graph()
+                self.blocked_dict = {n_id: [] for n_id in extended_graph}
 
-            self.blocked_set = set()
-            yield from self.dfs_part(1, extended_graph, reversed_extended_graph)
+                self.blocked_set = set()
+                
+                yield from self.dfs_part(1, extended_graph, reversed_extended_graph)
 
     def get_cycles(self):
         s = 2
