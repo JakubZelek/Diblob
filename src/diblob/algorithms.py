@@ -573,7 +573,7 @@ class PrimePathsGenerator:
     @staticmethod
     def digraph_manager_to_graph_dict(digraph_manager):
         keys = sorted(digraph_manager.nodes)
-        translation_dict = {key: int(key) + 2 for key in keys}
+        translation_dict = {key: index + 2 for index, key in enumerate(keys)}
 
         reversed_translation_dict = {
             value: key for key, value in translation_dict.items()
