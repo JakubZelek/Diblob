@@ -74,7 +74,6 @@ class DFS(DFSTemplate):
 
 
 class DFS_with_path(DFSTemplate):
-
     def run(self, node_id):
         test_cases = []
         current_path = []
@@ -83,7 +82,6 @@ class DFS_with_path(DFSTemplate):
         return test_cases
 
     def run_iter(self, node_id: str, current_path, test_cases):
-
         self.visited_nodes.append(node_id)
         self.nodes_to_visit.remove(node_id)
         current_path.append(node_id)
@@ -157,7 +155,6 @@ class DijkstraAlgorithm:
         }
 
         while nodes:
-
             min_node_id = min(
                 nodes,
                 key=lambda dest_node_id: min_distance_dict[dest_node_id]["distance"],
@@ -170,7 +167,6 @@ class DijkstraAlgorithm:
             for neigh_id in set(self.digraph_manager[min_node_id].outgoing_nodes) & set(
                 nodes
             ):
-
                 u = min_distance_dict[neigh_id]
                 edge_id = (min_node_id, neigh_id)
                 potential_new_min_distance = min_distance + cost_function[edge_id]
@@ -192,7 +188,7 @@ class TarjanSSC:
 
     def run(self):
         stack = []
-        defined = set()  # Tracks nodes that have been fully processed
+        defined = set()
         on_stack = set()
         low_links = {}
         indices = {}
@@ -201,22 +197,20 @@ class TarjanSSC:
 
         def strong_connect(node_id):
             nonlocal index
-            # Mark the node as visited
+
             indices[node_id] = low_links[node_id] = index
             index += 1
             stack.append(node_id)
             on_stack.add(node_id)
-            defined.add(node_id)  # Mark the node as fully defined/processed
+            defined.add(node_id)
 
-            # Traverse outgoing nodes
             for out_node_id in self.digraph_manager[node_id].outgoing_nodes:
-                if out_node_id not in defined:  # Node not yet visited
+                if out_node_id not in defined:
                     strong_connect(out_node_id)
                     low_links[node_id] = min(low_links[node_id], low_links[out_node_id])
-                elif out_node_id in on_stack:  # Node is part of the current SCC
+                elif out_node_id in on_stack:
                     low_links[node_id] = min(low_links[node_id], indices[out_node_id])
 
-            # Check if this node is the root of an SCC
             if low_links[node_id] == indices[node_id]:
                 scc = set()
                 while True:
@@ -227,7 +221,6 @@ class TarjanSSC:
                         break
                 result.append(scc)
 
-        # Start the Tarjan's algorithm
         for node_id in self.digraph_manager.nodes:
             if node_id not in defined:
                 strong_connect(node_id)
@@ -255,19 +248,16 @@ class JonsonForSimpleSSC:
         stack = []
 
         def circuit(node_id, start):
-
             stack.append(node_id)
             blocked[node_id] = True
             found_cycle = False
 
             for outgoing_node_id in self.digraph_manager[node_id].outgoing_nodes:
                 if outgoing_node_id == start:
-
                     cycle = normalize_cycle(stack + [start])
                     cycles.add(tuple(cycle))
                     found_cycle = True
                 elif not blocked[outgoing_node_id]:
-
                     if circuit(outgoing_node_id, start):
                         found_cycle = True
 
@@ -303,7 +293,6 @@ class JonsonForSimpleSSC:
 
 
 class HopcroftKarp:
-
     @staticmethod
     def run(digraph_manager):
         pair_u = {node_id: None for node_id in digraph_manager.nodes}
@@ -361,7 +350,6 @@ class HopcroftKarp:
 
     @staticmethod
     def construct_path_cover(digraph_manager):
-
         _, pair_u, _ = HopcroftKarp.run(digraph_manager)
         visited = set()
         paths = []
@@ -385,7 +373,6 @@ class HopcroftKarp:
 
 
 class ShortestPathBetween2Nodes:
-
     @staticmethod
     def run(digraph_manager, start, target):
         queue = deque([(start, [start])])
@@ -403,7 +390,6 @@ class ShortestPathBetween2Nodes:
 
 
 class GenerateDijkstraMatrix:
-
     @staticmethod
     def run(digraph_manager):
         dijkstra_matrix = {}
@@ -420,7 +406,6 @@ class GenerateDijkstraMatrix:
 
 class PrimePathsGenerator:
     def __init__(self, digraph_manager):
-
         self.graph_dict, self.reversed_translation_dict = (
             self.digraph_manager_to_graph_dict(digraph_manager)
         )
@@ -428,22 +413,73 @@ class PrimePathsGenerator:
         self.blocked_set = set()
         self.stack = []
         self.blocked_dict = {}
+        self.digraph_manager = digraph_manager
+        self.same_ssc, self.different_ssc = self.get_scc_order_set()
 
     def get_extended_graph(self, node_id):
         extended_graph = deepcopy(self.graph_dict)
-        extended_graph[1] = [node_id]
 
         append_counter = 0
         for n_id in list(extended_graph):
-            
-            if n_id != node_id and node_id not in extended_graph[n_id]:
-                append_counter += 1
-                extended_graph[n_id].append(1)
-        
+            if (
+                self.reversed_translation_dict[node_id],
+                self.reversed_translation_dict[n_id],
+            ) in self.same_ssc | self.different_ssc:
+                if n_id != node_id and node_id not in extended_graph[n_id]:
+                    append_counter += 1
+                    extended_graph[n_id].append(1)
+
+        extended_graph[1] = [node_id]
         if append_counter == 0:
             return False
-
         return extended_graph
+
+    def get_scc_order_set(self):
+        tarjan_ssc = TarjanSSC(self.digraph_manager)
+        ssc_list = tarjan_ssc.run()
+
+        the_same_ssc_matching_set = set()
+
+        for ssc in ssc_list:
+            if len(ssc) == 1:
+                continue
+            for pair in [(a, b) for a in ssc for b in ssc if a != b]:
+                if not (
+                    set(self.digraph_manager[pair[0]].incoming_nodes) - set(ssc)
+                    or set(self.digraph_manager[pair[1]].outgoing_nodes) - set(ssc)
+                ):
+                    the_same_ssc_matching_set.add(pair)
+
+        spb2d = ShortestPathBetween2Nodes()
+        different_ssc_matching_set = set()
+
+        ssc_list = [
+            ssc
+            for ssc in ssc_list
+            if not (
+                len(ssc) == 1
+                and (
+                    len(self.digraph_manager[list(ssc)[0]].incoming_nodes) != 0
+                    and len(self.digraph_manager[list(ssc)[0]].outgoing_nodes) != 0
+                )
+            )
+        ]
+
+        for pair_od_sscs in [
+            (a, b)
+            for a in ssc_list
+            for b in ssc_list
+            if a != b and spb2d.run(self.digraph_manager, list(a)[0], list(b)[0])
+        ]:
+            for pair in [(a, b) for a in pair_od_sscs[0] for b in pair_od_sscs[1]]:
+                if not (
+                    set(self.digraph_manager[pair[0]].incoming_nodes) - pair_od_sscs[0]
+                    or set(self.digraph_manager[pair[1]].outgoing_nodes)
+                    - pair_od_sscs[1]
+                ):
+                    different_ssc_matching_set.add(pair)
+
+        return the_same_ssc_matching_set, different_ssc_matching_set
 
     def get_reversed_graph(self):
         reversed_graph = {node_id: [] for node_id in self.graph_dict}
@@ -461,21 +497,21 @@ class PrimePathsGenerator:
         self.blocked_set.add(node_id)
 
         for outgoing_node_id in graph[node_id]:
-
-
             if self.stack[0] == outgoing_node_id:
                 if outgoing_node_id == 1:
                     outgoing_nodes = graph[node_id]
 
                     incoming_nodes_to_start = reversed_graph[graph[1][0]]
 
-                    cannot_be_extend_forward = not (set(outgoing_nodes) - set(self.stack))
+                    cannot_be_extend_forward = not (
+                        set(outgoing_nodes) - set(self.stack)
+                    )
                     cannot_be_extend_backward = not (
                         set(incoming_nodes_to_start) - set(self.stack)
                     )
                     found_cycle = True
                     if cannot_be_extend_forward and cannot_be_extend_backward:
-                        yield list(self.stack[1:])        
+                        yield list(self.stack[1:])
                     else:
                         yield []
                 else:
@@ -498,12 +534,11 @@ class PrimePathsGenerator:
         return
 
     def unblock(self, node_id):
-
         self.blocked_set.remove(node_id)
 
         for blocked_outgoing_id in list(self.blocked_dict[node_id]):
             self.blocked_dict[node_id].remove(blocked_outgoing_id)
-            
+
             if blocked_outgoing_id in self.blocked_set:
                 self.unblock(blocked_outgoing_id)
 
@@ -512,12 +547,11 @@ class PrimePathsGenerator:
             extended_graph = self.get_extended_graph(node_id)
 
             if extended_graph:
-  
                 reversed_extended_graph = self.get_reversed_graph()
                 self.blocked_dict = {n_id: [] for n_id in extended_graph}
 
                 self.blocked_set = set()
-                
+
                 yield from self.dfs_part(1, extended_graph, reversed_extended_graph)
 
     def get_cycles(self):
@@ -539,7 +573,7 @@ class PrimePathsGenerator:
     @staticmethod
     def digraph_manager_to_graph_dict(digraph_manager):
         keys = sorted(digraph_manager.nodes)
-        translation_dict = {key: index + 2 for index, key in enumerate(keys)}
+        translation_dict = {key: int(key) + 2 for key in keys}
 
         reversed_translation_dict = {
             value: key for key, value in translation_dict.items()
