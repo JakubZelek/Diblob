@@ -509,9 +509,11 @@ class PrimePathsGenerator:
                         set(incoming_nodes_to_start) - set(self.stack)
                     )
                     found_cycle = True
-
+                    
                     if cannot_be_extend_forward and cannot_be_extend_backward:
                         yield list(self.stack[1:])
+                    else:
+                        yield []
                 else:
                     yield list(self.stack + [outgoing_node_id])
                     found_cycle = True
