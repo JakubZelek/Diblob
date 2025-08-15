@@ -500,7 +500,6 @@ class PrimePathsGenerator:
             if self.stack[0] == outgoing_node_id:
                 if outgoing_node_id == 1:
                     outgoing_nodes = graph[node_id]
-
                     incoming_nodes_to_start = reversed_graph[graph[1][0]]
 
                     cannot_be_extend_forward = not (
@@ -510,10 +509,9 @@ class PrimePathsGenerator:
                         set(incoming_nodes_to_start) - set(self.stack)
                     )
                     found_cycle = True
+
                     if cannot_be_extend_forward and cannot_be_extend_backward:
                         yield list(self.stack[1:])
-                    else:
-                        yield []
                 else:
                     yield list(self.stack + [outgoing_node_id])
                     found_cycle = True
@@ -587,3 +585,4 @@ class PrimePathsGenerator:
             ]
 
         return result_dictionary, reversed_translation_dict
+
