@@ -1,16 +1,29 @@
 
 # Diblob
 
-Diblob is a package designed for computations on digraphs (pseudographs).
-The main assumption is to enable easy operations on JSON representations of digraphs. The package allows treating a subgraph as a node and facilitates the extraction of subgraphs for further work.
-It is based on basic Python structures and does not depend on external packages.
+Diblob is a lightweight Python package for test case coverage of directed graphs (digraphs), with a focus on SESE graphs (Single Entry, Single Exit — graphs with one source and one sink). It is primarily developed for testing purposes and provides a simple, dependency-free solution built entirely on standard Python data structures.
 
-# Installation
+## Overview
+
+The package focuses on JSON-based representations of digraphs, enabling intuitive and flexible operations. It provides functionality to:
+- Treat a subgraph as a node for higher-level abstractions. 
+- Extract subgraphs for further analysis or processing.
+- Generate test coverage based on multiple criteria:
+  - Node Coverage (test cases streaming),
+  - Edge Coverage (including various variants, see [papier](http://sciencedirect.com/science/article/abs/pii/S0957417425008383))
+  - NSwitch Coverage,
+  - Cycle Coverage (test cases streaming),
+  - Simple Paths Coverage (test cases streaming, separated from simple cycles),
+  - Prime Path Coverage (test cases streaming),
+  - Acyclic Path (NPath) Coverage (test cases streaming).
+
+
+## Installation
 Package requires python with version >= 3.10.
-- The package can be installed with pip using the command `pip install diblob`.
-- For installing packages necessary only for testing, use the command `pip install -r requirements.txt`.
+- The package can be installed using [pip](https://pypi.org/project/diblob/) (`pip install diblob`).
+- For the packages necessary only for testing, use `pip install -r requirements.txt`.
 
-# Data structure
+# Structure of the solution
 
 The core of Diblob revolves around its data structure, managed by the GraphManager. Operations within Diblob are executed on Node, Edge, and Blob components.
 
@@ -19,9 +32,7 @@ The core of Diblob revolves around its data structure, managed by the GraphManag
 
 
 ## Node
-Node representation in digraph. Components cosists of following fields:
-
-Node representation in a digraph consists of the following fields:
+The Node representation in digraph, that consists of the following fields:
 
 - `node_id`: The identifier for the node used by GraphManager.
 - `diblob_id`: The identifier of the diblob where the node is located.
@@ -31,11 +42,11 @@ Node representation in a digraph consists of the following fields:
 Both incoming and outgoing nodes can be redundant, as pseudographs are accommodated as well.
 
 ## Edge
-Representation of an edge in a digraph:
+The representation of an edge in a digraph:
  - `path`: A list of node IDs that the edge connects.
 
 ## Diblob
-Representation of a diblob within a digraph:
+The representation of a diblob within a digraph:
 - `diblob_id`: The identifier for the diblob, used by GraphManager.
 - `parent_id`: The identifier of the parent diblob to this diblob.
 - `children`: IDs of diblobs that are children of this diblob.
@@ -61,7 +72,7 @@ digraph_dict = {"B0": {"A": ["B", "F"],
 
 digraph_manager = DigraphManager(digraph_dict)
 ```
-Note that if a digraph is stored in a JSON file, it can be loaded using json.load. 
+Note that digraphs stored in a JSON files can be easily loaded using json.load and applied as the inputs to the DigraphManager.
 To illustrate, let's create blobs B1 and B2 in the digraph, each containing specific nodes. 
 Blob B1 will include nodes A and B, while B2 will encompass nodes C, D, and E:
 
@@ -71,7 +82,7 @@ from diblob import tools
 digraph_manager.gather('B1', {'A', 'B'})
 digraph_manager.gather('B2', {'C', 'D', 'E'})
 
-tools.display_digraph_json(digraph_manager('B0'))
+tools.display_digraph(digraph_manager('B0'))
 ```
 The result is as follows (where display_digraph is a helper function used for printing a human-friendly output in Python):
 ```json
@@ -109,7 +120,7 @@ The result is as follows:
 },
 }
 ```
-# Diblob documentation
+# Documentation
 The Diblob package is composed of the following modules:
 
 - `components`: Utilized by the Graph Manager, this module includes node, edge, and diblob components.
@@ -118,6 +129,9 @@ The Diblob package is composed of the following modules:
 - `algorithms`: Contains examples of employing Diblob with basic digraph algorithms such as DFS, DFSA (a modified version of DFS), and the Dijkstra algorithm.
 - `exceptions`: Defines exceptions that are utilized across the modules.
 - `tools`: Offers utilities for convenient work with digraphs.
+
+The package contains also module with the testing criterions:
+- 
 
 Within the entire package, methods prefixed with an underscore ('_') are intended for internal use by the GraphManager.
 
