@@ -2,7 +2,11 @@ from setuptools import setup, find_packages
 
 setup(
     name="diblob",
+<<<<<<< Updated upstream
     version="2.0.1",
+=======
+    version="2.0.3",
+>>>>>>> Stashed changes
     package_dir={"": "src"},
     packages=find_packages(where="src"),
     description="Diblob Package, that enable working with directed graphs (multigraphs) as well as generate testing criterions based on graph-based model of the system.",
