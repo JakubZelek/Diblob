@@ -15,7 +15,7 @@ class SimplePathsCoverage:
     def __init__(self, digraph_manager) -> None:
         self.digraph_manager = digraph_manager
 
-    def get_test_cases(self, max_number_of_cycles_in_single_test_case):
+    def get_test_cases(self, max_number_of_simple_paths_in_single_test_case):
 
         digraph_manager = self.digraph_manager
         dijkstra_matrix = GenerateDijkstraMatrix.run(digraph_manager)
@@ -53,7 +53,7 @@ class SimplePathsCoverage:
 
                 if (
                     skip_flag
-                    or simple_path_iterator == max_number_of_cycles_in_single_test_case
+                    or simple_path_iterator == max_number_of_simple_paths_in_single_test_case
                 ):
                     path += dijkstra_matrix[(path[-1], "T")][1:]
                     if path[1] == "S":
