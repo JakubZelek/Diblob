@@ -4,9 +4,6 @@ from abc import ABC, abstractmethod
 from copy import deepcopy
 from diblob.digraph_manager import DigraphManager
 
-START = "S"
-END = "T"
-
 
 def edges_to_path(edges):
     if not edges:
