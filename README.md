@@ -1,16 +1,29 @@
 
 # Diblob
 
-Diblob is a package designed for computations on digraphs (pseudographs).
-The main assumption is to enable easy operations on JSON representations of digraphs. The package allows treating a subgraph as a node and facilitates the extraction of subgraphs for further work.
-It is based on basic Python structures and does not depend on external packages.
+Diblob is a lightweight Python package for test case coverage of directed graphs (digraphs), with a focus on SESE graphs (Single Entry, Single Exit — graphs with one source and one sink). It is primarily developed for testing purposes and provides a simple, dependency-free solution built entirely on standard Python data structures.
 
-# Installation
+## Overview
+
+The package focuses on JSON-based representations of digraphs, enabling intuitive and flexible operations. It provides functionality to:
+- Treat a subgraph as a node for higher-level abstractions. 
+- Extract subgraphs for further analysis or processing.
+- Generate test coverage based on multiple criteria ([Go to Testing Criterions](#testing-criterions)):
+  - Node Coverage (test cases streaming),
+  - Edge Coverage (including various variants, see [papier](http://sciencedirect.com/science/article/abs/pii/S0957417425008383))
+  - NSwitch Coverage,
+  - Cycle Coverage (test cases streaming),
+  - Simple Paths Coverage (test cases streaming, separated from simple cycles),
+  - Prime Path Coverage (test cases streaming),
+  - Acyclic Path (NPath) Coverage (test cases streaming).
+
+
+## Installation
 Package requires python with version >= 3.10.
-- The package can be installed with pip using the command `pip install diblob`.
-- For installing packages necessary only for testing, use the command `pip install -r requirements.txt`.
+- The package can be installed using [pip](https://pypi.org/project/diblob/) (`pip install diblob`).
+- For the packages necessary only for testing, use `pip install -r requirements.txt`.
 
-# Data structure
+# Structure of the solution
 
 The core of Diblob revolves around its data structure, managed by the GraphManager. Operations within Diblob are executed on Node, Edge, and Blob components.
 
@@ -19,9 +32,7 @@ The core of Diblob revolves around its data structure, managed by the GraphManag
 
 
 ## Node
-Node representation in digraph. Components cosists of following fields:
-
-Node representation in a digraph consists of the following fields:
+The Node representation in digraph, that consists of the following fields:
 
 - `node_id`: The identifier for the node used by GraphManager.
 - `diblob_id`: The identifier of the diblob where the node is located.
@@ -31,11 +42,11 @@ Node representation in a digraph consists of the following fields:
 Both incoming and outgoing nodes can be redundant, as pseudographs are accommodated as well.
 
 ## Edge
-Representation of an edge in a digraph:
+The representation of an edge in a digraph:
  - `path`: A list of node IDs that the edge connects.
 
 ## Diblob
-Representation of a diblob within a digraph:
+The representation of a diblob within a digraph:
 - `diblob_id`: The identifier for the diblob, used by GraphManager.
 - `parent_id`: The identifier of the parent diblob to this diblob.
 - `children`: IDs of diblobs that are children of this diblob.
@@ -61,7 +72,7 @@ digraph_dict = {"B0": {"A": ["B", "F"],
 
 digraph_manager = DigraphManager(digraph_dict)
 ```
-Note that if a digraph is stored in a JSON file, it can be loaded using json.load. 
+Note that digraphs stored in a JSON files can be easily loaded using json.load and applied as the inputs to the DigraphManager.
 To illustrate, let's create blobs B1 and B2 in the digraph, each containing specific nodes. 
 Blob B1 will include nodes A and B, while B2 will encompass nodes C, D, and E:
 
@@ -71,7 +82,7 @@ from diblob import tools
 digraph_manager.gather('B1', {'A', 'B'})
 digraph_manager.gather('B2', {'C', 'D', 'E'})
 
-tools.display_digraph_json(digraph_manager('B0'))
+tools.display_digraph(digraph_manager('B0'))
 ```
 The result is as follows (where display_digraph is a helper function used for printing a human-friendly output in Python):
 ```json
@@ -109,15 +120,16 @@ The result is as follows:
 },
 }
 ```
-# Diblob documentation
+# Documentation
 The Diblob package is composed of the following modules:
-
 - `components`: Utilized by the Graph Manager, this module includes node, edge, and diblob components.
 - `digraph_manager`: Serves as the core of the proposed data structure.
 - `factory`: Provides examples of using the graph_manager for creating more complex digraphs.
 - `algorithms`: Contains examples of employing Diblob with basic digraph algorithms such as DFS, DFSA (a modified version of DFS), and the Dijkstra algorithm.
 - `exceptions`: Defines exceptions that are utilized across the modules.
 - `tools`: Offers utilities for convenient work with digraphs.
+- `testing_criterions`: Contains test coverage algorithms for test suits generation.
+
 
 Within the entire package, methods prefixed with an underscore ('_') are intended for internal use by the GraphManager.
 
@@ -451,19 +463,16 @@ example of usage can be found in notebooks:
 https://github.com/JakubZelek/Diblob/tree/main/notebooks
 
 # Testing Criterions
-The package enables to generate test suits for digraphs, based on the specific criterions. Solution consists of the following:
-- Node coverage
-- Edge coverage (three variants)
-- NSwitch coverage (three variants)
-- Simple cycle coverage
-- Simple paths coverage
-- Prime paths coverage
-- NPath coverage
+The package enables to generate test suits for SESE digraphs based on the specific criterions.
 
-To enable the user working with the particular criterion, every criterion will be discussed based on the following digraph:
+The example of the usage will be presented on this particular digraphs:
 <img width="800" alt="image" src="https://github.com/user-attachments/assets/c8b5b7c5-e823-4522-a4eb-0015082c8846">
 ## Node Coverage
-To generate test cuit that cover all nodes in the graph, let's use `NodeCoverage` from `testing_criterions`. The example usage is as follows (basen on graph above): 
+
+The goal of this criterion is to cover all nodes in the graph, so we are looking for a test suit $P = [p_1, p_2, \dots, p_n]$, such that $\forall v \in V$, $\exists p \in P$ such that $v \in p$.
+
+
+To generate test suit let's use `NodeCoverage` from `testing_criterions`: 
 ```python
 from diblob.digraph_manager import DigraphManager
 from testing_criterions.NodeCoverage import NodeCoverage
@@ -482,7 +491,7 @@ for test_case in node_coverage.get_test_cases():
    print(test_case)
 
 ```
-Thats generate the following output:
+The output is as follows:
 ```python
  ["S", "1", "2", "5", "6", "1", "2", "5", "T"],
  ["S", "1", "2", "5", "T"],
@@ -490,20 +499,22 @@ Thats generate the following output:
  ["S", "1", "4", "5", "T"]
 ```
 The algorithm working as follows:
-- run DFS on 'S'
-- run DijkstraAlgorithm on reversed graph on 'T'
-- connect paths generathed from the first and second step appriopriatelly
+- run DFS on 'S',
+- run DijkstraAlgorithm on reversed graph on 'T',
+- connect paths generathed from the first and second step appriopriatelly.
 
-`node_coverage.get_test_cases()` is a generator. In effect, there is no need to generate entire test_suit at once.
-Note that the test case `["S", "1", "2", "5", "T"]` has all nodes from `["S", "1", "2", "5", "6", "1", "2", "5", "T"]`. In effect, it would be removed from test suit and node coverage criterion would be met. It could be easily done by the user accumulating test_cases and them removing overlapping ones, but then the user lose the effect of generator (generatiing test case one by one).
+`node_coverage.get_test_cases()` is a generator. In effect, there is no need to generate entire test_suit at once, that's enable testers starting testing immediatelly - before he generate entire suit.
+Note that the test case `["S", "1", "2", "5", "T"]` has all nodes from `["S", "1", "2", "5", "6", "1", "2", "5", "T"]`. In effect, it would be removed from test suit and node coverage criterion would be met. It could be easily done by the user accumulating test_cases and them removing overlapping ones, but then the user lose the effect of generator.
 
 ## Edge Coverage
-Edge coverage use Chinese Postman Tour algorithm to generate optimal test suit for the following criterions:
-- Minimal total cost of the test suit.
-- Minimal number of test cases.
-- Set number of test cases, minimalize the cost.
+In this criterion we want to cover all edges in the digraph (as a main criterion), so we are looking for a test suit $P = [p_1, p_2, \dots, p_n]$, such that $\forall e \in E$, $\exists p \in P$ such that $e \in E$.
 
-Criterions are described in the following [papier](https://www.sciencedirect.com/science/article/pii/S0957417425008383?dgcid=author).
+Edge coverage use Chinese Postman Tour algorithm to generate optimal test suit for the following criterions:
+- Minimal total cost of the test suit (weighted edges).
+- Minimal number of test cases in the suit.
+- Set number of test cases in the suit, minimalize the cost.
+
+Criterions and algorithms are described in this [papier](https://www.sciencedirect.com/science/article/pii/S0957417425008383?dgcid=author).
 The example of the usage is as follows:
 
 ```python
@@ -533,7 +544,7 @@ test_cases = edge_coverage.get_test_cases_set_number_of_test_cases(
     cost_function={("5", "6"): 10, ("6", "1"): 10}, default_cost=1, k=3
 )
 ```
-The results are as follows:
+The outputs:
 
 ```python
 #minimal_number_of_test_cases
@@ -544,24 +555,26 @@ The results are as follows:
 [['S', '1', '4', '5', 'T'], ['S', '1', '2', '5', 'T'], ['S', '1', '3', '5', '6', '1', '2', '5', 'T']]
 ```
 Note the argument applied to the functions:
-- `default_cost`: the default cost of all edges
-- `cost_function`: the costs of the edges (dict), override the `default_cost`
-- `k`: number of the test_cases in `get_test_cases_set_number_of_test_cases` method
+  - `default_cost`: the default cost of all edges
+  - `cost_function`: the costs of the edges (dict), override the `default_cost`
+  - `k`: number of the test_cases in `get_test_cases_set_number_of_test_cases` method
 
 ## NSwitch Coverage
 NSwitch coverage is a software testing criterion that requires tests to cover all possible sequences of exactly N transitions between states in a system's control flow or state machine.
+
 For example:
-- 1-Switch coverage ensures that every individual transition is tested (equivalent to edge coverage),
-- 2-Switch coverage ensures that every possible pair of consecutive transitions is tested,
-- and so on.
+  - 1-Switch coverage ensures that every individual transition is tested (equivalent to edge coverage),
+  - 2-Switch coverage ensures that every possible pair of consecutive transitions is tested (all adjacent edges),
+  - and so on.
 
 The algorithm uses mechanism described in the same [papier](https://www.sciencedirect.com/science/article/pii/S0957417425008383?dgcid=author).
-The strategy is as follows:
--For choosen `n` create `DiblobFactory.generate_edge_digraph` recursivelly (n-1 times) and accumulate costs of edges
--Add 'S' and 'T' to keep the graph requirements, set the cost of the new edges to `default_cost`
--Run EdgeCoverage algorithm for the generated digraph
 
-There is the following usage:
+The strategy is as follows:
+  - For choosen `n` create `DiblobFactory.generate_edge_digraph` recursivelly (n-1 times) and accumulate costs of edges,
+  - Add 'S' and 'T' to keep the graph requirements, set the cost of the new edges to `default_cost`.
+  - Run EdgeCoverage algorithm for the generated digraph
+
+The example of the usage:
 
 ```python
 from diblob.digraph_manager import DigraphManager
@@ -590,7 +603,7 @@ test_cases = edge_coverage.get_test_cases_set_number_of_test_cases(
     cost_function={("5", "6"): 10, ("6", "1"): 10}, default_cost=1, k=3
 )
 ```
-Note, that is the same like for Edge coverage. The result is as follows:
+Note, that the methods are exactly the same as in the edge coverage (because in practice, the criterion is edge coverage on the modified graph). The result is as follows:
 ```python
 #minimal_number_of_test_cases
 [['S', '1', '2', '5', '6', '1', '2', '5', 'T'], ['S', '1', '3', '5', '6', '1', '3', '5', 'T'], ['S', '1', '4', '5', '6', '1', '4', '5', 'T']]
@@ -602,12 +615,12 @@ Note, that is the same like for Edge coverage. The result is as follows:
 ## Simple Cycle Coverage
 
 The implementation uses [Johnson Algorithm](https://arxiv.org/pdf/2105.10094) for cycles. The strategy is as follows:
-- Decompose the digraph into strongly connected components using Tarjan algorithm
-- Starting from 'S' go to the next cycle (in one of strongly connected components)
-- Try accumulate cycles until reach `maksimal_number_of_cycles` going from the one to another connecting them with the shortes path between starting points of the cycles.
-- Go to 'T' if next cycle cannot be reached or `maksimal_number_of_cycles` is achieved
+  - Decompose the digraph into strongly connected components using Tarjan algorithm,
+  - Starting from 'S' go to the next cycle (going through the strongly connected components),
+  - Try accumulate cycles until reach `maksimal_number_of_cycles` going through the cycles. If it's not possible, go to 'T',
+  - Go to 'T' if next cycle cannot be reached or `maksimal_number_of_cycles` is achieved.
 
-In effect, the solution gives the generator for test cases as in the Node Coverage criterion.
+In effect, the solution returns the generator for test cases as in the Node Coverage criterion.
 The example usage is as follows:
 
 ```python
@@ -645,15 +658,16 @@ The results are as follows:
 ["S", "1", "2", "5", "6", "1", "3", "5", "6", "1", "4", "5", "6", "1", "2", "5", "T"]
 ```
   
-In the first scenario, where algorithm find the cycle, immediatelly go to the 'T', In the second scenatio, it try accumulate 5 cycles,
-because in the graph there is just 3 and entire graph call be covered with the single test_case, the one test_case is returned.
+In the first scenario, where algorithm find the cycle, immediatelly go to the 'T', In the second scenatio, it try to accumulate 5 simple cycles,
+because in the graph there is just 3 simple cycles and entire graph can be covered with the single test_case, the one test_case is returned.
 
 ## Simple Paths Coverage
+The Simple Path is a path, that cannot be extended backward or forward, and does'n not contain repeated nodes.
 
-The Algorith uses [Johnson Algorithm](https://arxiv.org/pdf/2105.10094) for cycles on the modified graph (just first iteration) and remove appropriate nodes from the results.
+The Algorith uses [Johnson Algorithm](https://arxiv.org/pdf/2105.10094) for cycles on the modified graph (just first iteration of the jonson algorithm, on added node).
 The strategy is as follows:
-- Start one iteration of the Johnson Algorithm (without removing nodes) adding artificial node artificial_node_id, and connecting it with (node_id, artificial_node_id) and (artificial_node_id, other_node_id) for every node_id, where node_id!=other_node_id.
-- Run the algorithm for `Cycle Coverage` and remove artificial_node_id from test_cases.
+- for every node, construct new digraph adding one artificial node and connect it appropriatelly with the candidates for simple cycles,
+- Run the modified Jonson Algorithm (only one iteration).
 
 In effect we obtained the generator for Simple Paths.
 The example usage is as follows:
@@ -672,7 +686,7 @@ digraph_manager = DigraphManager({"B0": {"S": ["1"],
                                      }})
 simple_path = SimplePathsCoverage(digraph_manager)
 
-for test_case in simple_path.get_test_cases(maksimal_number_of_cycles=1):
+for test_case in simple_path.get_test_cases(max_number_of_simple_paths_in_single_test_case=1):
    print(test_case)
 
 
@@ -681,21 +695,21 @@ for test_case in simple_path.get_test_cases(maksimal_number_of_cycles=1):
 The result is as follows:
 
 ```python
-["S", "1", "2", "5", "6", "1", "2", "5", "T"],
-["S", "1", "2", "5", "T"],
-["S", "1", "3", "5", "6", "1", "2", "5", "T"],
-["S", "1", "3", "5", "T"],
-["S", "1", "4", "5", "6", "1", "2", "5", "T"],
-["S", "1", "4", "5", "T"],
-["S", "1", "2", "5", "6", "1", "2", "5", "T"],
-["S", "1", "2", "5", "6", "1", "3", "5", "T"],
-["S", "1", "2", "5", "6", "1", "4", "5", "T"],
-["S", "1", "4", "5", "6", "1", "2", "5", "T"],
-["S", "1", "4", "5", "6", "1", "3", "5", "T"],
-["S", "1", "3", "5", "6", "1", "2", "5", "T"],
-["S", "1", "3", "5", "6", "1", "4", "5", "T"],
-["S", "1", "2", "5", "6", "1", "3", "5", "T"],
-["S", "1", "2", "5", "6", "1", "4", "5", "T"]
+['S', '1', '2', '5', '6', '1', '2', '5', 'T']
+['S', '1', '2', '5', 'T']
+['S', '1', '3', '5', '6', '1', '2', '5', 'T']
+['S', '1', '3', '5', 'T']
+['S', '1', '4', '5', '6', '1', '2', '5', 'T']
+['S', '1', '4', '5', 'T']
+['S', '1', '2', '5', '6', '1', '2', '5', 'T']
+['S', '1', '2', '5', '6', '1', '3', '5', 'T']
+['S', '1', '2', '5', '6', '1', '4', '5', 'T']
+['S', '1', '4', '5', '6', '1', '2', '5', 'T']
+['S', '1', '4', '5', '6', '1', '3', '5', 'T']
+['S', '1', '3', '5', '6', '1', '2', '5', 'T']
+['S', '1', '3', '5', '6', '1', '4', '5', 'T']
+['S', '1', '2', '5', '6', '1', '3', '5', 'T']
+['S', '1', '2', '5', '6', '1', '4', '5', 'T']
     
 ```
 
@@ -746,11 +760,12 @@ With the result as a combination of  Simple Paths Coverage and Simple Cycle Cove
 ['S', '1', '2', '5', '6', '1', '3', '5', 'T'],
 ['S', '1', '2', '5', '6', '1', '4', '5', 'T']
 ```
-Note, that the test_cases are also get from generator (there is no need to generate entire test_suit at one)
-## NPaths Coverage
-The NPath Coverage is a metric, that enable to have in simple path:
-- Cycles with common node for n=2
-- Cycles with common edge for n=3
+Note, that the test_cases are also get from generator (there is no need to generate entire test_suit at one) In this case is very usefull, because the number of prime paths grows very fast.
+
+## Acyclic Path Coverage (NPATH)
+The NPath Coverage is a metric, that enable to extend simple paths with:
+- Cycles with common node in the path for n=2,
+- Cycles with common node in the path edge for n=3,
 - and so on.
 
 The algorithm is as follows:
@@ -798,3 +813,11 @@ The result is as follows:
 ['S', '1', '4', '5', '6', '1', '3', '5', 'T']
 ['S', '1', '4', '5', 'T']
 ```
+## Future Works
+Future Works
+
+Planned improvements for Diblob include:
+
+  - New testing criteria will be added to expand coverage options (heuristics for NP-Complete problems)
+  - Algorithms will be improved and optimized for better performance and scalability.
+  - Documentation will be extended, including more examples and detailed explanations.
