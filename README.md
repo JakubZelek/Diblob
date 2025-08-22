@@ -790,7 +790,7 @@ Note, that the test_cases are also get from generator (there is no need to gener
 ## Acyclic Path Coverage (NPATH)
 The NPath Coverage is a metric, that enable to extend simple paths with:
 - Cycles with common node in the path for n=2,
-- Cycles with common node in the path edge for n=3,
+- Cycles with common edge in the path for n=3,
 - etc.
 
 The algorithm is as follows:
@@ -812,31 +812,25 @@ digraph_manager = DigraphManager({"B0": {"S": ["1"],
                                          "5": ["6", "T"],
                                          "2": ["5"],
                                      }})
-n_paths = NPathCoverage(digraph_manager)
+n_paths = NPathCoverage(digraph_manager, n_paths=2)
 
-for test_case in n_paths.get_test_cases(1):
-   print(test_cases)
+for test_case in n_paths.get_test_cases(max_number_of_n_paths_in_single_test_case=1):
+   print(test_case)
 
 ```
 
 The result is as follows:
 
 ```python
-['S', '1', '2', '5', '6', '1', '2', '5', '6', '1', '2', '5', 'T']
-['S', '1', '2', '5', '6', '1', '3', '5', '6', '1', '2', '5', 'T']
-['S', '1', '2', '5', '6', '1', '4', '5', '6', '1', '2', '5', 'T']
-['S', '1', '2', '5', '6', '1', '2', '5', 'T']
-['S', '1', '3', '5', '6', '1', '3', '5', 'T']
-['S', '1', '4', '5', '6', '1', '4', '5', 'T']
-['S', '1', '2', '5', 'T']
-['S', '1', '2', '5', '6', '1', '3', '5', 'T']
-['S', '1', '2', '5', '6', '1', '4', '5', 'T']
-['S', '1', '3', '5', 'T']
-['S', '1', '3', '5', '6', '1', '2', '5', 'T']
-['S', '1', '3', '5', '6', '1', '4', '5', 'T']
 ['S', '1', '4', '5', '6', '1', '2', '5', 'T']
 ['S', '1', '4', '5', '6', '1', '3', '5', 'T']
 ['S', '1', '4', '5', 'T']
+['S', '1', '2', '5', '6', '1', '3', '5', 'T']
+['S', '1', '2', '5', '6', '1', '4', '5', 'T']
+['S', '1', '2', '5', 'T']
+['S', '1', '3', '5', 'T']
+['S', '1', '3', '5', '6', '1', '2', '5', 'T']
+['S', '1', '3', '5', '6', '1', '4', '5', 'T']
 ```
 ## Future Works
 Future Works
