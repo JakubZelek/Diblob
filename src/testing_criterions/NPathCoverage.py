@@ -1,3 +1,4 @@
+from copy import deepcopy
 from testing_criterions.SimplePathsCoverage import SimplePathsCoverage
 from diblob.factory import DiblobFactory
 from testing_criterions.exceptions import InvalidNPathException
@@ -20,6 +21,7 @@ class NPathCoverage:
                 "n_path argument should be at least equals to 2."
             )
 
+        digraph_manager = deepcopy(digraph_manager)
         for reduce in range(n_paths - 1):
             digraph_manager = DiblobFactory.generate_edge_digraph(
                 digraph_manager, reduce_value=reduce

@@ -1,3 +1,4 @@
+from copy import deepcopy
 from diblob import DigraphManager
 from diblob.factory import DiblobFactory
 from testing_criterions.EdgeCoverage import EdgeCoverage
@@ -124,6 +125,7 @@ class NSwitchCoverage:
     @staticmethod
     def generate_n_switch_graph(digraph_manager, n_switch):
 
+        digraph_manager = deepcopy(digraph_manager)
         if n_switch < 2:
             raise InvalidNSwitchException(
                 "n_switch should be at least equals to 2 or 3"
