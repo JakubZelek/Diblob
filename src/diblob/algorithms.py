@@ -583,7 +583,7 @@ class PrimePathsGenerator:
                 cannot_be_extend_backward = not (
                     set(incoming_nodes_to_start) - set(potential_prime_path) - {1}
                 )
-                neigh = potential_prime_path[1] in strongly_connected_component[potential_prime_path[-1]]
+                neigh = potential_prime_path[0] in strongly_connected_component[potential_prime_path[-1]]
 
                 if cannot_be_extend_forward and cannot_be_extend_backward and not neigh:
                     yield potential_prime_path
