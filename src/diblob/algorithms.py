@@ -412,60 +412,75 @@ class PrimePathsGenerator:
         self.stack = []
         self.blocked_dict = {}
         self.digraph_manager = digraph_manager
-        self.same_ssc, self.different_ssc = self.get_scc_order_set()
+        self.scc_order_dict = self.get_scc_order_dict()
 
-    def get_extended_graph(self, node_id):
+    def get_extended_graph(self):
         extended_graph = deepcopy(self.graph_dict)
-        append_counter = 0
+        global_append_counter = 0
 
-        for n_id in [x for x in extended_graph if x != node_id]:
-            if (
-                self.reversed_translation_dict[node_id],
-                self.reversed_translation_dict[n_id],
-            ) in self.same_ssc | self.different_ssc:
-                append_counter += 1
-                extended_graph[n_id].append(1)
+        for node_id in self.graph_dict:
+            append_counter = 0
+            ext_list = []
 
-        if append_counter == 0:
+            if self.reversed_translation_dict[node_id] in self.scc_order_dict:
+                for n_id in [x for x in extended_graph if x not in {1, node_id}]:
+          
+                    rev_node_id = self.reversed_translation_dict[node_id]
+                    rev_n_id = self.reversed_translation_dict[n_id]
+
+                    if rev_n_id in self.scc_order_dict.get(rev_node_id, {}):
+                        append_counter += 1
+                        ext_list.append(n_id)
+
+                global_append_counter += append_counter
+
+                if append_counter > 0:
+                    for n_app_id in ext_list:
+                        if 1 not in extended_graph[n_app_id]: 
+                            extended_graph[n_app_id].append(1)
+                    extended_graph.setdefault(1, []).append(node_id)
+                    append_counter = 0
+
+        if global_append_counter == 0:
             return False
-        extended_graph[1] = [node_id]
+        
         return extended_graph
 
-    def get_scc_order_set(self):
+
+    def get_scc_order_dict(self):
         tarjan_ssc = TarjanSSC(self.digraph_manager)
         ssc_list = tarjan_ssc.run()
+        order_dict = {}
 
-        the_same_ssc_matching_set = set()
+        def can_be_start_of_simple_path(node_id, strongly_connected_component):
+            if set(self.digraph_manager[node_id].incoming_nodes) - strongly_connected_component:
+                return False
+            
+            neigh_inc = self.digraph_manager[node_id].incoming_nodes
+            if neigh_inc and all(len(self.digraph_manager[n_id].outgoing_nodes) == 1
+                for n_id in neigh_inc):
+                return False
+            return True
 
+        def can_be_the_end_of_simple_path(node_id, strongly_connected_component):
+            if set(self.digraph_manager[node_id].outgoing_nodes) - strongly_connected_component:
+                return False
+            neigh_out = self.digraph_manager[node_id].outgoing_nodes
+            if neigh_out and all(len(self.digraph_manager[n_id].incoming_nodes) == 1
+                for n_id in neigh_out):
+                return False
+            return True
+                    
+            
         for ssc in ssc_list:
-            for pair in [(a, b) for a in ssc for b in ssc]:
-                a, b = pair
-                if not (
-                    a in self.digraph_manager[b].outgoing_nodes
-                    or a == b
-                    or set(self.digraph_manager[a].incoming_nodes) - ssc
-                    or set(self.digraph_manager[b].outgoing_nodes) - ssc
-                    or (
-                        len(self.digraph_manager[a].incoming_nodes) == 1
-                        and len(
-                            self.digraph_manager[
-                                self.digraph_manager[a].incoming_nodes[0]
-                            ].outgoing_nodes
-                        ) == 1
-                    )
-                    or (
-                        len(self.digraph_manager[b].outgoing_nodes) == 1
-                        and len(
-                            self.digraph_manager[
-                                self.digraph_manager[b].outgoing_nodes[0]
-                            ].incoming_nodes
-                        ) == 1
-                    )
-                ):
-                    the_same_ssc_matching_set.add(pair)
+            for a in ssc:
+                if can_be_start_of_simple_path(a, ssc):
+                    for b in ssc:
+                        if a != b and a not in self.digraph_manager[b].outgoing_nodes and can_be_the_end_of_simple_path(b, ssc):
+                            order_dict.setdefault(a, []).append(b)
+
 
         spb2d = ShortestPathBetween2Nodes()
-        different_ssc_matching_set = set()
 
         for pair_od_sscs in [
             (ssc_a, ssc_b) for ssc_a in ssc_list for ssc_b in ssc_list
@@ -475,33 +490,14 @@ class PrimePathsGenerator:
             if ssc_a != ssc_b and spb2d.run(
                 self.digraph_manager, list(ssc_a)[0], list(ssc_b)[0]
             ):
-                for pair in [(a, b) for a in ssc_a for b in ssc_b]:
-                    a, b = pair
-                    if not (
-                        (
-                            len(self.digraph_manager[a].incoming_nodes) == 1
-                            and len(
-                                self.digraph_manager[
-                                    self.digraph_manager[a].incoming_nodes[0]
-                                ].outgoing_nodes
-                            )
-                            == 1
-                        )
-                        or (
-                            len(self.digraph_manager[b].outgoing_nodes) == 1
-                            and len(
-                                self.digraph_manager[
-                                    self.digraph_manager[b].outgoing_nodes[0]
-                                ].incoming_nodes
-                            )
-                            == 1
-                        )
-                        or set(self.digraph_manager[a].incoming_nodes) - ssc_a
-                        or set(self.digraph_manager[b].outgoing_nodes) - ssc_b
-                    ):
-                        different_ssc_matching_set.add(pair)
+                for a in ssc_a:
+                    if can_be_start_of_simple_path(a, ssc_a):
+                        for b in ssc_b:
+                            if a != b and a not in self.digraph_manager[b].outgoing_nodes and can_be_the_end_of_simple_path(b, ssc_b):
+                                order_dict.setdefault(a, []).append(b)
 
-        return the_same_ssc_matching_set, different_ssc_matching_set
+        return order_dict
+
 
     def get_reversed_graph(self):
         reversed_graph = {node_id: [] for node_id in self.graph_dict}
@@ -512,7 +508,8 @@ class PrimePathsGenerator:
 
         return reversed_graph
 
-    def dfs_part(self, node_id, graph, reversed_graph):
+
+    def dfs_part(self, node_id, graph):
         found_cycle = False
 
         self.stack.append(node_id)
@@ -520,28 +517,11 @@ class PrimePathsGenerator:
 
         for outgoing_node_id in graph[node_id]:
             if self.stack[0] == outgoing_node_id:
-                if outgoing_node_id == 1:
-                    outgoing_nodes = graph[node_id]
-                    incoming_nodes_to_start = reversed_graph[graph[1][0]]
-
-                    cannot_be_extend_forward = not (
-                        set(outgoing_nodes) - set(self.stack)
-                    )
-                    cannot_be_extend_backward = not (
-                        set(incoming_nodes_to_start) - set(self.stack)
-                    )
-                    found_cycle = True
-
-                    if cannot_be_extend_forward and cannot_be_extend_backward:
-                        yield list(self.stack[1:])
-                    else:
-                        yield []
-                else:
-                    yield list(self.stack + [outgoing_node_id])
-                    found_cycle = True
+                yield list(self.stack + [outgoing_node_id])
+                found_cycle = True
 
             elif outgoing_node_id not in self.blocked_set:
-                for result in self.dfs_part(outgoing_node_id, graph, reversed_graph):
+                for result in self.dfs_part(outgoing_node_id, graph):
                     yield result
                     found_cycle = True
 
@@ -581,20 +561,33 @@ class PrimePathsGenerator:
                 return graph
 
     def get_prime_paths_without_cycles(self):
-        for node_id in self.graph_dict:
-            extended_graph = self.get_extended_graph(node_id)
-            if extended_graph:
-                strongly_connected_component = self.get_ssc_induced_graph(
-                    extended_graph, 1
-                )
-                reversed_extended_graph = self.get_reversed_graph()
-                self.blocked_dict = {n_id: [] for n_id in strongly_connected_component}
+        extended_graph = self.get_extended_graph()
 
-                self.blocked_set = set()
+        if extended_graph:
+            strongly_connected_component = self.get_ssc_induced_graph(
+                extended_graph, 1
+            )
+            reversed_graph = self.get_reversed_graph()
 
-                yield from self.dfs_part(
-                    1, strongly_connected_component, reversed_extended_graph
+            self.blocked_dict = {n_id: [] for n_id in strongly_connected_component}
+            self.blocked_set = set()
+
+            for simple_path in self.dfs_part(1, strongly_connected_component):
+                potential_prime_path = simple_path[1:-1]
+                incoming_nodes_to_start = set(reversed_graph[potential_prime_path[0]])
+                outgoing_nodes = strongly_connected_component[potential_prime_path[-1]] 
+
+                cannot_be_extend_forward = not (
+                        set(outgoing_nodes) - set(potential_prime_path) - {1}
+                    )
+                cannot_be_extend_backward = not (
+                    set(incoming_nodes_to_start) - set(potential_prime_path) - {1}
                 )
+                neigh = potential_prime_path[1] in strongly_connected_component[potential_prime_path[-1]]
+
+                if cannot_be_extend_forward and cannot_be_extend_backward and not neigh:
+                    yield potential_prime_path
+
 
     def get_cycles(self):
         s = 2
@@ -611,7 +604,7 @@ class PrimePathsGenerator:
                 self.blocked_dict = {n_id: [] for n_id in graph}
                 self.blocked_set = set()
 
-                yield from self.dfs_part(s, graph, None)
+                yield from self.dfs_part(s, graph)
                 s += 1
 
     @staticmethod
