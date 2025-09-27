@@ -62,7 +62,7 @@ class SimpleCycleCoverage:
                 
                 elif cycle_counter == k:
                     shortest_path_to_t = self.get_shortest_path(shortest_path_dict, cycle[-1], "T")
-                    test_case += shortest_path + cycle[1:] + shortest_path_to_t[1:]
+                    test_case += shortest_path[1:] + cycle[1:] + shortest_path_to_t[1:]
                     yield test_case
                     cycle_counter, test_case = 0, []
                 else:
@@ -70,5 +70,5 @@ class SimpleCycleCoverage:
 
 
         if cycle_counter != 0:
-            test_case += self.get_shortest_path(shortest_path_dict, test_case[-1], "T")
+            test_case += self.get_shortest_path(shortest_path_dict, test_case[-1], "T")[1:]
             yield test_case
