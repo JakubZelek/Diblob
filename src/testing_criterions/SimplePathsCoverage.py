@@ -1,4 +1,4 @@
-from diblob.algorithms import PrimePathsGenerator, GenerateDijkstraMatrix
+from diblob.algorithms import PrimePathsGenerator, ShortestPathBetween2Nodes
 from testing_criterions.decorators import (
     validate_source,
     validate_sink,
@@ -15,58 +15,53 @@ class SimplePathsCoverage:
     def __init__(self, digraph_manager) -> None:
         self.digraph_manager = digraph_manager
 
-    def get_test_cases(self, max_number_of_simple_paths_in_single_test_case):
-
-        digraph_manager = self.digraph_manager
-        dijkstra_matrix = GenerateDijkstraMatrix.run(digraph_manager)
-
-        simple_path_iterator = 0
-        path = ["S"]
-        skip_flag = False
-
-        ppg = PrimePathsGenerator(digraph_manager)
+    def get_shortest_path(self, shortest_path_dict: dict, node_id_x: str, node_id_y: str):
+        if (node_id_x, node_id_y) in shortest_path_dict:
+            return shortest_path_dict[(node_id_x, node_id_y)]
+        shortest_path = ShortestPathBetween2Nodes.run(self.digraph_manager, node_id_x, node_id_y)
+        shortest_path_dict[(node_id_x, node_id_y)] = shortest_path
+        return shortest_path
+    
+    def get_test_cases(
+        self, k: int):
+        ppg = PrimePathsGenerator(self.digraph_manager)
         reversed_translation_dict = ppg.reversed_translation_dict
+        shortest_path_dict = {}
+        test_case = []
+
+        simple_path_counter = 0
         for simple_path in ppg.get_prime_paths_without_cycles():
-            if simple_path:
-                if (
-                    reversed_translation_dict[simple_path[0]] == "S"
-                    and reversed_translation_dict[simple_path[-1]] == "T"
-                ):
-                    yield [reversed_translation_dict[x] for x in simple_path]
-                    continue
+            simple_path = [reversed_translation_dict[node_id] for node_id in simple_path]
 
-                simple_path_iterator += 1
-                potential_extension = dijkstra_matrix[
-                    (path[-1], reversed_translation_dict[simple_path[0]])
-                ]
+            simple_path_counter += 1
+    
+            if simple_path_counter == 1:
+                shortest_path_from_s = self.get_shortest_path(shortest_path_dict, "S", simple_path[0])
+                test_case += shortest_path_from_s + simple_path[1:]
+                if k == 1:
+                    shortest_path_to_t = self.get_shortest_path(shortest_path_dict, test_case[-1], "T")
+                    test_case += shortest_path_to_t[1:]
+                    yield test_case
+                    simple_path_counter, test_case = 0, []
 
-                if potential_extension:
-                    trans_cycle = [reversed_translation_dict[sp] for sp in simple_path]
-                    path += potential_extension[1:-1] + trans_cycle
-
-                elif path[-1] == reversed_translation_dict[simple_path[0]]:
-                    trans_cycle = [reversed_translation_dict[sp] for sp in simple_path]
-                    path += potential_extension[1:-1] + trans_cycle[1:]
-
-                else:
-                    skip_flag = True
-
-                if (
-                    skip_flag
-                    or simple_path_iterator == max_number_of_simple_paths_in_single_test_case
-                ):
-                    path += dijkstra_matrix[(path[-1], "T")][1:]
-                    if path[1] == "S":
-                        yield path[1:]
-                    else:
-                        yield path
-                    simple_path_iterator = 0
-                    path = ["S"]
-                    skip_flag = False
-
-        if path != ["S"]:
-            path += dijkstra_matrix[(path[-1], "T")][1:]
-            if path[1] == "S":
-                yield path[1:]
             else:
-                yield path
+                shortest_path = self.get_shortest_path(shortest_path_dict, test_case[-1], simple_path[0])
+
+                if shortest_path is None:
+                    shortest_path_to_t = self.get_shortest_path(shortest_path_dict, test_case[-1], "T")
+                    test_case += shortest_path_to_t[1:]
+                    yield test_case
+                    shortest_path_from_s = self.get_shortest_path(shortest_path_dict, "S", simple_path[0])
+                    simple_path_counter, test_case = 1, shortest_path_from_s + simple_path[1:]
+                
+                elif simple_path_counter == k:
+                    shortest_path_to_t = self.get_shortest_path(shortest_path_dict, simple_path[-1], "T")
+                    test_case += shortest_path[1:] + simple_path[1:] + shortest_path_to_t[1:]
+                    yield test_case
+                    simple_path_counter, test_case = 0, []
+                else:
+                    test_case += shortest_path[1:] + simple_path[1:]
+        if simple_path_counter != 0:
+            test_case += self.get_shortest_path(shortest_path_dict, test_case[-1], "T")[1:]
+            yield test_case
+
