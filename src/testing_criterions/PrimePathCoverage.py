@@ -16,13 +16,13 @@ class PrimePathCoverage:
     def __init__(self, digraph_manager) -> None:
         self.digraph_manager = digraph_manager
 
-    def get_test_cases(self, max_number_of_cycles_in_single_test_case):
+    def get_test_cases(self, k):
         scc = SimpleCycleCoverage(self.digraph_manager)
         spc = SimplePathsCoverage(self.digraph_manager)
 
         for test_case in scc.get_test_cases(
-            max_number_of_cycles_in_single_test_case, double_cycle=True
+            k, double_cycle=True
         ):
             yield test_case
-        for test_case in spc.get_test_cases(max_number_of_cycles_in_single_test_case):
+        for test_case in spc.get_test_cases(k):
             yield test_case
