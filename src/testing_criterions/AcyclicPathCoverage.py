@@ -10,7 +10,7 @@ from testing_criterions.decorators import (
 )
 
 
-class NPathCoverage:
+class AcyclicPathCoverage:
     @validate_reachability()
     @validate_source()
     @validate_sink()
@@ -36,8 +36,8 @@ class NPathCoverage:
             if node_id[-2:] == "|T":
                 self.digraph_manager.connect_nodes((node_id, "T"))
 
-    def get_test_cases(self, max_number_of_n_paths_in_single_test_case):
+    def get_test_cases(self, k):
         spc = SimplePathsCoverage(self.digraph_manager)
 
-        for test_case in spc.get_test_cases(max_number_of_n_paths_in_single_test_case):
+        for test_case in spc.get_test_cases(k):
             yield test_case[1].split("|") + [t.split("|")[-1] for t in test_case[2:-1]]

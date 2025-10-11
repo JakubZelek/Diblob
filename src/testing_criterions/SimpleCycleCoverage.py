@@ -1,7 +1,4 @@
-from diblob import DigraphManager
-from copy import deepcopy
-from diblob.tools import cut_outgoing_edges
-from diblob.algorithms import TarjanSSC, PrimePathsGenerator, GenerateDijkstraMatrix
+from diblob.algorithms import PrimePathsGenerator, ShortestPathBetween2Nodes
 from testing_criterions.decorators import (
     validate_source,
     validate_sink,
@@ -15,63 +12,60 @@ class SimpleCycleCoverage:
     @validate_source()
     @validate_sink()
     @validate_diblob()
+
     def __init__(self, digraph_manager) -> None:
         self.digraph_manager = digraph_manager
 
+    def get_shortest_path(self, shortest_path_dict: dict, node_id_x: str, node_id_y: str):
+        if (node_id_x, node_id_y) in shortest_path_dict:
+            return shortest_path_dict[(node_id_x, node_id_y)]
+        shortest_path = ShortestPathBetween2Nodes.run(self.digraph_manager, node_id_x, node_id_y)
+        shortest_path_dict[(node_id_x, node_id_y)] = shortest_path
+        return shortest_path
+
     def get_test_cases(
-        self, max_number_of_cycles_in_single_test_case, double_cycle=False
+        self, k: int, double_cycle: bool=False
     ):
+        ppg = PrimePathsGenerator(self.digraph_manager)
+        reversed_translation_dict = ppg.reversed_translation_dict
+        shortest_path_dict = {}
+        test_case = []
 
-        digraph_manager = self.digraph_manager
-        digraph_manager_to_compress = deepcopy(digraph_manager)
-        trj = TarjanSSC(digraph_manager)
-        dijkstra_matrix = GenerateDijkstraMatrix.run(digraph_manager)
+        cycle_counter = 0
+        for cycle in ppg.get_cycles():
+            cycle = [reversed_translation_dict[node_id] for node_id in cycle]
+            cycle_counter += 1
+            if double_cycle:
+                cycle = cycle + cycle[1:]
+    
+            if cycle_counter == 1:
+                shortest_path_from_s = self.get_shortest_path(shortest_path_dict, "S", cycle[0])
+                test_case += shortest_path_from_s + cycle[1:]
+                if k == 1:
+                    shortest_path_to_t = self.get_shortest_path(shortest_path_dict, test_case[-1], "T")
+                    test_case += shortest_path_to_t[1:]
+                    yield test_case
+                    cycle_counter, test_case = 0, []
 
-        sc_components = trj.run()
+            else:
+                shortest_path = self.get_shortest_path(shortest_path_dict, test_case[-1], cycle[0])
 
-        blob_id = 1
-        cycle_iterator = 0
-        path = ["S"]
+                if shortest_path is None:
+                    shortest_path_to_t = self.get_shortest_path(shortest_path_dict, test_case[-1], "T")
+                    test_case += shortest_path_to_t[1:]
+                    yield test_case
+                    shortest_path_from_s = self.get_shortest_path(shortest_path_dict, "S", cycle[0])
+                    cycle_counter, test_case = 1, shortest_path_from_s + cycle[1:]
+                
+                elif cycle_counter == k:
+                    shortest_path_to_t = self.get_shortest_path(shortest_path_dict, cycle[-1], "T")
+                    test_case += shortest_path[1:] + cycle[1:] + shortest_path_to_t[1:]
+                    yield test_case
+                    cycle_counter, test_case = 0, []
+                else:
+                    test_case += shortest_path[1:] + cycle[1:]
 
-        for scc in sc_components:
-            if len(scc) > 1:
-                str_blob_id = f"SubBlob{blob_id}"
-                digraph_manager_to_compress.gather(str_blob_id, scc)
-                ssc_dict = cut_outgoing_edges(digraph_manager_to_compress, str_blob_id)
-                ssc_digraph_manager = DigraphManager(ssc_dict)
 
-                ppg = PrimePathsGenerator(ssc_digraph_manager)
-                reversed_translation_dict = ppg.reversed_translation_dict
-                for cycle in ppg.get_cycles():
-
-                    cycle_iterator += 1
-                    potential_extension = dijkstra_matrix[
-                        (path[-1], reversed_translation_dict[cycle[0]])
-                    ]
-
-                    if potential_extension:
-
-                        trans_cycle = [reversed_translation_dict[c] for c in cycle]
-                        path += potential_extension[1:-1] + trans_cycle
-
-                        if double_cycle:
-                            path += trans_cycle[1:]
-
-                    elif path[-1] == reversed_translation_dict[cycle[0]]:
-
-                        trans_cycle = [reversed_translation_dict[c] for c in cycle]
-                        path += potential_extension[1:-1] + trans_cycle[1:]
-
-                        if double_cycle:
-                            path += trans_cycle[1:]
-
-                    if cycle_iterator == max_number_of_cycles_in_single_test_case:
-
-                        path += dijkstra_matrix[(path[-1], "T")][1:]
-                        yield path
-                        cycle_iterator = 0
-                        path = ["S"]
-
-        if path != ["S"]:
-            path += dijkstra_matrix[(path[-1], "T")][1:]
-            yield path
+        if cycle_counter != 0:
+            test_case += self.get_shortest_path(shortest_path_dict, test_case[-1], "T")[1:]
+            yield test_case

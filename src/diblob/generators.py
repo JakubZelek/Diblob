@@ -313,3 +313,29 @@ class CycleBasedDigraph(RandomBase):
         )
 
         super().__init__(digraph)
+
+
+class RandomSESEPathBased(RandomBase):
+    @staticmethod
+    def make_pairs(lst):
+        return [(lst[i], lst[i+1]) for i in range(len(lst)-1)]
+
+    def __init__(self, number_of_nodes: int, max_path_len: int, min_path_len: int, number_of_paths: int):
+        node_space = {str(i) for i in range(1, number_of_nodes + 1)}
+        edges = set()
+        nodes = set()
+        for _ in range(number_of_paths):
+            path_length = random.randint(min_path_len, max_path_len)
+            path = ["S"]
+            for _ in range(path_length):
+                path.append(random.choice(list(node_space)))
+                
+            path.append("T")
+            edges |= set(self.make_pairs(path))
+            nodes |= set(path)
+
+        digraph = DigraphManager({"B0": {}})
+        digraph.add_nodes(*nodes)
+        digraph.connect_nodes(*edges)
+        super().__init__(digraph)
+        
