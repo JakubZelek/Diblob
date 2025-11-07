@@ -507,7 +507,7 @@ The algorithm working as follows:
 Note that the test case `["S", "1", "2", "5", "T"]` has all nodes from `["S", "1", "2", "5", "6", "1", "2", "5", "T"]`. In effect, it would be removed from test suit and node coverage criterion would be met. It could be easily done by the user accumulating test_cases and them removing overlapping ones, but then the user lose the effect of generator.
 
 ## Edge Coverage
-In this criterion we want to cover all edges in the digraph (as a main criterion), so we are looking for a test suit $P = [p_1, p_2, \dots, p_n]$, such that $\forall e \in E$, $\exists p \in P$ such that $e \in E$.
+In this criterion we want to cover all edges in the digraph (as a main criterion), so we are looking for a test suit $P = [p_1, p_2, \dots, p_n]$, such that $\forall e \in E$, $\exists p \in P$ such that $e \in p$.
 
 Edge coverage use Chinese Postman Tour algorithm to generate optimal test suit for the following criterions:
 - Minimal total cost of the test suit (weighted edges).
