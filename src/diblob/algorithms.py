@@ -3,6 +3,8 @@ from collections import deque
 from abc import ABC, abstractmethod
 from copy import deepcopy
 from diblob.digraph_manager import DigraphManager
+from diblob.factory import DiblobFactory
+from diblob.exceptions import CollisionException, InvalidNodeIdException
 
 
 def edges_to_path(edges):
@@ -176,7 +178,7 @@ class DijkstraAlgorithm:
         return min_distance_dict
 
 
-class TarjanSSC:
+class TarjanSCC:
     """
     Extracts SSC's from the graph.
     """
@@ -401,226 +403,239 @@ class GenerateDijkstraMatrix:
 
         return dijkstra_matrix
 
+class PrimePathCore:
+    """
+    Core for Simple Cycle Generator and Max Simple Path generator.
+    """
 
-class PrimePathsGenerator:
-    def __init__(self, digraph_manager):
-        self.graph_dict, self.reversed_translation_dict = (
-            self.digraph_manager_to_graph_dict(digraph_manager)
-        )
-
-        self.blocked_set = set()
-        self.stack = []
-        self.blocked_dict = {}
+    def __init__(self, digraph_manager: DigraphManager):
         self.digraph_manager = digraph_manager
-        self.scc_order_dict = self.get_scc_order_dict()
 
-    def get_extended_graph(self):
-        extended_graph = deepcopy(self.graph_dict)
-        global_append_counter = 0
+        diblob_id = self.digraph_manager.root_diblob_id
+        self.graph_dict = dict(self.digraph_manager(diblob_id)[diblob_id])
+        self.reversed_graph = self.reverse_graph(self.graph_dict)
 
-        for node_id in self.graph_dict:
-            append_counter = 0
-            ext_list = []
+        self.tarjant_dict = {}
+        for scc in TarjanSCC(digraph_manager).run():
+            for node_id in scc:
+                self.tarjant_dict[node_id] = scc
 
-            if self.reversed_translation_dict[node_id] in self.scc_order_dict:
-                for n_id in [x for x in extended_graph if x not in {1, node_id}]:
-          
-                    rev_node_id = self.reversed_translation_dict[node_id]
-                    rev_n_id = self.reversed_translation_dict[n_id]
-
-                    if rev_n_id in self.scc_order_dict.get(rev_node_id, {}):
-                        append_counter += 1
-                        ext_list.append(n_id)
-
-                global_append_counter += append_counter
-
-                if append_counter > 0:
-                    for n_app_id in ext_list:
-                        if 1 not in extended_graph[n_app_id]: 
-                            extended_graph[n_app_id].append(1)
-                    extended_graph.setdefault(1, []).append(node_id)
-                    append_counter = 0
-
-        if global_append_counter == 0:
-            return False
-        
-        return extended_graph
-
-
-    def get_scc_order_dict(self):
-        tarjan_ssc = TarjanSSC(self.digraph_manager)
-        ssc_list = tarjan_ssc.run()
-        order_dict = {}
-
-        def can_be_start_of_simple_path(node_id, strongly_connected_component):
-            if set(self.digraph_manager[node_id].incoming_nodes) - strongly_connected_component:
-                return False
-            
-            neigh_inc = self.digraph_manager[node_id].incoming_nodes
-            if neigh_inc and all(len(self.digraph_manager[n_id].outgoing_nodes) == 1
-                for n_id in neigh_inc):
-                return False
-            return True
-
-        def can_be_the_end_of_simple_path(node_id, strongly_connected_component):
-            if set(self.digraph_manager[node_id].outgoing_nodes) - strongly_connected_component:
-                return False
-            neigh_out = self.digraph_manager[node_id].outgoing_nodes
-            if neigh_out and all(len(self.digraph_manager[n_id].incoming_nodes) == 1
-                for n_id in neigh_out):
-                return False
-            return True
-                    
-            
-        for ssc in ssc_list:
-            for a in ssc:
-                if can_be_start_of_simple_path(a, ssc):
-                    for b in ssc:
-                        if a != b and a not in self.digraph_manager[b].outgoing_nodes and can_be_the_end_of_simple_path(b, ssc):
-                            order_dict.setdefault(a, []).append(b)
-
-
-        spb2d = ShortestPathBetween2Nodes()
-
-        for pair_od_sscs in [
-            (ssc_a, ssc_b) for ssc_a in ssc_list for ssc_b in ssc_list
-        ]:
-            ssc_a, ssc_b = pair_od_sscs
-
-            if ssc_a != ssc_b and spb2d.run(
-                self.digraph_manager, list(ssc_a)[0], list(ssc_b)[0]
-            ):
-                for a in ssc_a:
-                    if can_be_start_of_simple_path(a, ssc_a):
-                        for b in ssc_b:
-                            if a != b and a not in self.digraph_manager[b].outgoing_nodes and can_be_the_end_of_simple_path(b, ssc_b):
-                                order_dict.setdefault(a, []).append(b)
-
-        return order_dict
-
-
-    def get_reversed_graph(self):
-        reversed_graph = {node_id: [] for node_id in self.graph_dict}
-
-        for node_id, outgoing_nodes in self.graph_dict.items():
-            for outgoing_node_id in outgoing_nodes:
-                reversed_graph[outgoing_node_id].append(node_id)
-
-        return reversed_graph
-
-
-    def dfs_part(self, node_id, graph):
+    def dfs_jonson(self, node_id: str, induced_graph: dict, stack: list,
+                    blocked_set: set, blocked_dict: dict):
+        """
+        DFS part from Jonson's algorithm
+        """
         found_cycle = False
+        stack.append(node_id)
+        blocked_set.add(node_id)
 
-        self.stack.append(node_id)
-        self.blocked_set.add(node_id)
-
-        for outgoing_node_id in graph[node_id]:
-            if self.stack[0] == outgoing_node_id:
-                yield list(self.stack + [outgoing_node_id])
+        for outgoing_node_id in induced_graph[node_id]:
+            if stack[0] == outgoing_node_id:
+                yield (*stack, outgoing_node_id)
                 found_cycle = True
 
-            elif outgoing_node_id not in self.blocked_set:
-                for result in self.dfs_part(outgoing_node_id, graph):
+            elif outgoing_node_id not in blocked_set:
+                for result in self.dfs_jonson(outgoing_node_id,
+                                              induced_graph,
+                                              stack,
+                                              blocked_set,
+                                              blocked_dict):
                     yield result
                     found_cycle = True
 
         if found_cycle:
-            self.unblock(node_id)
+            self.unblock(blocked_set, blocked_dict, node_id)
         else:
-            for outgoing_node_id in graph[node_id]:
-                if node_id not in list(self.blocked_dict[outgoing_node_id]):
-                    self.blocked_dict[outgoing_node_id].append(node_id)
+            for outgoing_node_id in induced_graph[node_id]:
+                if node_id not in blocked_dict[outgoing_node_id]:
+                    blocked_dict[outgoing_node_id].add(node_id)
 
-        self.stack.pop()
+        stack.pop()
         return
 
-    def unblock(self, node_id):
-        self.blocked_set.remove(node_id)
+    def unblock(self, blocked_set: set, blocked_dict: dict, node_id: str):
+        """
+        Unblock mechanism from Jonson's algorithm for simple cycles.
+        """
+        blocked_set.remove(node_id)
 
-        for blocked_outgoing_id in list(self.blocked_dict[node_id]):
-            self.blocked_dict[node_id].remove(blocked_outgoing_id)
-
-            if blocked_outgoing_id in self.blocked_set:
-                self.unblock(blocked_outgoing_id)
-
-    def get_ssc_induced_graph(self, graph, node_id):
-        graph = {str(key): [str(w) for w in val] for key, val in graph.items()}
-
-        diblob = DigraphManager({"B0": graph})
-        ssc_list = TarjanSSC(diblob).run()
-
-        for ssc in ssc_list:
-            if str(node_id) in ssc:
-                graph = {
-                    int(n_id): [int(w) for w in graph[n_id] if w in ssc]
-                    for n_id in graph
-                    if n_id in ssc
-                }
-
-                return graph
-
-    def get_prime_paths_without_cycles(self):
-        extended_graph = self.get_extended_graph()
-
-        if extended_graph:
-            strongly_connected_component = self.get_ssc_induced_graph(
-                extended_graph, 1
-            )
-            reversed_graph = self.get_reversed_graph()
-
-            self.blocked_dict = {n_id: [] for n_id in strongly_connected_component}
-            self.blocked_set = set()
-
-            for simple_path in self.dfs_part(1, strongly_connected_component):
-                potential_prime_path = simple_path[1:-1]
-                incoming_nodes_to_start = set(reversed_graph[potential_prime_path[0]])
-                outgoing_nodes = strongly_connected_component[potential_prime_path[-1]] 
-
-                cannot_be_extend_forward = not (
-                        set(outgoing_nodes) - set(potential_prime_path) - {1}
-                    )
-                cannot_be_extend_backward = not (
-                    set(incoming_nodes_to_start) - set(potential_prime_path) - {1}
-                )
-                neigh = potential_prime_path[0] in strongly_connected_component[potential_prime_path[-1]]
-
-                if cannot_be_extend_forward and cannot_be_extend_backward and not neigh:
-                    yield potential_prime_path
-
-
-    def get_cycles(self):
-        s = 2
-        while s < len(self.graph_dict) + 1:
-            graph = {
-                node_id: [w for w in self.graph_dict[node_id] if w >= s]
-                for node_id in self.graph_dict
-                if node_id >= s
-            }
-            graph = self.get_ssc_induced_graph(graph, s)
-
-            if graph:
-                s = min(graph.keys())
-                self.blocked_dict = {n_id: [] for n_id in graph}
-                self.blocked_set = set()
-
-                yield from self.dfs_part(s, graph)
-                s += 1
+        while blocked_dict[node_id]:
+            blocked_outgoing_id = blocked_dict[node_id].pop()
+            if blocked_outgoing_id in blocked_set:
+                self.unblock(blocked_set, blocked_dict, blocked_outgoing_id)
 
     @staticmethod
-    def digraph_manager_to_graph_dict(digraph_manager):
-        keys = sorted(digraph_manager.nodes)
-        translation_dict = {key: index + 2 for index, key in enumerate(keys)}
+    def reverse_graph(graph_dict: dict):
+        """
+        Returns reversed graph for given dict.
+        example: {'A': ['B'], 'B': []} -> {'B': ['A'], 'A': []}
+        """
+        reversed_graph = {node_id: [] for node_id in graph_dict}
 
-        reversed_translation_dict = {
-            value: key for key, value in translation_dict.items()
-        }
-        result_dictionary = {}
+        for node_id, outgoing_nodes in graph_dict.items():
+            for neigh in outgoing_nodes:
+                reversed_graph[neigh].append(node_id)
 
-        for node_id in digraph_manager.nodes:
-            result_dictionary[translation_dict[node_id]] = [
-                translation_dict[outgoing_node_id]
-                for outgoing_node_id in digraph_manager[node_id].outgoing_nodes
-            ]
+        return reversed_graph
 
-        return result_dictionary, reversed_translation_dict
+class MaxSimplePathGenerator(PrimePathCore):
+    """
+    MaX Simple Path Generator - based on the node_id
+    """
+    def __init__(self, digraph_manager: DigraphManager):
+        super().__init__(digraph_manager)
+
+        self.sources = {node_id for node_id in digraph_manager.nodes
+                        if len(digraph_manager[node_id].incoming_nodes) == 0}
+        self.sinks = {node_id for node_id in digraph_manager.nodes
+                      if len(digraph_manager[node_id].outgoing_nodes) == 0}
+
+
+    def get_extended_graph(self, node_id: str, artificial_node: str = "ArtificialNode"):
+        """
+        Returns extended digraph for given node_id, None if
+        node_id cannot be a Maximal Simple Path starting node.
+        """
+
+        if artificial_node in self.digraph_manager:
+            raise CollisionException(f"Please choose other node_id, {artificial_node} is occupied")
+        if node_id not in self.digraph_manager:
+            raise InvalidNodeIdException(f"{node_id} doesn't exists in \
+                    digraph_manager, available nodes: {self.digraph_manager.nodes}")
+
+        incoming_nodes = self.digraph_manager[node_id].incoming_nodes
+        set_in_outgoing = set()
+
+        for incoming_node_id in self.digraph_manager[node_id].incoming_nodes:
+            if self.tarjant_dict[incoming_node_id] - self.tarjant_dict[node_id]:
+                return False #Always extendable -> Different SCCs
+            set_in_outgoing |= set(self.digraph_manager[incoming_node_id].outgoing_nodes)
+
+        if len(set_in_outgoing) <= len(incoming_nodes) and len(incoming_nodes) > 0:
+            return False
+
+        nodes_to_add = {(artificial_node, node_id)}
+
+        for digraph_manager_node_id in self.digraph_manager.nodes:
+
+            if digraph_manager_node_id == node_id:
+                continue
+
+            if node_id in self.digraph_manager.nodes[digraph_manager_node_id].outgoing_nodes:
+                continue #There is a possible cycle
+
+            skip_loop = False
+            outgoings = self.digraph_manager[digraph_manager_node_id].outgoing_nodes
+            set_out_incomings = set()
+
+            for outgoing_node_id in outgoings:
+                if self.tarjant_dict[outgoing_node_id] != self.tarjant_dict[digraph_manager_node_id]:
+                    skip_loop = True
+                    break
+
+                set_out_incomings |= set(self.digraph_manager[outgoing_node_id].incoming_nodes)
+
+            if skip_loop or len(set_out_incomings) <= len(outgoings) and len(outgoings) > 0:
+                continue
+
+            nodes_to_add.add((digraph_manager_node_id, artificial_node))
+
+        self.digraph_manager.add_nodes(artificial_node)
+        self.digraph_manager.connect_nodes(*nodes_to_add)
+
+        return True
+
+    def get_maximal_simple_path_for_node_id(self,
+                                            node_id: str,
+                                            artificial_node: str = "ArtificialNode"):
+        """
+        Yields maximal simple paths that starts from node_id
+        """
+        graph_dict = self.graph_dict
+        reversed_graph = self.reversed_graph
+        extended_graph = self.get_extended_graph(node_id, artificial_node)
+        digraph_manager = self.digraph_manager
+
+        if extended_graph:
+
+            for scc in TarjanSCC(digraph_manager).run():
+
+                if node_id in scc:
+
+                    induced_graph = DiblobFactory.get_induced_digraph(digraph_manager, scc)
+                    induced_graph = dict(induced_graph("Ind")["Ind"])
+
+                    blocked_dict = {n_id: set() for n_id in induced_graph}
+                    blocked_set = set()
+                    stack = []
+
+                    for potential_simple_path in self.dfs_jonson(artificial_node,
+                                                                 induced_graph,
+                                                                 stack,
+                                                                 blocked_set,
+                                                                 blocked_dict):
+
+                        potential_simple_path = potential_simple_path[1:-1]
+                        tail, head = potential_simple_path[0], potential_simple_path[-1]
+
+                        tail_ok = all(_node in potential_simple_path
+                                      for _node in reversed_graph[tail])
+                        head_ok = all(_node in potential_simple_path
+                                      for _node in graph_dict[head])
+
+                        if tail_ok and head_ok:
+                            yield potential_simple_path
+
+                    self.digraph_manager.remove_nodes(self.digraph_manager[artificial_node])
+                    return
+
+
+class SimpleCycleGenerator(PrimePathCore):
+    """
+    Simple Cycles Generator
+    """
+
+    def __init__(self, digraph_manager: DigraphManager):
+        super().__init__(digraph_manager)
+
+    def get_simple_cycles(self):
+        """
+        Yields simple cycles
+        """
+
+        nodes = list(self.digraph_manager.nodes)
+        digraph_manager = self.digraph_manager
+        tarjan_dict = self.tarjant_dict
+
+        for node_index, node_id in enumerate(nodes):
+            induced_nodes = set(nodes[node_index:]) & tarjan_dict[node_id]
+            induced_graph = DiblobFactory.get_induced_digraph(digraph_manager, induced_nodes)
+            induced_graph = dict(induced_graph("Ind")["Ind"])
+
+            stack = []
+            blocked_dict = {n_id: set() for n_id in induced_graph}
+            blocked_set = set()
+
+            yield from self.dfs_jonson(node_id,
+                                        induced_graph,
+                                        stack,
+                                        blocked_set,
+                                        blocked_dict)
+
+class PrimePathGenerator:
+    """
+    Prime Paths generator (backward compatibility)
+    """
+    def __init__(self, digraph_manager):
+        self.digraph_manager = digraph_manager
+        self.max_simple_paths_generator = MaxSimplePathGenerator(digraph_manager)
+        self.simple_cycles_generator = SimpleCycleGenerator(digraph_manager)
+
+    def get_prime_paths_without_cycles(self):
+        for node_id in self.digraph_manager.nodes:
+            for max_simple_cycle in self.max_simple_paths_generator.get_maximal_simple_path_for_node_id(node_id):
+                yield max_simple_cycle
+
+    def get_cycles(self):
+        for simple_cycle in self.simple_cycles_generator.get_simple_cycles():
+            yield simple_cycle
