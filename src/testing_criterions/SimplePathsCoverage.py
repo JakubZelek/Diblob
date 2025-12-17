@@ -1,4 +1,5 @@
-from diblob.algorithms import PrimePathsGenerator, ShortestPathBetween2Nodes
+from copy import deepcopy
+from diblob.algorithms import PrimePathGenerator, ShortestPathBetween2Nodes
 from testing_criterions.decorators import (
     validate_source,
     validate_sink,
@@ -24,14 +25,13 @@ class SimplePathsCoverage:
     
     def get_test_cases(
         self, k: int):
-        ppg = PrimePathsGenerator(self.digraph_manager)
-        reversed_translation_dict = ppg.reversed_translation_dict
+        ppg = PrimePathGenerator(deepcopy(self.digraph_manager))
         shortest_path_dict = {}
         test_case = []
 
         simple_path_counter = 0
         for simple_path in ppg.get_prime_paths_without_cycles():
-            simple_path = [reversed_translation_dict[node_id] for node_id in simple_path]
+            simple_path = [node_id for node_id in simple_path]
 
             simple_path_counter += 1
     
@@ -64,4 +64,3 @@ class SimplePathsCoverage:
         if simple_path_counter != 0:
             test_case += self.get_shortest_path(shortest_path_dict, test_case[-1], "T")[1:]
             yield test_case
-

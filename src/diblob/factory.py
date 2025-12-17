@@ -3,7 +3,7 @@ Functions for working with digraph_manager
 """
 
 from diblob.digraph_manager import DigraphManager
-from diblob.exceptions import MultipleEdgeException, CycleException
+from diblob.exceptions import MultipleEdgeException, CycleException, InvalidNodeIdException
 
 
 def add_outgoing(digraph_manager, node_id, outgoing_list):
@@ -195,3 +195,16 @@ class DiblobFactory:
 
         flow_graph_manager.connect_nodes(*edges_to_connect)
         return flow_graph_manager
+
+    @staticmethod
+    def get_induced_digraph(digraph_manager: DigraphManager, node_ids: set):
+        
+        difference = node_ids - set(digraph_manager.nodes)
+        if difference:
+            raise InvalidNodeIdException(f"There is no {difference} in the digraph_manager")
+        
+        induced_digraph = DigraphManager({"Ind": {}})
+        induced_digraph.add_nodes(*node_ids)
+        induced_digraph.connect_nodes(*((u, v) for u, v in digraph_manager.edges if u in node_ids and v in node_ids))
+
+        return induced_digraph

@@ -122,3 +122,8 @@ class CycleException(Exception):
     """
     Raised when cycle found in the DAG-focused algorithm.
     """
+
+class InvalidNodeIdException(Exception):
+    """
+    Raised when node_id is incorrect.
+    """
