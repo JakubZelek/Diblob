@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name="diblob",
-    version="2.1.3",
+    version="2.1.4",
     package_dir={"": "src"},
     packages=find_packages(where="src"),
     description="Diblob is a lightweight Python package for test case coverage of directed graphs (digraphs), with a focus on SESE graphs (Single Entry, Single Exit — graphs with one source and one sink). It is primarily developed for testing purposes and provides a simple, dependency-free solution built entirely on standard Python data structures.",
