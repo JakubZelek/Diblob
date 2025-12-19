@@ -425,6 +425,7 @@ class PrimePathCore:
         """
         DFS part from Jonson's algorithm
         """
+
         found_cycle = False
         stack.append(node_id)
         blocked_set.add(node_id)
@@ -485,12 +486,6 @@ class MaxSimplePathGenerator(PrimePathCore):
     def __init__(self, digraph_manager: DigraphManager):
         super().__init__(digraph_manager)
 
-        self.sources = {node_id for node_id in digraph_manager.nodes
-                        if len(digraph_manager[node_id].incoming_nodes) == 0}
-        self.sinks = {node_id for node_id in digraph_manager.nodes
-                      if len(digraph_manager[node_id].outgoing_nodes) == 0}
-
-
     def get_extended_graph(self, node_id: str, artificial_node: str = "ArtificialNode"):
         """
         Returns extended digraph for given node_id, None if
@@ -505,13 +500,23 @@ class MaxSimplePathGenerator(PrimePathCore):
 
         incoming_nodes = self.digraph_manager[node_id].incoming_nodes
         set_in_outgoing = set()
+        set_in_incoming = set()
+        node_id_ssc = self.tarjant_dict[node_id]
+
 
         for incoming_node_id in self.digraph_manager[node_id].incoming_nodes:
-            if self.tarjant_dict[incoming_node_id] - self.tarjant_dict[node_id]:
+            if self.tarjant_dict[incoming_node_id] - node_id_ssc:
                 return False #Always extendable -> Different SCCs
             set_in_outgoing |= set(self.digraph_manager[incoming_node_id].outgoing_nodes)
+            set_in_incoming |= set(self.digraph_manager[incoming_node_id].incoming_nodes)
 
         if len(set_in_outgoing) <= len(incoming_nodes) and len(incoming_nodes) > 0:
+            return False
+
+        if len(node_id_ssc & set_in_outgoing) < len(incoming_nodes):
+            return False
+
+        if len(node_id_ssc & set_in_incoming) < len(incoming_nodes):
             return False
 
         nodes_to_add = {(artificial_node, node_id)}
@@ -525,17 +530,27 @@ class MaxSimplePathGenerator(PrimePathCore):
                 continue #There is a possible cycle
 
             skip_loop = False
-            outgoings = self.digraph_manager[digraph_manager_node_id].outgoing_nodes
-            set_out_incomings = set()
+            outgoing_nodes = self.digraph_manager[digraph_manager_node_id].outgoing_nodes
 
-            for outgoing_node_id in outgoings:
-                if self.tarjant_dict[outgoing_node_id] != self.tarjant_dict[digraph_manager_node_id]:
+            set_out_incoming = set()
+            set_out_outgoing = set()
+            digraph_manager_node_id_ssc = self.tarjant_dict[digraph_manager_node_id]
+
+            for outgoing_node_id in outgoing_nodes:
+                if self.tarjant_dict[outgoing_node_id] != digraph_manager_node_id_ssc:
                     skip_loop = True
                     break
 
-                set_out_incomings |= set(self.digraph_manager[outgoing_node_id].incoming_nodes)
+                set_out_incoming |= set(self.digraph_manager[outgoing_node_id].incoming_nodes)
+                set_out_outgoing |= set(self.digraph_manager[outgoing_node_id].outgoing_nodes)
 
-            if skip_loop or len(set_out_incomings) <= len(outgoings) and len(outgoings) > 0:
+            if skip_loop or len(set_out_incoming) <= len(outgoing_nodes) and len(outgoing_nodes) > 0:
+                continue
+
+            if len(set_out_incoming & digraph_manager_node_id_ssc) < len(outgoing_nodes):
+                continue
+
+            if len(set_out_outgoing & digraph_manager_node_id_ssc) < len(outgoing_nodes):
                 continue
 
             nodes_to_add.add((digraph_manager_node_id, artificial_node))
@@ -630,6 +645,7 @@ class PrimePathGenerator:
         self.digraph_manager = digraph_manager
         self.max_simple_paths_generator = MaxSimplePathGenerator(digraph_manager)
         self.simple_cycles_generator = SimpleCycleGenerator(digraph_manager)
+
 
     def get_prime_paths_without_cycles(self):
         for node_id in self.digraph_manager.nodes:
