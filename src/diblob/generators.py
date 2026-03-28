@@ -338,4 +338,29 @@ class RandomSESEPathBased(RandomBase):
         digraph.add_nodes(*nodes)
         digraph.connect_nodes(*edges)
         super().__init__(digraph)
-        
+
+
+def generate_diamond(k: int, start_label="B0") -> dict:
+    """
+    Generate 'diamond' graph.
+    """
+    graph = {}
+    current_start = start_label
+    counter = 1
+
+    for _ in range(k):
+        left = f"B{counter}"
+        counter += 1
+        right = f"B{counter}"
+        counter += 1
+        next_vertex = f"B{counter}"
+        counter += 1
+
+        graph[current_start] = [left, right]
+        graph[left] = [next_vertex]
+        graph[right] = [next_vertex]
+
+        current_start = next_vertex
+    graph[current_start] = []
+
+    return graph
