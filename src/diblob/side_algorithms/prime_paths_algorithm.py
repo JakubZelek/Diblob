@@ -6,8 +6,8 @@ https://ieeexplore.ieee.org/document/8836452?denied=
 """
 
 from dataclasses import dataclass
-from diblob.algorithms import TarjanSCC
-from diblob import DigraphManager
+from ..diblob.algorithms import TarjanSCC
+from ..diblob import DigraphManager
 from collections import deque
 
 
