@@ -152,8 +152,8 @@ class SCC:
         """
         scc_prime_paths = set()
         for v in self.scc_graph.keys():
-            paths_ended_in_v = vertex_based_prime_paths_generation(self.scc_graph, v)
-            for values in paths_ended_in_v.values():
+            paths_started_in_v = vertex_based_prime_paths_generation(self.scc_graph, v)
+            for values in paths_started_in_v.values():
                 scc_prime_paths |= set(values)
         return scc_prime_paths
 
@@ -171,6 +171,7 @@ def get_ccfg_graph_and_scc_dict(graph: dict):
     scc_number = 0
     scc_dict = {}
     for scc in tarjan.run():
+        print("TAJRAN", scc, digraph)
         if len(scc) > 1:
             scc_id = f"SCC_{scc_number}"
 
@@ -438,7 +439,7 @@ def scc_entry_prime_paths_generation(
     return result
 
 
-def get_internal_prime_paths(scc_dict: dict[str, SCC]):
+def get_filtered_internal_prime_paths(scc_dict: dict[str, SCC]):
     """
     Returns cycles and prime paths that starts and ends in scc.
     """
@@ -455,63 +456,59 @@ def get_internal_prime_paths(scc_dict: dict[str, SCC]):
     return result
 
 
-def generate_prime_paths(graph: dict):
+def generate_prime_paths(graph: dict, starting_points = None):
     """
-    Yields all prime paths from the graph
+    Yields all prime paths from the graph.
     """
     
-    all_paths = set()
+    artificial_start_id = "ARTIFICIAL_START"
     temp_graph = dict(graph)
 
-    start_nodes = [node_id for node_id in graph.keys() if all(node_id not in outgoing for outgoing in graph.values())]
-
-    starting_node = start_nodes[0]
-    art_start = False
-
-    #Modify graph to Single entry, if necessary
-    if len(start_nodes) > 1:
-        temp_graph["ARTIFICIAL_START"] = [node_id for node_id in graph.keys() if all(node_id not in outgoing for outgoing in graph.values())]
-        starting_node = "ARTIFICIAL_START"
-        art_start = True
-
+    invalid_starting_points = set(starting_points) - set(graph.keys())
+    if invalid_starting_points:
+        raise Exception(f"Invalid starting nodes: {invalid_starting_points}")
+    if artificial_start_id in graph:
+        raise Exception(f"Graph cannot contain node_id={artificial_start_id}.")
     
+    temp_graph[artificial_start_id] = starting_points
+
 
     ccfg, scc_dict = get_ccfg_graph_and_scc_dict(temp_graph)
 
-    prime_paths_of_ccfg = vertex_based_prime_paths_generation(ccfg, starting_node)
+    for node_id in ccfg:
+        if node_id != artificial_start_id and not any(node_id in outgoings for out_id, outgoings in ccfg.items() if out_id != node_id):
+            raise Exception(f"starting_points should cover all entry SCCs and node_ids, uncovered: {node_id}.")
 
+
+    prime_paths_of_ccfg = vertex_based_prime_paths_generation(ccfg, artificial_start_id)
     non_empty_prime_paths = []
 
     for paths in prime_paths_of_ccfg.values():
         if paths:
-
             non_empty_prime_paths.extend(paths)
-
+    
     complete_prime_paths = cfg_complete_prime_paths_generation(
         non_empty_prime_paths, scc_dict, graph
     )
-
-    all_paths |= complete_prime_paths
+    print("PP", non_empty_prime_paths)
+    print("SCC_dict", scc_dict)
+    print("graph", graph)
+    for path in complete_prime_paths:
+        yield path[1:] 
     scc_exit_prime_paths = scc_exit_prime_paths_generation(
         complete_prime_paths, scc_dict
     )
-    
-    all_paths |= scc_exit_prime_paths
 
+    for path in scc_exit_prime_paths:
+        yield path[1:]
     scc_entry_prime_paths = scc_entry_prime_paths_generation(
         complete_prime_paths, scc_exit_prime_paths, scc_dict
     )
-    all_paths |= scc_entry_prime_paths
-    internal_prime_paths = get_internal_prime_paths(scc_dict)
 
-    all_paths |= internal_prime_paths
+    for path in scc_entry_prime_paths:
+        yield path[1:]
 
-    if art_start:
-        for path in all_paths:
-            yield path[1:]
-    else:
-        for path in all_paths:
-            yield path
+    internal_prime_paths = get_filtered_internal_prime_paths(scc_dict)
 
-
-
+    for path in internal_prime_paths:
+        yield path[1:]
