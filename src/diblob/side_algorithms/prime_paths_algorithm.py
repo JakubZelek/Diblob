@@ -381,15 +381,15 @@ def cfg_complete_prime_paths_generation(
     while queue:
         p = queue.popleft()
         expanded = False
-
         for scc_id, idx in p.get_scc_indexes().items():
+            
             for q in scc_dict[scc_id].entry_exit_paths:
                 if can_tour(p, q, idx, scc_dict, graph):
                     r = p.replace_node_with_path(q, idx)
                     queue.append(r)
                     expanded = True
 
-        if not expanded:
+        if not expanded and not (p[0].startswith("SCC") or p[-1].startswith("SCC")):
             result.add(p)
 
     return result
@@ -408,9 +408,11 @@ def scc_exit_prime_paths_generation(
             for q in scc.exit_paths:
                 v_ex = q[-1]
                 if v_ex in p:
-                    index = p.path.index(v_ex)
-                    r = Path(q.path[:-1] + p.path[index:])
-                    result.add(r)
+                    index = p.index(v_ex)
+                 
+                    if p[index + 1] not in scc.nodes:
+                        r = Path(q.path[:-1] + p.path[index:])
+                        result.add(r)
     return result
 
 
@@ -430,8 +432,9 @@ def scc_entry_prime_paths_generation(
                 v_en = q[0]
                 if v_en in p:
                     index = p.path.index(v_en)
-                    r = Path(p.path[:index] + q.path)
-                    result.add(r)
+                    if p[index-1] not in scc.nodes:
+                        r = Path(p.path[:index] + q.path)
+                        result.add(r)
     return result
 
 
@@ -442,8 +445,7 @@ def get_internal_prime_paths(scc_dict: dict[str, SCC]):
     result = set()
 
     for scc in scc_dict.values():
-        boundary = scc.entry_paths | scc.exit_paths
-
+        boundary = scc.scc_entry_nodes | scc.scc_exit_nodes
         for p in scc.internal_paths:
             start, end = p[0], p[-1]
 
@@ -458,35 +460,39 @@ def generate_prime_paths(graph: dict):
     Yields all prime paths from the graph
     """
     ccfg, scc_dict = get_ccfg_graph_and_scc_dict(graph)
-
+    all_paths = set()
     for node_id in ccfg.keys():
         if all(node_id not in outgoing for outgoing in ccfg.values()):
             prime_paths_of_ccfg = vertex_based_prime_paths_generation(ccfg, node_id)
-
+    
             non_empty_prime_paths = []
 
             for paths in prime_paths_of_ccfg.values():
                 if paths:
+
                     non_empty_prime_paths.extend(paths)
 
+            print("TUTAJ", non_empty_prime_paths)
             complete_prime_paths = cfg_complete_prime_paths_generation(
                 non_empty_prime_paths, scc_dict, graph
             )
-            for complete_prime_path in complete_prime_paths:
-                yield complete_prime_path
 
+            all_paths |= complete_prime_paths
             scc_exit_prime_paths = scc_exit_prime_paths_generation(
                 complete_prime_paths, scc_dict
             )
-            for scc_exit_prime_path in scc_exit_prime_paths:
-                yield scc_exit_prime_path
 
+            
+            all_paths |= scc_exit_prime_paths
+     
             scc_entry_prime_paths = scc_entry_prime_paths_generation(
                 complete_prime_paths, scc_exit_prime_paths, scc_dict
             )
-            for scc_entry_prime_path in scc_entry_prime_paths:
-                yield scc_entry_prime_path
-
+            all_paths |= scc_entry_prime_paths
             internal_prime_paths = get_internal_prime_paths(scc_dict)
-            for internal_prime_path in internal_prime_paths:
-                yield internal_prime_path
+     
+            all_paths |= internal_prime_paths
+            
+    for path in all_paths:
+        yield path
+

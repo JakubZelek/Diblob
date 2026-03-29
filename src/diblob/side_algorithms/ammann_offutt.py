@@ -60,7 +60,7 @@ def findSimplePath(graph, exPaths, paths=[]):
         findSimplePath(graph, newExPaths, paths)
 
 
-def findPrimePaths(graph):
+def ammann_offutt_prime_paths(graph):
     """Find the prime paths of a graph."""
     exPaths = [(n, ) for n in graph['nodes']]
     simplePaths = []
@@ -83,26 +83,4 @@ def rotate_cycle(cycle):
         rotated = base[i:] + base[:i] + [base[i]]
         rotations.append(rotated)
     return rotations
-
-def get_graph(digraph, number_of_nodes):
-    graph = {}
-    for key, value in dict(digraph("B0"))["B0"].items():
-        graph_key = key
-        if key == "S":
-            graph_key = 0
-        if key == "T":
-            graph_key = number_of_nodes + 1
-
-        values = []
-        for val in value:
-            if val == "S":
-                values.append(0)
-            elif val == "T":
-                values.append(number_of_nodes + 1)
-            else:
-                values.append(int(val))
-        graph[int(graph_key)] = values
-        
-
-    return {'nodes': list(graph.keys()), 'edges': graph}
-    
+ 

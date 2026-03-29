@@ -553,7 +553,7 @@ class MaxSimplePathGenerator(PrimePathCore):
         return True
 
     def left_extendability_validation(
-        self, path: list, node_id: str
+        self, path: list, node_id: str, skipped_set: set
     ) -> tuple[bool, bool]:
         """
         Return tuple of bools (Passed validation, Skip next validation)
@@ -565,7 +565,7 @@ class MaxSimplePathGenerator(PrimePathCore):
             node_is_left_extendable = bool(
                 set(path) & set(self.reversed_graph[path_start])
             )
-
+            skipped_set.add(node_id)
             return (not node_is_left_extendable, True)
 
         return (True, False)
@@ -577,7 +577,8 @@ class MaxSimplePathGenerator(PrimePathCore):
         stack: list,
         blocked_set: set,
         blocked_dict: dict,
-        skip_left_extendable_validation_flag: bool = True,
+        skipped_set: set,
+        skip_left_extendable_validation_flag: bool = True
     ):
         """
         DFS part from Jonson's algorithm (version for max simple paths)
@@ -590,7 +591,7 @@ class MaxSimplePathGenerator(PrimePathCore):
         for outgoing_node_id in induced_graph[node_id]:
             if not skip_left_extendable_validation_flag:
                 validation_result, skip_left_extendable_validation_flag = (
-                    self.left_extendability_validation(stack, outgoing_node_id)
+                    self.left_extendability_validation(stack, outgoing_node_id, skipped_set)
                 )
 
             if validation_result:
@@ -605,6 +606,7 @@ class MaxSimplePathGenerator(PrimePathCore):
                         stack,
                         blocked_set,
                         blocked_dict,
+                        skipped_set,
                         skip_left_extendable_validation_flag,
                     ):
                         yield result
@@ -614,7 +616,7 @@ class MaxSimplePathGenerator(PrimePathCore):
             self.unblock(blocked_set, blocked_dict, node_id)
         else:
             for outgoing_node_id in induced_graph[node_id]:
-                if node_id not in blocked_dict[outgoing_node_id]:
+                if node_id not in blocked_dict[outgoing_node_id] and node_id not in skipped_set:
                     blocked_dict[outgoing_node_id].add(node_id)
 
         stack.pop()
@@ -644,7 +646,7 @@ class MaxSimplePathGenerator(PrimePathCore):
                     stack = []
 
                     for potential_simple_path in self.dfs_jonson(
-                        artificial_node, induced_graph, stack, blocked_set, blocked_dict
+                        artificial_node, induced_graph, stack, blocked_set, blocked_dict, skipped_set=set()
                     ):
                         potential_simple_path = potential_simple_path[1:-1]
                         tail, head = potential_simple_path[0], potential_simple_path[-1]
@@ -763,3 +765,13 @@ class PrimePathGenerator:
     def get_cycles(self):
         for simple_cycle in self.simple_cycles_generator.get_simple_cycles():
             yield simple_cycle
+
+    def get_prime_paths(self):
+        for simple_cycle in self.simple_cycles_generator.get_simple_cycles():
+            base = simple_cycle[:-1]
+            n = len(base)
+            for i in range(n):
+                yield base[i:] + base[:i] + (base[i],)
+        
+        for simple_path in self.get_prime_paths_without_cycles():
+            yield simple_path
