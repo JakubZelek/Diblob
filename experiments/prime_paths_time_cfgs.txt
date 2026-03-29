@@ -1,70 +1,45 @@
-Graph with NODES = 22, NUM_SCC = 22, MAX_SCC = 1, id=ggml-cpu.ggml-cpu.cpp745cbcf2fe1eb88f8db615ac622f0b944d924ad6static void *ggml_backend_cpu_get_proc_address(ggml_backend_reg_t reg, const char *name)llama.cpp
-Ammann-Offutt | prime_paths: 11 | time: 0.001037s
-generate_prime_paths | prime_paths: 31 | time: 0.003801s
-PrimePathGenerator | prime_paths: 11 | time: 0.001792s
+Graph with NODES = 35, NUM_SCC = 26, MAX_SCC = 7, id=src.ggml-backend.cpp|745cbcf2fe1eb88f8db615ac622f0b944d924ad6|static int ggml_backend_sched_backend_id_from_cur(ggml_backend_sched_t sched, struct ggml_tensor *tensor)|llama.cpp
+Ammann-Offutt | prime_paths: 105 | time: 0.010869s
+generate_prime_paths | prime_paths: 105 | time: 0.046165s
+PrimePathGenerator | prime_paths: 105 | time: 0.010643s
 
-Graph with NODES = 22, NUM_SCC = 22, MAX_SCC = 1, id=ggml-cpu.ggml-cpu.cpp745cbcf2fe1eb88f8db615ac622f0b944d924ad6static void *ggml_backend_cpu_get_proc_address(ggml_backend_reg_t reg, const char *name)llama.cpp
-Ammann-Offutt | prime_paths: 11 | time: 0.001572s
-generate_prime_paths | prime_paths: 31 | time: 0.006696s
-PrimePathGenerator | prime_paths: 11 | time: 0.002778s
+Graph with NODES = 23, NUM_SCC = 19, MAX_SCC = 5, id=src.ggml-backend.cpp|745cbcf2fe1eb88f8db615ac622f0b944d924ad6|static struct ggml_tensor *graph_copy_dup_tensor(struct ggml_hash_set hash_set, struct ggml_tensor **node_copies, struct ggml_context *ctx_allocated, struct ggml_context *ctx_unallocated, struct ggml_tensor *src)|llama.cpp
+Ammann-Offutt | prime_paths: 53 | time: 0.005569s
+generate_prime_paths | prime_paths: 53 | time: 0.011646s
+PrimePathGenerator | prime_paths: 53 | time: 0.003508s
 
-Graph with NODES = 22, NUM_SCC = 22, MAX_SCC = 1, id=ggml-cpu.ggml-cpu.cpp745cbcf2fe1eb88f8db615ac622f0b944d924ad6static void *ggml_backend_cpu_get_proc_address(ggml_backend_reg_t reg, const char *name)llama.cpp
-Ammann-Offutt | prime_paths: 11 | time: 0.001931s
-generate_prime_paths | prime_paths: 31 | time: 0.008106s
-PrimePathGenerator | prime_paths: 11 | time: 0.004312s
+Graph with NODES = 22, NUM_SCC = 16, MAX_SCC = 3, id=src.ggml-backend.cpp|745cbcf2fe1eb88f8db615ac622f0b944d924ad6|struct ggml_backend_graph_copy ggml_backend_graph_copy(ggml_backend_t backend, struct ggml_cgraph *graph)|llama.cpp
+Ammann-Offutt | prime_paths: 24 | time: 0.001636s
+generate_prime_paths | prime_paths: 24 | time: 0.043081s
+PrimePathGenerator | prime_paths: 24 | time: 0.003385s
 
-Graph with NODES = 22, NUM_SCC = 22, MAX_SCC = 1, id=ggml-cpu.ggml-cpu.cpp745cbcf2fe1eb88f8db615ac622f0b944d924ad6static void *ggml_backend_cpu_get_proc_address(ggml_backend_reg_t reg, const char *name)llama.cpp
-Ammann-Offutt | prime_paths: 11 | time: 0.001979s
-generate_prime_paths | prime_paths: 31 | time: 0.006291s
-PrimePathGenerator | prime_paths: 11 | time: 0.002533s
+Graph with NODES = 31, NUM_SCC = 27, MAX_SCC = 5, id=src.ggml-opt.cpp|745cbcf2fe1eb88f8db615ac622f0b944d924ad6|void ggml_opt_dataset_get_batch(ggml_opt_dataset_t dataset, struct ggml_tensor *data_batch, struct ggml_tensor *labels_batch, int64_t ibatch)|llama.cpp
+Ammann-Offutt | prime_paths: 114 | time: 0.016122s
+generate_prime_paths | prime_paths: 114 | time: 0.370075s
+PrimePathGenerator | prime_paths: 114 | time: 0.026308s
 
-Graph with NODES = 22, NUM_SCC = 22, MAX_SCC = 1, id=ggml-cpu.ggml-cpu.cpp745cbcf2fe1eb88f8db615ac622f0b944d924ad6static void *ggml_backend_cpu_get_proc_address(ggml_backend_reg_t reg, const char *name)llama.cpp
-Ammann-Offutt | prime_paths: 11 | time: 0.001504s
-generate_prime_paths | prime_paths: 31 | time: 0.007432s
-PrimePathGenerator | prime_paths: 11 | time: 0.003299s
+Graph with NODES = 21, NUM_SCC = 15, MAX_SCC = 5, id=src.ggml-backend.cpp|745cbcf2fe1eb88f8db615ac622f0b944d924ad6|bool ggml_backend_compare_graph_backend(ggml_backend_t backend1, ggml_backend_t backend2, struct ggml_cgraph *graph, ggml_backend_eval_callback callback, void *user_data, struct ggml_tensor *test_node)|llama.cpp
+Ammann-Offutt | prime_paths: 29 | time: 0.005133s
+generate_prime_paths | prime_paths: 28 | time: 0.008596s
+PrimePathGenerator | prime_paths: 29 | time: 0.007250s
 
-Graph with NODES = 22, NUM_SCC = 22, MAX_SCC = 1, id=ggml-cpu.ggml-cpu.cpp745cbcf2fe1eb88f8db615ac622f0b944d924ad6static void *ggml_backend_cpu_get_proc_address(ggml_backend_reg_t reg, const char *name)llama.cpp
-Ammann-Offutt | prime_paths: 11 | time: 0.001609s
-generate_prime_paths | prime_paths: 31 | time: 0.005604s
-PrimePathGenerator | prime_paths: 11 | time: 0.002823s
+Graph with NODES = 27, NUM_SCC = 17, MAX_SCC = 7, id=src.ggml-opt.cpp|745cbcf2fe1eb88f8db615ac622f0b944d924ad6|static ggml_cgraph *dup_graph(ggml_context *ctx, ggml_cgraph *src)|llama.cpp
+Ammann-Offutt | prime_paths: 44 | time: 0.006571s
+generate_prime_paths | prime_paths: 44 | time: 0.018302s
+PrimePathGenerator | prime_paths: 44 | time: 0.032382s
 
-Graph with NODES = 22, NUM_SCC = 22, MAX_SCC = 1, id=ggml-cpu.ggml-cpu.cpp745cbcf2fe1eb88f8db615ac622f0b944d924ad6static void *ggml_backend_cpu_get_proc_address(ggml_backend_reg_t reg, const char *name)llama.cpp
-Ammann-Offutt | prime_paths: 11 | time: 0.001833s
-generate_prime_paths | prime_paths: 31 | time: 0.006745s
-PrimePathGenerator | prime_paths: 11 | time: 0.002899s
+Graph with NODES = 41, NUM_SCC = 13, MAX_SCC = 29, id=src.gguf.cpp|745cbcf2fe1eb88f8db615ac622f0b944d924ad6|void gguf_set_kv(struct gguf_context *ctx, const struct gguf_context *src)|llama.cpp
+Ammann-Offutt | prime_paths: 445 | time: 0.128590s
+generate_prime_paths | prime_paths: 333 | time: 4.987848s
+PrimePathGenerator | prime_paths: 445 | time: 0.118127s
 
-Graph with NODES = 22, NUM_SCC = 22, MAX_SCC = 1, id=ggml-cpu.ggml-cpu.cpp745cbcf2fe1eb88f8db615ac622f0b944d924ad6static void *ggml_backend_cpu_get_proc_address(ggml_backend_reg_t reg, const char *name)llama.cpp
-Ammann-Offutt | prime_paths: 11 | time: 0.002896s
-generate_prime_paths | prime_paths: 31 | time: 0.008778s
-PrimePathGenerator | prime_paths: 11 | time: 0.003730s
+Graph with NODES = 27, NUM_SCC = 20, MAX_SCC = 8, id=src.ggml-opt.cpp|745cbcf2fe1eb88f8db615ac622f0b944d924ad6|void ggml_opt_fit(ggml_backend_sched_t backend_sched, ggml_context *ctx_compute, ggml_tensor *inputs, ggml_tensor *outputs, ggml_opt_dataset_t dataset, enum ggml_opt_loss_type loss_type, enum ggml_opt_optimizer_type optimizer, ggml_opt_get_optimizer_params get_opt_pars, int64_t nepoch, int64_t nbatch_logical, float val_split, bool silent)|llama.cpp
+Ammann-Offutt | prime_paths: 112 | time: 0.013184s
+generate_prime_paths | prime_paths: 112 | time: 0.038861s
+PrimePathGenerator | prime_paths: 112 | time: 0.012531s
 
-Graph with NODES = 22, NUM_SCC = 22, MAX_SCC = 1, id=ggml-cpu.ggml-cpu.cpp745cbcf2fe1eb88f8db615ac622f0b944d924ad6static void *ggml_backend_cpu_get_proc_address(ggml_backend_reg_t reg, const char *name)llama.cpp
-Ammann-Offutt | prime_paths: 11 | time: 0.001863s
-generate_prime_paths | prime_paths: 31 | time: 0.006926s
-PrimePathGenerator | prime_paths: 11 | time: 0.002638s
-
-Graph with NODES = 22, NUM_SCC = 22, MAX_SCC = 1, id=ggml-cpu.ggml-cpu.cpp745cbcf2fe1eb88f8db615ac622f0b944d924ad6static void *ggml_backend_cpu_get_proc_address(ggml_backend_reg_t reg, const char *name)llama.cpp
-Ammann-Offutt | prime_paths: 11 | time: 0.003663s
-generate_prime_paths | prime_paths: 31 | time: 0.014316s
-PrimePathGenerator | prime_paths: 11 | time: 0.003857s
-
-Graph with NODES = 22, NUM_SCC = 22, MAX_SCC = 1, id=ggml-cpu.ggml-cpu.cpp745cbcf2fe1eb88f8db615ac622f0b944d924ad6static void *ggml_backend_cpu_get_proc_address(ggml_backend_reg_t reg, const char *name)llama.cpp
-Ammann-Offutt | prime_paths: 11 | time: 0.001469s
-generate_prime_paths | prime_paths: 31 | time: 0.006636s
-PrimePathGenerator | prime_paths: 11 | time: 0.002553s
-
-Graph with NODES = 22, NUM_SCC = 22, MAX_SCC = 1, id=ggml-cpu.ggml-cpu.cpp745cbcf2fe1eb88f8db615ac622f0b944d924ad6static void *ggml_backend_cpu_get_proc_address(ggml_backend_reg_t reg, const char *name)llama.cpp
-Ammann-Offutt | prime_paths: 11 | time: 0.001175s
-generate_prime_paths | prime_paths: 31 | time: 0.004618s
-PrimePathGenerator | prime_paths: 11 | time: 0.001988s
-
-Graph with NODES = 22, NUM_SCC = 22, MAX_SCC = 1, id=ggml-cpu.ggml-cpu.cpp745cbcf2fe1eb88f8db615ac622f0b944d924ad6static void *ggml_backend_cpu_get_proc_address(ggml_backend_reg_t reg, const char *name)llama.cpp
-Ammann-Offutt | prime_paths: 11 | time: 0.001924s
-generate_prime_paths | prime_paths: 31 | time: 0.006650s
-PrimePathGenerator | prime_paths: 11 | time: 0.004507s
-
-Graph with NODES = 22, NUM_SCC = 22, MAX_SCC = 1, id=ggml-cpu.ggml-cpu.cpp745cbcf2fe1eb88f8db615ac622f0b944d924ad6static void *ggml_backend_cpu_get_proc_address(ggml_backend_reg_t reg, const char *name)llama.cpp
-Ammann-Offutt | prime_paths: 11 | time: 0.001665s
-generate_prime_paths | prime_paths: 31 | time: 0.006890s
-PrimePathGenerator | prime_paths: 11 | time: 0.002736s
+Graph with NODES = 41, NUM_SCC = 13, MAX_SCC = 29, id=src.gguf.cpp|745cbcf2fe1eb88f8db615ac622f0b944d924ad6|void gguf_set_kv(struct gguf_context *ctx, const struct gguf_context *src)|llama.cpp
+Ammann-Offutt | prime_paths: 445 | time: 0.042607s
+generate_prime_paths | prime_paths: 333 | time: 3.981251s
+PrimePathGenerator | prime_paths: 445 | time: 0.108983s
 
