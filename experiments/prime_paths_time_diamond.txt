@@ -1,0 +1,55 @@
+--- Diamond size: 2 ---
+Ammann-Offutt | prime_paths: 4 | time: 0.000109s
+generate_prime_paths | prime_paths: 4 | time: 0.000330s
+PrimePathGenerator | prime_paths: 4 | time: 0.000425s
+
+--- Diamond size: 3 ---
+Ammann-Offutt | prime_paths: 8 | time: 0.000261s
+generate_prime_paths | prime_paths: 8 | time: 0.000811s
+PrimePathGenerator | prime_paths: 8 | time: 0.000605s
+
+--- Diamond size: 4 ---
+Ammann-Offutt | prime_paths: 16 | time: 0.000650s
+generate_prime_paths | prime_paths: 16 | time: 0.002786s
+PrimePathGenerator | prime_paths: 16 | time: 0.000939s
+
+--- Diamond size: 5 ---
+Ammann-Offutt | prime_paths: 32 | time: 0.001690s
+generate_prime_paths | prime_paths: 32 | time: 0.013954s
+PrimePathGenerator | prime_paths: 32 | time: 0.001065s
+
+--- Diamond size: 6 ---
+Ammann-Offutt | prime_paths: 64 | time: 0.003407s
+generate_prime_paths | prime_paths: 64 | time: 0.047821s
+PrimePathGenerator | prime_paths: 64 | time: 0.001469s
+
+--- Diamond size: 7 ---
+Ammann-Offutt | prime_paths: 128 | time: 0.008787s
+generate_prime_paths | prime_paths: 128 | time: 0.362170s
+PrimePathGenerator | prime_paths: 128 | time: 0.004039s
+
+--- Diamond size: 8 ---
+Ammann-Offutt | prime_paths: 256 | time: 0.035682s
+generate_prime_paths | prime_paths: 256 | time: 3.140865s
+PrimePathGenerator | prime_paths: 256 | time: 0.003863s
+
+--- Diamond size: 9 ---
+Ammann-Offutt | prime_paths: 512 | time: 0.073220s
+generate_prime_paths | prime_paths: 512 | time: 7.780507s
+PrimePathGenerator | prime_paths: 512 | time: 0.008077s
+
+--- Diamond size: 10 ---
+Ammann-Offutt | prime_paths: 1024 | time: 0.379259s
+generate_prime_paths | prime_paths: 1024 | time: 29.376474s
+PrimePathGenerator | prime_paths: 1024 | time: 0.012598s
+
+--- Diamond size: 11 ---
+Ammann-Offutt | prime_paths: 2048 | time: 0.336446s
+generate_prime_paths | prime_paths: 2048 | time: 97.619519s
+PrimePathGenerator | prime_paths: 2048 | time: 0.025440s
+
+--- Diamond size: 12 ---
+Ammann-Offutt | prime_paths: 4096 | time: 0.727404s
+generate_prime_paths | prime_paths: 4096 | time: 504.780186s
+PrimePathGenerator | prime_paths: 4096 | time: 0.041856s
+

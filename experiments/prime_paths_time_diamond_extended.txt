@@ -1,0 +1,45 @@
+--- Diamond size: 2 ---
+Ammann-Offutt | prime_paths: 28 | time: 0.000447s
+generate_prime_paths | prime_paths: 28 | time: 0.010159s
+PrimePathGenerator | prime_paths: 28 | time: 0.003371s
+
+--- Diamond size: 3 ---
+Ammann-Offutt | prime_paths: 80 | time: 0.001720s
+generate_prime_paths | prime_paths: 80 | time: 0.049926s
+PrimePathGenerator | prime_paths: 80 | time: 0.005227s
+
+--- Diamond size: 4 ---
+Ammann-Offutt | prime_paths: 208 | time: 0.005448s
+generate_prime_paths | prime_paths: 208 | time: 0.304431s
+PrimePathGenerator | prime_paths: 208 | time: 0.008545s
+
+--- Diamond size: 5 ---
+Ammann-Offutt | prime_paths: 512 | time: 0.016530s
+generate_prime_paths | prime_paths: 512 | time: 2.702637s
+PrimePathGenerator | prime_paths: 512 | time: 0.015936s
+
+--- Diamond size: 6 ---
+Ammann-Offutt | prime_paths: 1216 | time: 0.034866s
+generate_prime_paths | prime_paths: 1216 | time: 8.115066s
+PrimePathGenerator | prime_paths: 1216 | time: 0.071761s
+
+--- Diamond size: 7 ---
+Ammann-Offutt | prime_paths: 2816 | time: 0.073293s
+generate_prime_paths | prime_paths: 2816 | time: 45.410272s
+PrimePathGenerator | prime_paths: 2816 | time: 0.055034s
+
+--- Diamond size: 8 ---
+Ammann-Offutt | prime_paths: 6400 | time: 0.199456s
+generate_prime_paths | prime_paths: 6400 | time: 279.314580s
+PrimePathGenerator | prime_paths: 6400 | time: 0.085632s
+
+--- Diamond size: 9 ---
+Ammann-Offutt | prime_paths: 14336 | time: 0.479357s
+generate_prime_paths | prime_paths: 14336 | time: 1880.951518s
+PrimePathGenerator | prime_paths: 14336 | time: 0.137318s
+
+--- Diamond size: 10 ---
+Ammann-Offutt | prime_paths: 31744 | time: 2.423003s
+generate_prime_paths | prime_paths: 31744 | time: 9229.113051s
+PrimePathGenerator | prime_paths: 31744 | time: 0.242354s
+
