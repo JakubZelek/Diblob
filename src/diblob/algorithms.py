@@ -425,7 +425,7 @@ class PrimePathCore:
         """
         Unblock mechanism from Jonson's algorithm for simple cycles.
         """
-        blocked_set.remove(node_id)
+        blocked_set.discard(node_id)
 
         while blocked_dict[node_id]:
             blocked_outgoing_id = blocked_dict[node_id].pop()

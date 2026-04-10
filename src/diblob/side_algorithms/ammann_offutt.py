@@ -1,86 +1,77 @@
-"""
-Implementation for the prime paths generation from:
-https://github.com/heshenghuan/Prime-Path-Coverage
-"""
+def is_simple_path(path):
+    return (len(path) <= 1 or path[0] == path[-1]) or (len(set(path)) == len(path))
+
+def is_cycle(path):
+    return len(path) > 1 and  path[0] == path[-1]
+
+def is_forward_extendable(path, graph):
+    """Check if path can be extended forward while staying simple."""
+    last = path[-1]
+    for neighbor in graph["edges"].get(last, []):
+        if neighbor not in path or neighbor == path[0]:
+            return True
+    return False
 
 
-def isPrimePath(path, graph):
-    """Whether a path is a prime path."""
-    if len(path) >= 2 and path[0] == path[-1]:
-        return True
-    elif reachHead(path, graph) and reachEnd(path, graph):
-        return True
-    else:
-        return False
+def extend_path(path, graph):
+    """Generate all one-step forward extensions of path."""
+    last = path[-1]
+    extensions = []
+
+    for neighbor in graph["edges"][last]:
+        if neighbor not in path or neighbor == path[0]:
+            extensions.append(path + (neighbor,))
+
+    return extensions
 
 
-def reachHead(path, graph):
+def is_subpath(sub, full):
+    """Check if sub is a contiguous subpath of full."""
+    return "-".join(sub) + "-" in "-".join(full) + "-"
+
+
+def get_prime_paths(graph):
     """
-    Whether the path can be extended at head, and the extended path is still
-    a simple path.
+    Implementation of Ammann-Offutt prime path algorithm.
+    graph = {
+        "nodes": [...],
+        "edges": {node: [neighbors]}
+    }
     """
-    former_nodes = filter(lambda n: path[0] in graph[
-                          'edges'][n], graph['nodes'])
-    for n in former_nodes:
-        if n not in path or n == path[-1]:
-            return False
-    return True
+    # 1: P' = V (paths of length 0 → single nodes)
+    p_prime = [(v,) for v in graph["nodes"]]
 
+    # 2: T = emptyset
+    temp_paths = []
 
-def reachEnd(path, graph):
-    """
-    Whether the path can be extended at tail, and the extended path is still
-    a simple path.
-    """
-    later_nodes = graph['edges'][path[-1]]
-    for n in later_nodes:
-        if n not in path or n == path[0]:
-            return False
-    return True
+    # 3: PP(G) = emptyset
+    prime_paths_set = set()
 
+    # 4: while P' != emptyset
+    while p_prime:
+        # 5: remove arbitrary path
+        path = p_prime.pop()
 
-def extendable(path, graph):
-    """Whether a path is extendable."""
-    if isPrimePath(path, graph) or reachEnd(path, graph):
-        return False
-    else:
-        return True
+        # 6: if simple and forward extendable
+        if is_simple_path(path) and is_forward_extendable(path, graph) and not is_cycle(path):
+            # 7: extend and add back to P'
+            p_prime.extend(extend_path(path, graph))
+        else:
+            temp_paths.append(path)
 
+    # 10: while T != emptyset
+    while temp_paths:
+        # 11: remove the longest path
+        path = max(temp_paths, key=len)
+        temp_paths.remove(path)
 
-def findSimplePath(graph, exPaths, paths=[]):
-    """Find the simple paths of a graph."""
-    paths.extend(filter(lambda p: isPrimePath(p, graph), exPaths))
-    exPaths = filter(lambda p: extendable(p, graph), exPaths)
-    newExPaths = []
-    for p in exPaths:
-        for nx in graph['edges'][p[-1]]:
-            if nx not in p or nx == p[0]:
-                newExPaths.append(p + (nx, ))
-    if len(newExPaths) > 0:
-        findSimplePath(graph, newExPaths, paths)
+        # 12: add to PP(G)
+        prime_paths_set.add(path)
 
+        # 13: remove all subpaths of p from T
+        temp_paths = [
+            p for p in temp_paths if not is_subpath(p, path)
+        ]
 
-def ammann_offutt_prime_paths(graph):
-    """Find the prime paths of a graph."""
-    exPaths = [(n, ) for n in graph['nodes']]
-    simplePaths = []
-    # recursively finding the simple paths of the graph
-    findSimplePath(graph, exPaths, simplePaths)
-    primePaths = sorted(simplePaths, key=lambda a: (len(a), a))
-
-    return primePaths
-
-def rotate_cycle(cycle):
-    """
-    Given a cycle like [A, B, C, D, A],
-    return all its rotations:
-    [A, B, C, D, A], [B, C, D, A, B], ...
-    """
-    base = cycle[:-1]
-    rotations = []
-    n = len(base)
-    for i in range(n):
-        rotated = base[i:] + base[:i] + [base[i]]
-        rotations.append(rotated)
-    return rotations
- 
+    # 14: return PP(G)
+    return list(prime_paths_set)

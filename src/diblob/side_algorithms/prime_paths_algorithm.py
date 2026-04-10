@@ -35,7 +35,7 @@ class Path:
         return item in self.path
 
     def __lt__(self, other):
-        return "-".join(self.path) in "-".join(other.path)
+        return  "-".join(self.path) + "-" in  "-".join(other.path) + "-"
 
     def __repr__(self):
         return str(self.path)
@@ -44,7 +44,7 @@ class Path:
         return hash(tuple(self.path))
 
     def __eq__(self, other):
-        return "-".join(self.path) == "-".join(other.path)
+        return  "-".join(self.path) + "-" == "-".join(other.path) + "-"
 
     def index(self, value):
         """
@@ -86,26 +86,26 @@ class SCC:
 
     def __init__(self, scc_graph: dict, graph: dict):
         self.scc_graph = scc_graph
-        self.internal_paths = self.get_internal_prime_paths()
 
         self.scc_entry_nodes = {
-            scc_node_id
-            for scc_node_id in scc_graph
+            v
+            for v in scc_graph
             if any(
-                scc_node_id in graph[node_id]
-                for node_id in graph
-                if node_id not in scc_graph
+                v in graph.get(u, [])
+                for u in graph
+                if u not in scc_graph
             )
         }
+
         self.scc_exit_nodes = {
-            scc_node_id
-            for scc_node_id in scc_graph
+            u
+            for u in scc_graph
             if any(
-                node_id in graph[scc_node_id]
-                for node_id in graph
-                if node_id not in scc_graph
+                v not in scc_graph
+                for v in graph.get(u, [])
             )
         }
+        self.internal_paths = self.get_internal_prime_paths()
         self.nodes = scc_graph.keys()
 
         self.entry_exit_paths = self.compute_entry_exit_paths()
@@ -134,7 +134,7 @@ class SCC:
         """
         scc_entry_set = set()
         for scc_entry in self.scc_entry_nodes:
-            scc_entry_set |= scc_entry_paths_extraction(self.internal_paths, scc_entry)
+            scc_entry_set |= scc_entry_paths_extraction(self.internal_paths, scc_entry, self)
         return scc_entry_set
 
     def extract_exit_paths(self):
@@ -143,7 +143,7 @@ class SCC:
         """
         scc_exit_set = set()
         for scc_exit in self.scc_exit_nodes:
-            scc_exit_set |= scc_exit_paths_extraction(self.internal_paths, scc_exit)
+            scc_exit_set |= scc_exit_paths_extraction(self.internal_paths, scc_exit, self)
         return scc_exit_set
 
     def get_internal_prime_paths(self):
@@ -154,7 +154,9 @@ class SCC:
         for v in self.scc_graph.keys():
             paths_started_in_v = vertex_based_prime_paths_generation(self.scc_graph, v)
             for values in paths_started_in_v.values():
-                scc_prime_paths |= set(values)
+                for path in values:
+                    if path.is_cycle or path[0] not in self.scc_entry_nodes and path[-1] not in self.scc_exit_nodes:
+                        scc_prime_paths.add(path)
         return scc_prime_paths
 
     def __repr__(self):
@@ -171,7 +173,7 @@ def get_ccfg_graph_and_scc_dict(graph: dict):
     scc_number = 0
     scc_dict = {}
     for scc in tarjan.run():
-        print("TAJRAN", scc, digraph)
+
         if len(scc) > 1:
             scc_id = f"SCC_{scc_number}"
 
@@ -283,13 +285,14 @@ def scc_entry_exit_paths_extraction(
     return entry_exit_paths
 
 
-def scc_exit_paths_extraction(scc_internal_prime_paths: set[Path], v_ex: str):
+def scc_exit_paths_extraction(scc_internal_prime_paths: set[Path], v_ex: str, scc: SCC):
     """
     Algorithm 3 from [1]
     """
     exit_paths = set()
     for path in scc_internal_prime_paths:
         if v_ex in path and not (path.is_cycle and path[0] == v_ex):
+
             v_ex_index = path.index(v_ex)
             exit_paths.add(path[: v_ex_index + 1])
 
@@ -300,10 +303,14 @@ def scc_exit_paths_extraction(scc_internal_prime_paths: set[Path], v_ex: str):
             if p != k and k < p:
                 if k in exit_paths:
                     exit_paths.remove(k)
+    for p in list(exit_paths):
+        if p[0] in scc.scc_entry_nodes:
+            exit_paths.remove(p)
+
     return exit_paths
 
 
-def scc_entry_paths_extraction(scc_internal_prime_paths: set[Path], v_en: str):
+def scc_entry_paths_extraction(scc_internal_prime_paths: set[Path], v_en: str, scc: SCC):
     """
     Algorithm 4 from [1]
     """
@@ -320,6 +327,11 @@ def scc_entry_paths_extraction(scc_internal_prime_paths: set[Path], v_en: str):
             if p != k and k < p:
                 if k in entry_paths:
                     entry_paths.remove(k)
+
+    for p in list(entry_paths):
+        if p[-1] in scc.scc_exit_nodes:
+            entry_paths.remove(p)
+
     return entry_paths
 
 
@@ -407,6 +419,7 @@ def scc_exit_prime_paths_generation(
     for p in complete_prime_paths:
         for scc in p.get_scc_crossed_by_path(scc_dict):
             for q in scc.exit_paths:
+ 
                 v_ex = q[-1]
                 if v_ex in p:
                     index = p.index(v_ex)
@@ -433,7 +446,7 @@ def scc_entry_prime_paths_generation(
                 v_en = q[0]
                 if v_en in p:
                     index = p.path.index(v_en)
-                    if p[index-1] not in scc.nodes:
+                    if p[index - 1] not in scc.nodes:
                         r = Path(p.path[:index] + q.path)
                         result.add(r)
     return result
@@ -446,11 +459,9 @@ def get_filtered_internal_prime_paths(scc_dict: dict[str, SCC]):
     result = set()
 
     for scc in scc_dict.values():
-        boundary = scc.scc_entry_nodes | scc.scc_exit_nodes
         for p in scc.internal_paths:
             start, end = p[0], p[-1]
-
-            if p.is_cycle or (start not in boundary and end not in boundary):
+            if p.is_cycle or (start not in scc.scc_entry_nodes  and end not in scc.scc_exit_nodes):
                 result.add(p)
 
     return result
@@ -490,25 +501,24 @@ def generate_prime_paths(graph: dict, starting_points = None):
     complete_prime_paths = cfg_complete_prime_paths_generation(
         non_empty_prime_paths, scc_dict, graph
     )
-    print("PP", non_empty_prime_paths)
-    print("SCC_dict", scc_dict)
-    print("graph", graph)
+
     for path in complete_prime_paths:
-        yield path[1:] 
+        yield path[1:] if path[0] == artificial_start_id else path, "1"
+
     scc_exit_prime_paths = scc_exit_prime_paths_generation(
         complete_prime_paths, scc_dict
     )
 
     for path in scc_exit_prime_paths:
-        yield path[1:]
+        yield path[1:] if path[0] == artificial_start_id else path, "2"
     scc_entry_prime_paths = scc_entry_prime_paths_generation(
         complete_prime_paths, scc_exit_prime_paths, scc_dict
     )
 
     for path in scc_entry_prime_paths:
-        yield path[1:]
+        yield path[1:] if path[0] == artificial_start_id else path, "3"
 
     internal_prime_paths = get_filtered_internal_prime_paths(scc_dict)
 
     for path in internal_prime_paths:
-        yield path[1:]
+        yield path[1:] if path[0] == artificial_start_id else path, "4"
