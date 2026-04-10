@@ -552,20 +552,23 @@ class MaxSimplePathGenerator(PrimePathCore):
 
         return True
 
+
     def left_extendability_validation(
-        self, path: list, node_id: str, skipped_set: set
+        self, path: list, node_id: str,
     ) -> tuple[bool, bool]:
         """
         Return tuple of bools (Passed validation, Skip next validation)
         """
-        path_start = path[0]
-        nodes_are_in_the_same_scc = node_id in self.tarjant_dict[path[0]]
+        if len(path) < 2:
+            return (True, False)
+    
+        star_node_id = path[1]
+        nodes_are_in_the_same_scc = node_id in self.tarjant_dict[star_node_id]
 
         if not nodes_are_in_the_same_scc:
             node_is_left_extendable = bool(
-                set(path) & set(self.reversed_graph[path_start])
+                set(self.reversed_graph[star_node_id]) - set(path)
             )
-            skipped_set.add(node_id)
             return (not node_is_left_extendable, True)
 
         return (True, False)
@@ -577,46 +580,45 @@ class MaxSimplePathGenerator(PrimePathCore):
         stack: list,
         blocked_set: set,
         blocked_dict: dict,
-        skipped_set: set,
-        skip_left_extendable_validation_flag: bool = True
+        skip_validation = False,
+        passed_validation = True,
     ):
         """
         DFS part from Jonson's algorithm (version for max simple paths)
         """
-        validation_result = True
+        if not skip_validation:
+            passed_validation, skip_validation = self.left_extendability_validation(stack, node_id)
+            if not passed_validation:
+                return
+
         found_cycle = False
         stack.append(node_id)
         blocked_set.add(node_id)
 
         for outgoing_node_id in induced_graph[node_id]:
-            if not skip_left_extendable_validation_flag:
-                validation_result, skip_left_extendable_validation_flag = (
-                    self.left_extendability_validation(stack, outgoing_node_id, skipped_set)
-                )
+            
+            if stack[0] == outgoing_node_id:
+                yield (*stack, outgoing_node_id)
+                found_cycle = True
 
-            if validation_result:
-                if stack[0] == outgoing_node_id:
-                    yield (*stack, outgoing_node_id)
+            elif outgoing_node_id not in blocked_set:
+                for result in self.dfs_jonson(
+                    outgoing_node_id,
+                    induced_graph,
+                    stack,
+                    blocked_set,
+                    blocked_dict,
+                    skip_validation,
+                    passed_validation
+                ):
+                    yield result
                     found_cycle = True
-
-                elif outgoing_node_id not in blocked_set:
-                    for result in self.dfs_jonson(
-                        outgoing_node_id,
-                        induced_graph,
-                        stack,
-                        blocked_set,
-                        blocked_dict,
-                        skipped_set,
-                        skip_left_extendable_validation_flag,
-                    ):
-                        yield result
-                        found_cycle = True
 
         if found_cycle:
             self.unblock(blocked_set, blocked_dict, node_id)
         else:
             for outgoing_node_id in induced_graph[node_id]:
-                if node_id not in blocked_dict[outgoing_node_id] and node_id not in skipped_set:
+                if node_id not in blocked_dict[outgoing_node_id]:
                     blocked_dict[outgoing_node_id].add(node_id)
 
         stack.pop()
@@ -646,7 +648,7 @@ class MaxSimplePathGenerator(PrimePathCore):
                     stack = []
 
                     for potential_simple_path in self.dfs_jonson(
-                        artificial_node, induced_graph, stack, blocked_set, blocked_dict, skipped_set=set()
+                        artificial_node, induced_graph, stack, blocked_set, blocked_dict
                     ):
                         potential_simple_path = potential_simple_path[1:-1]
                         tail, head = potential_simple_path[0], potential_simple_path[-1]
