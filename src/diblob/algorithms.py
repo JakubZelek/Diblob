@@ -452,9 +452,6 @@ class MaxSimplePathGenerator(PrimePathCore):
     MaX Simple Path Generator - based on the node_id
     """
 
-    def __init__(self, digraph_manager: DigraphManager):
-        super().__init__(digraph_manager)
-
     def get_extended_graph(self, node_id: str, artificial_node: str = "ArtificialNode"):
         """
         Returns extended digraph for given node_id, None if
@@ -675,8 +672,6 @@ class SimpleCycleGenerator(PrimePathCore):
     Simple Cycles Generator
     """
 
-    def __init__(self, digraph_manager: DigraphManager):
-        super().__init__(digraph_manager)
 
     def dfs_jonson(
         self,

@@ -503,22 +503,22 @@ def generate_prime_paths(graph: dict, starting_points = None):
     )
 
     for path in complete_prime_paths:
-        yield path[1:] if path[0] == artificial_start_id else path, "1"
+        yield path[1:] if path[0] == artificial_start_id else path
 
     scc_exit_prime_paths = scc_exit_prime_paths_generation(
         complete_prime_paths, scc_dict
     )
 
     for path in scc_exit_prime_paths:
-        yield path[1:] if path[0] == artificial_start_id else path, "2"
+        yield path[1:] if path[0] == artificial_start_id else path
     scc_entry_prime_paths = scc_entry_prime_paths_generation(
         complete_prime_paths, scc_exit_prime_paths, scc_dict
     )
 
     for path in scc_entry_prime_paths:
-        yield path[1:] if path[0] == artificial_start_id else path, "3"
+        yield path[1:] if path[0] == artificial_start_id else path
 
     internal_prime_paths = get_filtered_internal_prime_paths(scc_dict)
 
     for path in internal_prime_paths:
-        yield path[1:] if path[0] == artificial_start_id else path, "4"
+        yield path[1:] if path[0] == artificial_start_id else path

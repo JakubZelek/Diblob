@@ -1,0 +1,47 @@
+TITLE = less_than_5000.jsonl
+MIN_NUM_OF_NODES = 15
+MAX_NUM_OF_NODES = 500
+TIMEOUT = max(16*time, 10min)
+num_of_prime_paths < 5000
+
+TITLE: diamond.jsonl
+TIMEOUT: 5h
+
+TITLE: diamond_extended.jsonl.jsonl
+TIMEOUT: 5h
+
+TITLE: 1001_2000.jsonl
+THRESHOLD = 500_000_00 #break
+MES_THRESHOLD = 100_000 #measure
+NOTE: finish time have to be multiplied by -1 (issue)
+
+TITLE: 15_50.jsonl
+MIN_NUM_OF_NODES = 15
+MAX_NUM_OF_NODES = 50
+TIMEOUT = max(16*time, 10min)
+num_of_prime_paths >= 5000
+
+TITLE: 51_100.jsonl
+MIN_NUM_OF_NODES = 15
+MAX_NUM_OF_NODES = 50
+TIMEOUT = max(16*time, 30min)
+num_of_prime_paths >= 5000
+
+TITLE 101_200.jsonl
+MIN_NUM_OF_NODES = 101
+MAX_NUM_OF_NODES = 200
+TIMEOUT = max(8*time, 1h)
+num_of_prime_paths >= 5000
+
+TITLE: 201_1000.jsonl
+MIN_NUM_OF_NODES = 201
+MAX_NUM_OF_NODES = 1000
+TIMEOUT = max(4*time, 2h)
+num_of_prime_paths >= 5000
+
+TITLE: 2_the_best.jsonl
+MIN_NUM_OF_NODES = 15
+MAX_NUM_OF_NODES = 150
+TIMEOUT = time*3 + 10min
+num_of_prime_paths >= 5000
+note: only our and speed up algorithm compared
