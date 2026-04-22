@@ -7,10 +7,10 @@ from diblob.algorithms import PrimePathGenerator, TarjanSCC
 from diblob.digraph_manager import DigraphManager
 from diblob.side_algorithms import generate_prime_paths, ammann_offutt_prime_paths, get_prime_paths
 
-with open("Diblob/final_cfgs.json") as f:
+with open("notebooks/experiments/final_cfgs.json") as f:
     data = json.load(f)
 
-with open("Diblob/final_maps.json") as f:
+with open("notebooks/experiments/final_maps.json") as f:
     map_of_ids = json.load(f)
 
 MIN_NUM_OF_NODES = 15

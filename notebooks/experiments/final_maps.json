@@ -1,0 +1,2593 @@
+{
+  "01": [
+    "https://github.com/openinterpreter/01.git"
+  ],
+  "2019-CCF-BDCI-OCR-MCZJ-OCR-IdentificationIDElement": [
+    "https://github.com/Mingtzge/2019-CCF-BDCI-OCR-MCZJ-OCR-IdentificationIDElement.git"
+  ],
+  "2d-gaussian-splatting": [
+    "https://github.com/hbb1/2d-gaussian-splatting.git"
+  ],
+  "3D-Shape-Analysis-Paper-List": [
+    "https://github.com/yinyunie/3D-Shape-Analysis-Paper-List.git"
+  ],
+  "ADAS": [
+    "https://github.com/ShengranHu/ADAS.git"
+  ],
+  "AI-Guide-and-Demos-zh_CN": [
+    "https://github.com/Hoper-J/AI-Guide-and-Demos-zh_CN.git"
+  ],
+  "AI-Infra-Guard": [
+    "https://github.com/Tencent/AI-Infra-Guard.git"
+  ],
+  "AI-Youtube-Shorts-Generator": [
+    "https://github.com/SamurAIGPT/AI-Youtube-Shorts-Generator.git"
+  ],
+  "AI-reads-books-page-by-page": [
+    "https://github.com/echohive42/AI-reads-books-page-by-page.git"
+  ],
+  "AIOS": [
+    "https://github.com/agiresearch/AIOS.git"
+  ],
+  "AQLM": [
+    "https://github.com/Vahe1994/AQLM.git"
+  ],
+  "ARL": [
+    "https://github.com/Aabyss-Team/ARL.git"
+  ],
+  "AdalFlow": [
+    "https://github.com/SylphAI-Inc/AdalFlow.git"
+  ],
+  "Agent-S": [
+    "https://github.com/simular-ai/Agent-S.git"
+  ],
+  "AgentStack": [
+    "https://github.com/agentstack-ai/AgentStack.git"
+  ],
+  "Agentless": [
+    "https://github.com/OpenAutoCoder/Agentless.git"
+  ],
+  "AgiBot-World": [
+    "https://github.com/OpenDriveLab/AgiBot-World.git"
+  ],
+  "AlphaCodium": [
+    "https://github.com/Codium-ai/AlphaCodium.git"
+  ],
+  "AniPortrait": [
+    "https://github.com/Zejun-Yang/AniPortrait.git"
+  ],
+  "Argus": [
+    "https://github.com/jasonxtn/Argus.git"
+  ],
+  "AsrTools": [
+    "https://github.com/WEIFENG2333/AsrTools.git"
+  ],
+  "AudioNotes": [
+    "https://github.com/harry0703/AudioNotes.git"
+  ],
+  "AugLy": [
+    "https://github.com/facebookresearch/AugLy.git"
+  ],
+  "AutoGroq": [
+    "https://github.com/jgravelle/AutoGroq.git"
+  ],
+  "AutoMergePublicNodes": [
+    "https://github.com/chengaopan/AutoMergePublicNodes.git"
+  ],
+  "AutoRAG": [
+    "https://github.com/Marker-Inc-Korea/AutoRAG.git"
+  ],
+  "Automated-AI-Web-Researcher-Ollama": [
+    "https://github.com/TheBlewish/Automated-AI-Web-Researcher-Ollama.git"
+  ],
+  "Awesome-ML-SYS-Tutorial": [
+    "https://github.com/zhaochenyang20/Awesome-ML-SYS-Tutorial.git"
+  ],
+  "Azure-Network-Security": [
+    "https://github.com/Azure/Azure-Network-Security.git"
+  ],
+  "BCEmbedding": [
+    "https://github.com/netease-youdao/BCEmbedding.git"
+  ],
+  "BabelDOC": [
+    "https://github.com/funstory-ai/BabelDOC.git"
+  ],
+  "Bagels": [
+    "https://github.com/EnhancedJax/Bagels.git"
+  ],
+  "Bench2Drive": [
+    "https://github.com/Thinklab-SJTU/Bench2Drive.git"
+  ],
+  "Bento4": [
+    "https://github.com/axiomatic-systems/Bento4.git"
+  ],
+  "Bert-Multi-Label-Text-Classification": [
+    "https://github.com/lonePatient/Bert-Multi-Label-Text-Classification.git"
+  ],
+  "BettaFish": [
+    "https://github.com/666ghj/BettaFish.git"
+  ],
+  "BitNet": [
+    "https://github.com/microsoft/BitNet.git",
+    "https://github.com/kyegomez/BitNet.git"
+  ],
+  "Bjorn": [
+    "https://github.com/infinition/Bjorn.git"
+  ],
+  "Blender-Launcher": [
+    "https://github.com/DotBow/Blender-Launcher.git"
+  ],
+  "BlueDucky": [
+    "https://github.com/pentestfunctions/BlueDucky.git"
+  ],
+  "BlueSpy": [
+    "https://github.com/TarlogicSecurity/BlueSpy.git"
+  ],
+  "BrushNet": [
+    "https://github.com/TencentARC/BrushNet.git"
+  ],
+  "ByteTrack": [
+    "https://github.com/FoundationVision/ByteTrack.git"
+  ],
+  "C-Plus-Plus": [
+    "https://github.com/TheAlgorithms/C-Plus-Plus.git"
+  ],
+  "CAG": [
+    "https://github.com/hhhuang/CAG.git"
+  ],
+  "CSI-Camera": [
+    "https://github.com/JetsonHacksNano/CSI-Camera.git"
+  ],
+  "CSPostgraduate-408": [
+    "https://github.com/CodePanda66/CSPostgraduate-408.git"
+  ],
+  "CartoonGan-tensorflow": [
+    "https://github.com/mnicnc404/CartoonGan-tensorflow.git"
+  ],
+  "CatVTON": [
+    "https://github.com/Zheng-Chong/CatVTON.git"
+  ],
+  "Catch2": [
+    "https://github.com/catchorg/Catch2.git"
+  ],
+  "ChatTTS": [
+    "https://github.com/2noise/ChatTTS.git"
+  ],
+  "ChatTTS-ui": [
+    "https://github.com/jianchang512/ChatTTS-ui.git"
+  ],
+  "ChatTTS_colab": [
+    "https://github.com/6drf21e/ChatTTS_colab.git"
+  ],
+  "Chinese-Chatbot-PyTorch-Implementation": [
+    "https://github.com/Doragd/Chinese-Chatbot-PyTorch-Implementation.git"
+  ],
+  "Cinder": [
+    "https://github.com/cinder/Cinder.git"
+  ],
+  "ClearerVoice-Studio": [
+    "https://github.com/modelscope/ClearerVoice-Studio.git"
+  ],
+  "Clipboard": [
+    "https://github.com/Slackadays/Clipboard.git"
+  ],
+  "CodeGeeX4": [
+    "https://github.com/zai-org/CodeGeeX4.git"
+  ],
+  "CogVLM2": [
+    "https://github.com/zai-org/CogVLM2.git"
+  ],
+  "ColiVara": [
+    "https://github.com/tjmlabs/ColiVara.git"
+  ],
+  "ComfyUI-3D-Pack": [
+    "https://github.com/MrForExample/ComfyUI-3D-Pack.git"
+  ],
+  "ComfyUI-AdvancedLivePortrait": [
+    "https://github.com/PowerHouseMan/ComfyUI-AdvancedLivePortrait.git"
+  ],
+  "ComfyUI-CogVideoXWrapper": [
+    "https://github.com/kijai/ComfyUI-CogVideoXWrapper.git"
+  ],
+  "ComfyUI-Florence2": [
+    "https://github.com/kijai/ComfyUI-Florence2.git"
+  ],
+  "ComfyUI-Fluxtapoz": [
+    "https://github.com/logtd/ComfyUI-Fluxtapoz.git"
+  ],
+  "ComfyUI-GGUF": [
+    "https://github.com/city96/ComfyUI-GGUF.git"
+  ],
+  "ComfyUI-HunyuanVideoWrapper": [
+    "https://github.com/kijai/ComfyUI-HunyuanVideoWrapper.git"
+  ],
+  "ComfyUI-InstantID": [
+    "https://github.com/ZHO-ZHO-ZHO/ComfyUI-InstantID.git"
+  ],
+  "ComfyUI-LTXVideo": [
+    "https://github.com/Lightricks/ComfyUI-LTXVideo.git"
+  ],
+  "ComfyUI-LivePortraitKJ": [
+    "https://github.com/kijai/ComfyUI-LivePortraitKJ.git"
+  ],
+  "ComfyUI-RMBG": [
+    "https://github.com/1038lab/ComfyUI-RMBG.git"
+  ],
+  "ComfyUI-SUPIR": [
+    "https://github.com/kijai/ComfyUI-SUPIR.git"
+  ],
+  "ComfyUI-layerdiffuse": [
+    "https://github.com/huchenlei/ComfyUI-layerdiffuse.git"
+  ],
+  "ComfyUI_Bxb": [
+    "https://github.com/zhulu111/ComfyUI_Bxb.git"
+  ],
+  "ComfyUI_InstantID": [
+    "https://github.com/cubiq/ComfyUI_InstantID.git"
+  ],
+  "ComfyUI_LayerStyle": [
+    "https://github.com/chflame163/ComfyUI_LayerStyle.git"
+  ],
+  "ControlFlow": [
+    "https://github.com/PrefectHQ/ControlFlow.git"
+  ],
+  "ControlNeXt": [
+    "https://github.com/dvlab-research/ControlNeXt.git"
+  ],
+  "ControlNetPlus": [
+    "https://github.com/xinsir6/ControlNetPlus.git"
+  ],
+  "CosyVoice": [
+    "https://github.com/FunAudioLLM/CosyVoice.git"
+  ],
+  "Cradle": [
+    "https://github.com/BAAI-Agents/Cradle.git"
+  ],
+  "CrawlerTutorial": [
+    "https://github.com/NanmiCoder/CrawlerTutorial.git"
+  ],
+  "CyberScraper-2077": [
+    "https://github.com/itsOwen/CyberScraper-2077.git"
+  ],
+  "D-FINE": [
+    "https://github.com/Peterande/D-FINE.git"
+  ],
+  "DALLE-pytorch": [
+    "https://github.com/lucidrains/DALLE-pytorch.git"
+  ],
+  "DATAGEN": [
+    "https://github.com/starpig1129/DATAGEN.git"
+  ],
+  "DH_live": [
+    "https://github.com/kleinlee/DH_live.git"
+  ],
+  "DataFlow": [
+    "https://github.com/OpenDCAI/DataFlow.git"
+  ],
+  "DataLoaders_DALI": [
+    "https://github.com/tanglang96/DataLoaders_DALI.git"
+  ],
+  "DeepFashion_Try_On": [
+    "https://github.com/switchablenorms/DeepFashion_Try_On.git"
+  ],
+  "DeepSeek-Math": [
+    "https://github.com/deepseek-ai/DeepSeek-Math.git"
+  ],
+  "DeepSeek-MoE": [
+    "https://github.com/deepseek-ai/DeepSeek-MoE.git"
+  ],
+  "DeepSeek-V3": [
+    "https://github.com/deepseek-ai/DeepSeek-V3.git"
+  ],
+  "DeepSeek-VL": [
+    "https://github.com/deepseek-ai/DeepSeek-VL.git"
+  ],
+  "DeepSeek-VL2": [
+    "https://github.com/deepseek-ai/DeepSeek-VL2.git"
+  ],
+  "Depth-Anything": [
+    "https://github.com/LiheYoung/Depth-Anything.git"
+  ],
+  "Depth-Anything-V2": [
+    "https://github.com/DepthAnything/Depth-Anything-V2.git"
+  ],
+  "DepthCrafter": [
+    "https://github.com/Tencent/DepthCrafter.git"
+  ],
+  "Devon": [
+    "https://github.com/entropy-research/Devon.git"
+  ],
+  "DiffSinger": [
+    "https://github.com/MoonInTheRiver/DiffSinger.git"
+  ],
+  "DimensionX": [
+    "https://github.com/wenqsun/DimensionX.git"
+  ],
+  "DocLayout-YOLO": [
+    "https://github.com/opendatalab/DocLayout-YOLO.git"
+  ],
+  "DouyinLiveWebFetcher": [
+    "https://github.com/saermart/DouyinLiveWebFetcher.git"
+  ],
+  "ELLA": [
+    "https://github.com/TencentQQGYLab/ELLA.git"
+  ],
+  "EOS": [
+    "https://github.com/Akkudoktor-EOS/EOS.git"
+  ],
+  "ERNIE-Pytorch": [
+    "https://github.com/nghuyong/ERNIE-Pytorch.git"
+  ],
+  "EasyAnimate": [
+    "https://github.com/aigc-apps/EasyAnimate.git"
+  ],
+  "EmoLLM": [
+    "https://github.com/SmartFlowAI/EmoLLM.git"
+  ],
+  "Emu3": [
+    "https://github.com/baaivision/Emu3.git"
+  ],
+  "EveryoneNobel": [
+    "https://github.com/16131zzzzzzzz/EveryoneNobel.git"
+  ],
+  "ExtractThinker": [
+    "https://github.com/enoch3712/ExtractThinker.git"
+  ],
+  "F5-TTS": [
+    "https://github.com/SWivid/F5-TTS.git"
+  ],
+  "FTXUI": [
+    "https://github.com/ArthurSonzogni/FTXUI.git"
+  ],
+  "FacialExpressionRecognition": [
+    "https://github.com/luanshiyinyang/FacialExpressionRecognition.git"
+  ],
+  "FastSpeech": [
+    "https://github.com/xcmyz/FastSpeech.git"
+  ],
+  "FastVideo": [
+    "https://github.com/hao-ai-lab/FastVideo.git"
+  ],
+  "FinanceDatabase": [
+    "https://github.com/JerBouma/FinanceDatabase.git"
+  ],
+  "FindMyFlipper": [
+    "https://github.com/MatthewKuKanich/FindMyFlipper.git"
+  ],
+  "FlashRAG": [
+    "https://github.com/RUC-NLPIR/FlashRAG.git"
+  ],
+  "FluxMusic": [
+    "https://github.com/feizc/FluxMusic.git"
+  ],
+  "FoundationStereo": [
+    "https://github.com/NVlabs/FoundationStereo.git"
+  ],
+  "FreeAskInternet": [
+    "https://github.com/nashsu/FreeAskInternet.git"
+  ],
+  "GLM-4": [
+    "https://github.com/zai-org/GLM-4.git"
+  ],
+  "GLM-4-Voice": [
+    "https://github.com/zai-org/GLM-4-Voice.git"
+  ],
+  "GOT-OCR2.0": [
+    "https://github.com/Ucas-HaoranWei/GOT-OCR2.0.git"
+  ],
+  "GPT-SoVITS": [
+    "https://github.com/RVC-Boss/GPT-SoVITS.git"
+  ],
+  "GSCNN": [
+    "https://github.com/nv-tlabs/GSCNN.git"
+  ],
+  "GaLore": [
+    "https://github.com/jiaweizzhao/GaLore.git"
+  ],
+  "GeneFacePlusPlus": [
+    "https://github.com/yerfor/GeneFacePlusPlus.git"
+  ],
+  "GoogleRecaptchaBypass": [
+    "https://github.com/sarperavci/GoogleRecaptchaBypass.git"
+  ],
+  "GraphRAG": [
+    "https://github.com/JayLZhou/GraphRAG.git"
+  ],
+  "GraphRAG-Local-UI": [
+    "https://github.com/severian42/GraphRAG-Local-UI.git"
+  ],
+  "HarmonyOS-Haps": [
+    "https://github.com/Zitann/HarmonyOS-Haps.git"
+  ],
+  "HippoRAG": [
+    "https://github.com/OSU-NLP-Group/HippoRAG.git"
+  ],
+  "HomePWN": [
+    "https://github.com/Telefonica/HomePWN.git"
+  ],
+  "Horde3D": [
+    "https://github.com/horde3d/Horde3D.git"
+  ],
+  "Hunyuan3D-1": [
+    "https://github.com/Tencent-Hunyuan/Hunyuan3D-1.git"
+  ],
+  "HunyuanVideo": [
+    "https://github.com/Tencent-Hunyuan/HunyuanVideo.git"
+  ],
+  "IC-Light": [
+    "https://github.com/lllyasviel/IC-Light.git"
+  ],
+  "IDM-VTON": [
+    "https://github.com/yisol/IDM-VTON.git"
+  ],
+  "IIC": [
+    "https://github.com/xu-ji/IIC.git"
+  ],
+  "IMAGDressing": [
+    "https://github.com/muzishen/IMAGDressing.git"
+  ],
+  "IPRotate_Burp_Extension": [
+    "https://github.com/RhinoSecurityLabs/IPRotate_Burp_Extension.git"
+  ],
+  "IPTV": [
+    "https://github.com/yuanzl77/IPTV.git",
+    "https://github.com/Free-TV/IPTV.git"
+  ],
+  "Index-anisora": [
+    "https://github.com/bilibili/Index-anisora.git"
+  ],
+  "Infinity": [
+    "https://github.com/FoundationVision/Infinity.git"
+  ],
+  "InkyPi": [
+    "https://github.com/fatihak/InkyPi.git"
+  ],
+  "InstantMesh": [
+    "https://github.com/TencentARC/InstantMesh.git"
+  ],
+  "InstantSplat": [
+    "https://github.com/NVlabs/InstantSplat.git"
+  ],
+  "Integuru": [
+    "https://github.com/Integuru-AI/Integuru.git"
+  ],
+  "InvSR": [
+    "https://github.com/zsyOAOA/InvSR.git"
+  ],
+  "Janus": [
+    "https://github.com/deepseek-ai/Janus.git"
+  ],
+  "JavSP": [
+    "https://github.com/Yuukiy/JavSP.git"
+  ],
+  "Jobs_Applier_AI_Agent_AIHawk": [
+    "https://github.com/feder-cr/Jobs_Applier_AI_Agent_AIHawk.git"
+  ],
+  "KAG": [
+    "https://github.com/OpenSPG/KAG.git"
+  ],
+  "KVCache-Factory": [
+    "https://github.com/Zefan-Cai/KVCache-Factory.git"
+  ],
+  "Kats": [
+    "https://github.com/facebookresearch/Kats.git"
+  ],
+  "Kiln": [
+    "https://github.com/Kiln-AI/Kiln.git"
+  ],
+  "Kokoro-FastAPI": [
+    "https://github.com/remsky/Kokoro-FastAPI.git"
+  ],
+  "Kolors": [
+    "https://github.com/Kwai-Kolors/Kolors.git"
+  ],
+  "LGM": [
+    "https://github.com/3DTopia/LGM.git"
+  ],
+  "LIEF": [
+    "https://github.com/lief-project/LIEF.git"
+  ],
+  "LLM-Engineers-Handbook": [
+    "https://github.com/PacktPublishing/LLM-Engineers-Handbook.git"
+  ],
+  "LLM4Decompile": [
+    "https://github.com/albertan017/LLM4Decompile.git"
+  ],
+  "LLMBook-zh.github.io": [
+    "https://github.com/LLMBook-zh/LLMBook-zh.github.io.git"
+  ],
+  "LLaMA-Omni": [
+    "https://github.com/ictnlp/LLaMA-Omni.git"
+  ],
+  "LLaVA-CoT": [
+    "https://github.com/PKU-YuanGroup/LLaVA-CoT.git"
+  ],
+  "LLaVA-NeXT": [
+    "https://github.com/LLaVA-VL/LLaVA-NeXT.git"
+  ],
+  "LMCache": [
+    "https://github.com/LMCache/LMCache.git"
+  ],
+  "LWM": [
+    "https://github.com/LargeWorldModel/LWM.git"
+  ],
+  "LaVague": [
+    "https://github.com/lavague-ai/LaVague.git"
+  ],
+  "LatentSync": [
+    "https://github.com/bytedance/LatentSync.git"
+  ],
+  "LazyLLM": [
+    "https://github.com/LazyAGI/LazyLLM.git"
+  ],
+  "Leffa": [
+    "https://github.com/franciszzj/Leffa.git"
+  ],
+  "LiYing": [
+    "https://github.com/aoguai/LiYing.git"
+  ],
+  "Liger-Kernel": [
+    "https://github.com/linkedin/Liger-Kernel.git"
+  ],
+  "LightGBM": [
+    "https://github.com/microsoft/LightGBM.git"
+  ],
+  "LightRAG": [
+    "https://github.com/HKUDS/LightRAG.git"
+  ],
+  "LiteLoaderQQNT_Install": [
+    "https://github.com/Mzdyl/LiteLoaderQQNT_Install.git"
+  ],
+  "LiuAlgoTrader": [
+    "https://github.com/amor71/LiuAlgoTrader.git"
+  ],
+  "LivePortrait": [
+    "https://github.com/KwaiVGI/LivePortrait.git"
+  ],
+  "LlamaGen": [
+    "https://github.com/FoundationVision/LlamaGen.git"
+  ],
+  "Local-File-Organizer": [
+    "https://github.com/QiuYannnn/Local-File-Organizer.git"
+  ],
+  "LongWriter": [
+    "https://github.com/THUDM/LongWriter.git"
+  ],
+  "Lumina-T2X": [
+    "https://github.com/Alpha-VLLM/Lumina-T2X.git"
+  ],
+  "MGM": [
+    "https://github.com/dvlab-research/MGM.git"
+  ],
+  "MIMO": [
+    "https://github.com/menyifang/MIMO.git"
+  ],
+  "MLE-agent": [
+    "https://github.com/MLSysOps/MLE-agent.git"
+  ],
+  "MMAudio": [
+    "https://github.com/hkchengrex/MMAudio.git"
+  ],
+  "MNN": [
+    "https://github.com/alibaba/MNN.git"
+  ],
+  "Macast": [
+    "https://github.com/xfangfang/Macast.git"
+  ],
+  "MagicClothing": [
+    "https://github.com/ShineChen1024/MagicClothing.git"
+  ],
+  "MagicQuill": [
+    "https://github.com/ant-research/MagicQuill.git"
+  ],
+  "MagicTime": [
+    "https://github.com/PKU-YuanGroup/MagicTime.git"
+  ],
+  "Magma": [
+    "https://github.com/microsoft/Magma.git"
+  ],
+  "MambaOut": [
+    "https://github.com/yuweihao/MambaOut.git"
+  ],
+  "MambaVision": [
+    "https://github.com/NVlabs/MambaVision.git"
+  ],
+  "MarS": [
+    "https://github.com/microsoft/MarS.git"
+  ],
+  "Marco-o1": [
+    "https://github.com/AIDC-AI/Marco-o1.git"
+  ],
+  "MegaParse": [
+    "https://github.com/QuivrHQ/MegaParse.git"
+  ],
+  "MeloTTS": [
+    "https://github.com/myshell-ai/MeloTTS.git"
+  ],
+  "MemoRAG": [
+    "https://github.com/qhjqhj00/MemoRAG.git"
+  ],
+  "Mengzi3": [
+    "https://github.com/Langboat/Mengzi3.git"
+  ],
+  "Merlion": [
+    "https://github.com/salesforce/Merlion.git"
+  ],
+  "MeshAnything": [
+    "https://github.com/buaacyw/MeshAnything.git"
+  ],
+  "MikroTikPatch": [
+    "https://github.com/elseif/MikroTikPatch.git"
+  ],
+  "MilkyTracker": [
+    "https://github.com/milkytracker/MilkyTracker.git"
+  ],
+  "MimicBrush": [
+    "https://github.com/ali-vilab/MimicBrush.git"
+  ],
+  "MimicMotion": [
+    "https://github.com/Tencent/MimicMotion.git"
+  ],
+  "MinerU": [
+    "https://github.com/opendatalab/MinerU.git"
+  ],
+  "MiniCPM-V": [
+    "https://github.com/OpenBMB/MiniCPM-V.git"
+  ],
+  "MixTeX-Latex-OCR": [
+    "https://github.com/RQLuo/MixTeX-Latex-OCR.git"
+  ],
+  "MoA": [
+    "https://github.com/togethercomputer/MoA.git"
+  ],
+  "MobileAgent": [
+    "https://github.com/X-PLUG/MobileAgent.git"
+  ],
+  "MobileLLM": [
+    "https://github.com/facebookresearch/MobileLLM.git"
+  ],
+  "ModernBERT": [
+    "https://github.com/AnswerDotAI/ModernBERT.git"
+  ],
+  "MoneyPrinter": [
+    "https://github.com/FujiwaraChoki/MoneyPrinter.git"
+  ],
+  "MoneyPrinterPlus": [
+    "https://github.com/ddean2009/MoneyPrinterPlus.git"
+  ],
+  "MoneyPrinterTurbo": [
+    "https://github.com/harry0703/MoneyPrinterTurbo.git"
+  ],
+  "MoneyPrinterV2": [
+    "https://github.com/FujiwaraChoki/MoneyPrinterV2.git"
+  ],
+  "MonoGS": [
+    "https://github.com/muskie82/MonoGS.git"
+  ],
+  "Moore-AnimateAnyone": [
+    "https://github.com/MooreThreads/Moore-AnimateAnyone.git"
+  ],
+  "Mora": [
+    "https://github.com/lichao-sun/Mora.git"
+  ],
+  "Multimodal-Transformer": [
+    "https://github.com/yaohungt/Multimodal-Transformer.git"
+  ],
+  "Muon": [
+    "https://github.com/KellerJordan/Muon.git"
+  ],
+  "MusePose": [
+    "https://github.com/TMElyralab/MusePose.git"
+  ],
+  "MuseTalk": [
+    "https://github.com/TMElyralab/MuseTalk.git"
+  ],
+  "MuseV": [
+    "https://github.com/TMElyralab/MuseV.git"
+  ],
+  "MusicFreePluginsHub": [
+    "https://github.com/xxnuo/MusicFreePluginsHub.git"
+  ],
+  "NISQA": [
+    "https://github.com/gabrielmittag/NISQA.git"
+  ],
+  "NarratoAI": [
+    "https://github.com/linyqh/NarratoAI.git"
+  ],
+  "Nugget": [
+    "https://github.com/leminlimez/Nugget.git"
+  ],
+  "OML-1.0-Fingerprinting": [
+    "https://github.com/sentient-agi/OML-1.0-Fingerprinting.git"
+  ],
+  "OOTDiffusion": [
+    "https://github.com/levihsu/OOTDiffusion.git"
+  ],
+  "OS-Copilot": [
+    "https://github.com/OS-Copilot/OS-Copilot.git"
+  ],
+  "OmDet": [
+    "https://github.com/om-ai-lab/OmDet.git"
+  ],
+  "OminiControl": [
+    "https://github.com/Yuanshi9815/OminiControl.git"
+  ],
+  "Omost": [
+    "https://github.com/lllyasviel/Omost.git"
+  ],
+  "OpCore-Simplify": [
+    "https://github.com/lzhoang2801/OpCore-Simplify.git"
+  ],
+  "Open-Interface": [
+    "https://github.com/AmberSahdev/Open-Interface.git"
+  ],
+  "Open-O1": [
+    "https://github.com/Open-Source-O1/Open-O1.git"
+  ],
+  "Open-Sora": [
+    "https://github.com/hpcaitech/Open-Sora.git"
+  ],
+  "Open-Sora-Plan": [
+    "https://github.com/PKU-YuanGroup/Open-Sora-Plan.git"
+  ],
+  "Open3D": [
+    "https://github.com/isl-org/Open3D.git"
+  ],
+  "OpenCC": [
+    "https://github.com/BYVoid/OpenCC.git"
+  ],
+  "OpenCodeInterpreter": [
+    "https://github.com/OpenCodeInterpreter/OpenCodeInterpreter.git"
+  ],
+  "OpenCoder-llm": [
+    "https://github.com/OpenCoder-llm/OpenCoder-llm.git"
+  ],
+  "OpenColorIO": [
+    "https://github.com/AcademySoftwareFoundation/OpenColorIO.git"
+  ],
+  "OpenHands": [
+    "https://github.com/All-Hands-AI/OpenHands.git"
+  ],
+  "OpenLongTailRecognition-OLTR": [
+    "https://github.com/zhmiao/OpenLongTailRecognition-OLTR.git"
+  ],
+  "OpenPrompt": [
+    "https://github.com/thunlp/OpenPrompt.git"
+  ],
+  "OpenRCT2": [
+    "https://github.com/OpenRCT2/OpenRCT2.git"
+  ],
+  "OpenVtuber": [
+    "https://github.com/1996scarlet/OpenVtuber.git"
+  ],
+  "Open_Duck_Mini": [
+    "https://github.com/apirrone/Open_Duck_Mini.git"
+  ],
+  "OuteTTS": [
+    "https://github.com/edwko/OuteTTS.git"
+  ],
+  "Ovis": [
+    "https://github.com/AIDC-AI/Ovis.git"
+  ],
+  "PDF-Extract-Kit": [
+    "https://github.com/opendatalab/PDF-Extract-Kit.git"
+  ],
+  "PDFMathTranslate": [
+    "https://github.com/Byaidu/PDFMathTranslate.git"
+  ],
+  "PIKE-RAG": [
+    "https://github.com/microsoft/PIKE-RAG.git"
+  ],
+  "PPPwn": [
+    "https://github.com/TheOfficialFloW/PPPwn.git"
+  ],
+  "PRIME": [
+    "https://github.com/PRIME-RL/PRIME.git"
+  ],
+  "Paints-UNDO": [
+    "https://github.com/lllyasviel/Paints-UNDO.git"
+  ],
+  "PiLiDAR": [
+    "https://github.com/PiLiDAR/PiLiDAR.git"
+  ],
+  "PixArt-sigma": [
+    "https://github.com/PixArt-alpha/PixArt-sigma.git"
+  ],
+  "PlugNPlay-Modules": [
+    "https://github.com/ai-dawang/PlugNPlay-Modules.git"
+  ],
+  "PocketFlow": [
+    "https://github.com/The-Pocket/PocketFlow.git",
+    "https://github.com/Tencent/PocketFlow.git"
+  ],
+  "PolarMask": [
+    "https://github.com/xieenze/PolarMask.git"
+  ],
+  "PolyglotPDF": [
+    "https://github.com/CBIhalsen/PolyglotPDF.git"
+  ],
+  "PositionBasedDynamics": [
+    "https://github.com/InteractiveComputerGraphics/PositionBasedDynamics.git"
+  ],
+  "PowerInfer": [
+    "https://github.com/SJTU-IPADS/PowerInfer.git"
+  ],
+  "PraisonAI": [
+    "https://github.com/MervinPraison/PraisonAI.git"
+  ],
+  "PromptWizard": [
+    "https://github.com/microsoft/PromptWizard.git"
+  ],
+  "Protenix": [
+    "https://github.com/bytedance/Protenix.git"
+  ],
+  "ProxyCat": [
+    "https://github.com/honmashironeko/ProxyCat.git"
+  ],
+  "PuLID": [
+    "https://github.com/ToTheBeginning/PuLID.git"
+  ],
+  "Pyramid-Flow": [
+    "https://github.com/jy0205/Pyramid-Flow.git"
+  ],
+  "QAnything": [
+    "https://github.com/netease-youdao/QAnything.git"
+  ],
+  "Qwen2-Audio": [
+    "https://github.com/QwenLM/Qwen2-Audio.git"
+  ],
+  "Qwen2-VL-Finetune": [
+    "https://github.com/2U1/Qwen2-VL-Finetune.git"
+  ],
+  "Qwen3": [
+    "https://github.com/QwenLM/Qwen3.git"
+  ],
+  "Qwen3-Coder": [
+    "https://github.com/QwenLM/Qwen3-Coder.git"
+  ],
+  "R2R": [
+    "https://github.com/SciPhi-AI/R2R.git"
+  ],
+  "RA.Aid": [
+    "https://github.com/ai-christianson/RA.Aid.git"
+  ],
+  "RD-Agent": [
+    "https://github.com/microsoft/RD-Agent.git"
+  ],
+  "REPA": [
+    "https://github.com/sihyun-yu/REPA.git"
+  ],
+  "RLHF-Reward-Modeling": [
+    "https://github.com/RLHFlow/RLHF-Reward-Modeling.git"
+  ],
+  "RULER": [
+    "https://github.com/NVIDIA/RULER.git"
+  ],
+  "RagaAI-Catalyst": [
+    "https://github.com/raga-ai-hub/RagaAI-Catalyst.git"
+  ],
+  "RapidOCR": [
+    "https://github.com/RapidAI/RapidOCR.git"
+  ],
+  "Realtime-Action-Recognition": [
+    "https://github.com/felixchenfy/Realtime-Action-Recognition.git"
+  ],
+  "RingNet": [
+    "https://github.com/soubhiksanyal/RingNet.git"
+  ],
+  "RoboTwin": [
+    "https://github.com/RoboTwin-Platform/RoboTwin.git"
+  ],
+  "RoboticsDiffusionTransformer": [
+    "https://github.com/thu-ml/RoboticsDiffusionTransformer.git"
+  ],
+  "Robyn": [
+    "https://github.com/sparckles/Robyn.git"
+  ],
+  "RouteLLM": [
+    "https://github.com/lm-sys/RouteLLM.git"
+  ],
+  "SFML": [
+    "https://github.com/SFML/SFML.git"
+  ],
+  "SPIN": [
+    "https://github.com/uclaml/SPIN.git",
+    "https://github.com/nkolot/SPIN.git"
+  ],
+  "STAR": [
+    "https://github.com/NJU-PCALab/STAR.git"
+  ],
+  "SWE-agent": [
+    "https://github.com/SWE-agent/SWE-agent.git"
+  ],
+  "Sana": [
+    "https://github.com/NVlabs/Sana.git"
+  ],
+  "ScopeSentry": [
+    "https://github.com/Autumn-27/ScopeSentry.git"
+  ],
+  "Scrapegraph-ai": [
+    "https://github.com/ScrapeGraphAI/Scrapegraph-ai.git"
+  ],
+  "Scrapling": [
+    "https://github.com/D4Vinci/Scrapling.git"
+  ],
+  "SenseVoice": [
+    "https://github.com/FunAudioLLM/SenseVoice.git"
+  ],
+  "Show-o": [
+    "https://github.com/showlab/Show-o.git"
+  ],
+  "ShowUI": [
+    "https://github.com/showlab/ShowUI.git"
+  ],
+  "SimSwap": [
+    "https://github.com/neuralchen/SimSwap.git"
+  ],
+  "Sonic": [
+    "https://github.com/jixiaozhong/Sonic.git"
+  ],
+  "SpanBERT": [
+    "https://github.com/facebookresearch/SpanBERT.git"
+  ],
+  "Speech-AI-Forge": [
+    "https://github.com/lenML/Speech-AI-Forge.git"
+  ],
+  "StableAnimator": [
+    "https://github.com/Francis-Rings/StableAnimator.git"
+  ],
+  "Streamer-Sales": [
+    "https://github.com/PeterH0323/Streamer-Sales.git"
+  ],
+  "StreamingT2V": [
+    "https://github.com/Picsart-AI-Research/StreamingT2V.git"
+  ],
+  "Suno-API": [
+    "https://github.com/SunoAI-API/Suno-API.git"
+  ],
+  "SurfSense": [
+    "https://github.com/MODSetter/SurfSense.git"
+  ],
+  "SwinIR": [
+    "https://github.com/JingyunLiang/SwinIR.git"
+  ],
+  "TRELLIS": [
+    "https://github.com/microsoft/TRELLIS.git"
+  ],
+  "TagStudio": [
+    "https://github.com/TagStudioDev/TagStudio.git"
+  ],
+  "TaskingAI": [
+    "https://github.com/TaskingAI/TaskingAI.git"
+  ],
+  "TechXueXi": [
+    "https://github.com/TechXueXi/TechXueXi.git"
+  ],
+  "Telechat": [
+    "https://github.com/Tele-AI/Telechat.git"
+  ],
+  "Tencent-Hunyuan-Large": [
+    "https://github.com/Tencent-Hunyuan/Tencent-Hunyuan-Large.git"
+  ],
+  "TensorRT-Model-Optimizer": [
+    "https://github.com/NVIDIA/TensorRT-Model-Optimizer.git"
+  ],
+  "TextGAN-PyTorch": [
+    "https://github.com/williamSYSU/TextGAN-PyTorch.git"
+  ],
+  "The-Ultimate-Python-Course": [
+    "https://github.com/CodeWithHarry/The-Ultimate-Python-Course.git"
+  ],
+  "ThinkMatch": [
+    "https://github.com/Thinklab-SJTU/ThinkMatch.git"
+  ],
+  "Time-LLM": [
+    "https://github.com/KimMeen/Time-LLM.git"
+  ],
+  "TimeMixer": [
+    "https://github.com/kwuking/TimeMixer.git"
+  ],
+  "ToonCrafter": [
+    "https://github.com/Doubiiu/ToonCrafter.git"
+  ],
+  "TotalRecall": [
+    "https://github.com/xaitax/TotalRecall.git"
+  ],
+  "TradingAgents": [
+    "https://github.com/TauricResearch/TradingAgents.git"
+  ],
+  "TrinityCore": [
+    "https://github.com/TrinityCore/TrinityCore.git",
+    "https://github.com/The-Cataclysm-Preservation-Project/TrinityCore.git"
+  ],
+  "TripoSR": [
+    "https://github.com/VAST-AI-Research/TripoSR.git"
+  ],
+  "UFO": [
+    "https://github.com/microsoft/UFO.git"
+  ],
+  "URS": [
+    "https://github.com/JosephLai241/URS.git"
+  ],
+  "Ultralight-Digital-Human": [
+    "https://github.com/anliyuan/Ultralight-Digital-Human.git"
+  ],
+  "Unique3D": [
+    "https://github.com/AiuniAI/Unique3D.git"
+  ],
+  "Upsonic": [
+    "https://github.com/Upsonic/Upsonic.git"
+  ],
+  "V-Express": [
+    "https://github.com/tencent-ailab/V-Express.git"
+  ],
+  "VILA": [
+    "https://github.com/NVlabs/VILA.git"
+  ],
+  "VITA": [
+    "https://github.com/VITA-MLLM/VITA.git"
+  ],
+  "VMamba": [
+    "https://github.com/MzeroMiko/VMamba.git"
+  ],
+  "VTK": [
+    "https://github.com/Kitware/VTK.git"
+  ],
+  "VV": [
+    "https://github.com/Cicada000/VV.git"
+  ],
+  "VideoCaptioner": [
+    "https://github.com/WEIFENG2333/VideoCaptioner.git"
+  ],
+  "VideoLingo": [
+    "https://github.com/Huanshere/VideoLingo.git"
+  ],
+  "VideoSys": [
+    "https://github.com/NUS-HPC-AI-Lab/VideoSys.git"
+  ],
+  "VideoX-Fun": [
+    "https://github.com/aigc-apps/VideoX-Fun.git"
+  ],
+  "Video_note_generator": [
+    "https://github.com/whotto/Video_note_generator.git"
+  ],
+  "ViewCrafter": [
+    "https://github.com/Drexubery/ViewCrafter.git"
+  ],
+  "Vim": [
+    "https://github.com/hustvl/Vim.git"
+  ],
+  "WAVM": [
+    "https://github.com/WAVM/WAVM.git"
+  ],
+  "WCT2": [
+    "https://github.com/clovaai/WCT2.git"
+  ],
+  "WasmEdge": [
+    "https://github.com/WasmEdge/WasmEdge.git"
+  ],
+  "WeChatOpenDevTools-Python": [
+    "https://github.com/JaveleyQAQ/WeChatOpenDevTools-Python.git"
+  ],
+  "WeChat_Article": [
+    "https://github.com/1061700625/WeChat_Article.git"
+  ],
+  "WeClone": [
+    "https://github.com/xming521/WeClone.git"
+  ],
+  "WebMonitor": [
+    "https://github.com/LogicJake/WebMonitor.git"
+  ],
+  "WechatMoments": [
+    "https://github.com/tech-shrimp/WechatMoments.git"
+  ],
+  "WhisperLiveKit": [
+    "https://github.com/QuentinFuxa/WhisperLiveKit.git"
+  ],
+  "WindowsCleaner": [
+    "https://github.com/darkmatter2048/WindowsCleaner.git"
+  ],
+  "WordLlama": [
+    "https://github.com/dleemiller/WordLlama.git"
+  ],
+  "XXMI-Launcher": [
+    "https://github.com/SpectrumQT/XXMI-Launcher.git"
+  ],
+  "XiaoYuanKouSuan": [
+    "https://github.com/cr4n5/XiaoYuanKouSuan.git"
+  ],
+  "YOLO": [
+    "https://github.com/MultimediaTechLab/YOLO.git"
+  ],
+  "YOLO-World": [
+    "https://github.com/AILab-CVC/YOLO-World.git"
+  ],
+  "YOWO": [
+    "https://github.com/wei-tim/YOWO.git"
+  ],
+  "YT-Spammer-Purge": [
+    "https://github.com/ThioJoe/YT-Spammer-Purge.git"
+  ],
+  "YTSage": [
+    "https://github.com/oop7/YTSage.git"
+  ],
+  "ZenlessZoneZero-Auto": [
+    "https://github.com/sMythicalBird/ZenlessZoneZero-Auto.git"
+  ],
+  "ZenlessZoneZero-OneDragon": [
+    "https://github.com/OneDragon-Anything/ZenlessZoneZero-OneDragon.git"
+  ],
+  "abseil-cpp": [
+    "https://github.com/abseil/abseil-cpp.git"
+  ],
+  "aci": [
+    "https://github.com/aipotheosis-labs/aci.git"
+  ],
+  "actor-framework": [
+    "https://github.com/actor-framework/actor-framework.git"
+  ],
+  "ag2": [
+    "https://github.com/ag2ai/ag2.git"
+  ],
+  "agent-service-toolkit": [
+    "https://github.com/JoshuaC215/agent-service-toolkit.git"
+  ],
+  "agent-squad": [
+    "https://github.com/awslabs/agent-squad.git"
+  ],
+  "agent-zero": [
+    "https://github.com/agent0ai/agent-zero.git"
+  ],
+  "agentUniverse": [
+    "https://github.com/agentuniverse-ai/agentUniverse.git"
+  ],
+  "agentic_security": [
+    "https://github.com/msoedov/agentic_security.git"
+  ],
+  "agentscope": [
+    "https://github.com/agentscope-ai/agentscope.git"
+  ],
+  "agibot_x1_train": [
+    "https://github.com/AgibotTech/agibot_x1_train.git"
+  ],
+  "ai-agents-masterclass": [
+    "https://github.com/coleam00/ai-agents-masterclass.git"
+  ],
+  "ai-data-science-team": [
+    "https://github.com/business-science/ai-data-science-team.git"
+  ],
+  "ai-for-grant-writing": [
+    "https://github.com/eseckel/ai-for-grant-writing.git"
+  ],
+  "ai-gradio": [
+    "https://github.com/AK391/ai-gradio.git"
+  ],
+  "ai-hedge-fund": [
+    "https://github.com/virattt/ai-hedge-fund.git"
+  ],
+  "ai-imu-dr": [
+    "https://github.com/mbrossar/ai-imu-dr.git"
+  ],
+  "ai.robots.txt": [
+    "https://github.com/ai-robots-txt/ai.robots.txt.git"
+  ],
+  "aiXcoder-7B": [
+    "https://github.com/aixcoder-plugin/aiXcoder-7B.git"
+  ],
+  "ailab": [
+    "https://github.com/bilibili/ailab.git"
+  ],
+  "airda": [
+    "https://github.com/hitsz-ids/airda.git"
+  ],
+  "airweave": [
+    "https://github.com/airweave-ai/airweave.git"
+  ],
+  "aisuite": [
+    "https://github.com/andrewyng/aisuite.git"
+  ],
+  "aktools": [
+    "https://github.com/akfamily/aktools.git"
+  ],
+  "alphafold3": [
+    "https://github.com/google-deepmind/alphafold3.git"
+  ],
+  "alphafold3-pytorch": [
+    "https://github.com/lucidrains/alphafold3-pytorch.git"
+  ],
+  "alphagenome": [
+    "https://github.com/google-deepmind/alphagenome.git"
+  ],
+  "ankicommunity-sync-server": [
+    "https://github.com/ankicommunity/ankicommunity-sync-server.git"
+  ],
+  "anomalib": [
+    "https://github.com/open-edge-platform/anomalib.git"
+  ],
+  "argilla": [
+    "https://github.com/argilla-io/argilla.git"
+  ],
+  "argoverse-api": [
+    "https://github.com/argoverse/argoverse-api.git"
+  ],
+  "arxiv-mcp-server": [
+    "https://github.com/blazickjp/arxiv-mcp-server.git"
+  ],
+  "atomic-agents": [
+    "https://github.com/BrainBlend-AI/atomic-agents.git"
+  ],
+  "audio2photoreal": [
+    "https://github.com/facebookresearch/audio2photoreal.git"
+  ],
+  "auto-code-rover": [
+    "https://github.com/AutoCodeRoverSG/auto-code-rover.git"
+  ],
+  "autoMate": [
+    "https://github.com/yuruotong1/autoMate.git"
+  ],
+  "auto_job__find__chatgpt__rpa": [
+    "https://github.com/Frrrrrrrrank/auto_job__find__chatgpt__rpa.git"
+  ],
+  "ava-whatsapp-agent-course": [
+    "https://github.com/neural-maze/ava-whatsapp-agent-course.git"
+  ],
+  "awesome-llm-apps": [
+    "https://github.com/Shubhamsaboo/awesome-llm-apps.git"
+  ],
+  "awkward": [
+    "https://github.com/scikit-hep/awkward.git"
+  ],
+  "baal": [
+    "https://github.com/baal-org/baal.git"
+  ],
+  "bailing": [
+    "https://github.com/wwbin2017/bailing.git"
+  ],
+  "basic-memory": [
+    "https://github.com/basicmachines-co/basic-memory.git"
+  ],
+  "beaverhabits": [
+    "https://github.com/daya0576/beaverhabits.git"
+  ],
+  "beeai-framework": [
+    "https://github.com/i-am-bee/beeai-framework.git"
+  ],
+  "bert": [
+    "https://github.com/google-research/bert.git"
+  ],
+  "bertsearch": [
+    "https://github.com/Hironsan/bertsearch.git"
+  ],
+  "bilibot": [
+    "https://github.com/linyiLYi/bilibot.git"
+  ],
+  "bilive": [
+    "https://github.com/timerring/bilive.git"
+  ],
+  "black": [
+    "https://github.com/psf/black.git"
+  ],
+  "blt": [
+    "https://github.com/LLNL/blt.git",
+    "https://github.com/facebookresearch/blt.git"
+  ],
+  "bm25s": [
+    "https://github.com/xhluca/bm25s.git"
+  ],
+  "boilerplates": [
+    "https://github.com/ChristianLempa/boilerplates.git"
+  ],
+  "boltz": [
+    "https://github.com/jwohlwend/boltz.git"
+  ],
+  "browser-use": [
+    "https://github.com/browser-use/browser-use.git"
+  ],
+  "brumadinho_location": [
+    "https://github.com/sosbrumadinho/brumadinho_location.git"
+  ],
+  "btop": [
+    "https://github.com/aristocratos/btop.git"
+  ],
+  "build-nanogpt": [
+    "https://github.com/karpathy/build-nanogpt.git"
+  ],
+  "bullet3": [
+    "https://github.com/bulletphysics/bullet3.git"
+  ],
+  "burr": [
+    "https://github.com/apache/burr.git"
+  ],
+  "cambrian": [
+    "https://github.com/cambrian-mllm/cambrian.git"
+  ],
+  "capnproto": [
+    "https://github.com/capnproto/capnproto.git"
+  ],
+  "chai-lab": [
+    "https://github.com/chaidiscovery/chai-lab.git"
+  ],
+  "chaiNNer": [
+    "https://github.com/chaiNNer-org/chaiNNer.git"
+  ],
+  "chameleon": [
+    "https://github.com/facebookresearch/chameleon.git"
+  ],
+  "champ": [
+    "https://github.com/chvmp/champ.git",
+    "https://github.com/fudan-generative-vision/champ.git"
+  ],
+  "chat-with-mlx": [
+    "https://github.com/qnguyen3/chat-with-mlx.git"
+  ],
+  "chat2api": [
+    "https://github.com/lanqian528/chat2api.git"
+  ],
+  "chronos-forecasting": [
+    "https://github.com/amazon-science/chronos-forecasting.git"
+  ],
+  "clarity-upscaler": [
+    "https://github.com/philz1337x/clarity-upscaler.git"
+  ],
+  "claude-engineer": [
+    "https://github.com/Doriandarko/claude-engineer.git"
+  ],
+  "claude-prompt-generator": [
+    "https://github.com/aws-samples/claude-prompt-generator.git"
+  ],
+  "cloudbak": [
+    "https://github.com/likeflyme/cloudbak.git"
+  ],
+  "code-act": [
+    "https://github.com/xingyaoww/code-act.git"
+  ],
+  "cog-face-to-many": [
+    "https://github.com/fofr/cog-face-to-many.git"
+  ],
+  "colpali": [
+    "https://github.com/illuin-tech/colpali.git"
+  ],
+  "comfyui_LLM_party": [
+    "https://github.com/heshengtao/comfyui_LLM_party.git"
+  ],
+  "comic-translate": [
+    "https://github.com/ogkalu2/comic-translate.git"
+  ],
+  "community": [
+    "https://github.com/tensorflow/community.git",
+    "https://github.com/open-telemetry/community.git"
+  ],
+  "composer": [
+    "https://github.com/mosaicml/composer.git"
+  ],
+  "computer_use_ootb": [
+    "https://github.com/showlab/computer_use_ootb.git"
+  ],
+  "contextgem": [
+    "https://github.com/shcherbak-ai/contextgem.git"
+  ],
+  "cppjieba": [
+    "https://github.com/yanyiwu/cppjieba.git",
+    "https://github.com/yanyiwu/cppjieba.git"
+  ],
+  "crackq": [
+    "https://github.com/f0cker/crackq.git"
+  ],
+  "crawl4ai": [
+    "https://github.com/unclecode/crawl4ai.git"
+  ],
+  "crawlee-python": [
+    "https://github.com/apify/crawlee-python.git"
+  ],
+  "create-llama": [
+    "https://github.com/run-llama/create-llama.git"
+  ],
+  "crewAI-tools": [
+    "https://github.com/crewAIInc/crewAI-tools.git"
+  ],
+  "ctpbee": [
+    "https://github.com/ctpbee/ctpbee.git"
+  ],
+  "cube-studio": [
+    "https://github.com/data-infra/cube-studio.git",
+    "https://github.com/tencentmusic/cube-studio.git"
+  ],
+  "curator": [
+    "https://github.com/bespokelabsai/curator.git"
+  ],
+  "cursor-auto-free": [
+    "https://github.com/chengazhen/cursor-auto-free.git"
+  ],
+  "cursor_machine_id": [
+    "https://github.com/fly8888/cursor_machine_id.git"
+  ],
+  "d6tflow": [
+    "https://github.com/d6t/d6tflow.git"
+  ],
+  "datachain": [
+    "https://github.com/iterative/datachain.git"
+  ],
+  "dbrx": [
+    "https://github.com/databricks/dbrx.git"
+  ],
+  "deep-ctr-prediction": [
+    "https://github.com/qiaoguan/deep-ctr-prediction.git"
+  ],
+  "deepseek-engineer": [
+    "https://github.com/Doriandarko/deepseek-engineer.git"
+  ],
+  "definitive-opensource": [
+    "https://github.com/mustbeperfect/definitive-opensource.git"
+  ],
+  "design-patterns-python": [
+    "https://github.com/RefactoringGuru/design-patterns-python.git"
+  ],
+  "devika": [
+    "https://github.com/stitionai/devika.git"
+  ],
+  "devin.cursorrules": [
+    "https://github.com/grapeot/devin.cursorrules.git"
+  ],
+  "diamond": [
+    "https://github.com/bbuchfink/diamond.git",
+    "https://github.com/eloialonso/diamond.git"
+  ],
+  "differential-privacy-library": [
+    "https://github.com/IBM/differential-privacy-library.git"
+  ],
+  "diffusion-pipe": [
+    "https://github.com/tdrussell/diffusion-pipe.git"
+  ],
+  "dify-for-dsl": [
+    "https://github.com/wwwzhouhui/dify-for-dsl.git"
+  ],
+  "dl-engineer-guidebook": [
+    "https://github.com/ypwhs/dl-engineer-guidebook.git"
+  ],
+  "dlib": [
+    "https://github.com/davisking/dlib.git"
+  ],
+  "docetl": [
+    "https://github.com/ucbepic/docetl.git"
+  ],
+  "docling": [
+    "https://github.com/docling-project/docling.git"
+  ],
+  "docs": [
+    "https://github.com/suitenumerique/docs.git",
+    "https://github.com/x64dbg/docs.git",
+    "https://github.com/pingcap/docs.git"
+  ],
+  "doctr": [
+    "https://github.com/mindee/doctr.git"
+  ],
+  "dsRAG": [
+    "https://github.com/D-Star-AI/dsRAG.git"
+  ],
+  "duckdb": [
+    "https://github.com/duckdb/duckdb.git"
+  ],
+  "dust3r": [
+    "https://github.com/naver/dust3r.git"
+  ],
+  "e0e1-wx": [
+    "https://github.com/eeeeeeeeee-code/e0e1-wx.git"
+  ],
+  "ebook2audiobook": [
+    "https://github.com/DrewThomasson/ebook2audiobook.git"
+  ],
+  "echomimic": [
+    "https://github.com/antgroup/echomimic.git"
+  ],
+  "echomimic_v2": [
+    "https://github.com/antgroup/echomimic_v2.git"
+  ],
+  "efficient-kan": [
+    "https://github.com/Blealtan/efficient-kan.git"
+  ],
+  "ell": [
+    "https://github.com/MadcowD/ell.git"
+  ],
+  "enhanced-FaaS-in-China": [
+    "https://github.com/xingpingcn/enhanced-FaaS-in-China.git"
+  ],
+  "entropix": [
+    "https://github.com/xjdr-alt/entropix.git"
+  ],
+  "esm": [
+    "https://github.com/evolutionaryscale/esm.git",
+    "https://github.com/facebookresearch/esm.git"
+  ],
+  "evolutionary-model-merge": [
+    "https://github.com/SakanaAI/evolutionary-model-merge.git"
+  ],
+  "excelCPU": [
+    "https://github.com/InkboxSoftware/excelCPU.git"
+  ],
+  "exchange-api": [
+    "https://github.com/fawazahmed0/exchange-api.git"
+  ],
+  "exo": [
+    "https://github.com/exo-explore/exo.git"
+  ],
+  "falco": [
+    "https://github.com/falcosecurity/falco.git"
+  ],
+  "fanqienovel-downloader": [
+    "https://github.com/ying-ck/fanqienovel-downloader.git"
+  ],
+  "fast-graphrag": [
+    "https://github.com/circlemind-ai/fast-graphrag.git"
+  ],
+  "fast3r": [
+    "https://github.com/facebookresearch/fast3r.git"
+  ],
+  "fastapi": [
+    "https://github.com/fastapi/fastapi.git"
+  ],
+  "fastcrud": [
+    "https://github.com/benavlabs/fastcrud.git"
+  ],
+  "fastmcp": [
+    "https://github.com/jlowin/fastmcp.git"
+  ],
+  "filament": [
+    "https://github.com/google/filament.git"
+  ],
+  "files-to-prompt": [
+    "https://github.com/simonw/files-to-prompt.git"
+  ],
+  "finetrainers": [
+    "https://github.com/huggingface/finetrainers.git"
+  ],
+  "flatbuffers": [
+    "https://github.com/google/flatbuffers.git"
+  ],
+  "flow_matching": [
+    "https://github.com/facebookresearch/flow_matching.git"
+  ],
+  "flux": [
+    "https://github.com/bytedance/flux.git",
+    "https://github.com/tcbrindle/flux.git",
+    "https://github.com/black-forest-labs/flux.git"
+  ],
+  "fluxgym": [
+    "https://github.com/cocktailpeanut/fluxgym.git"
+  ],
+  "fmt": [
+    "https://github.com/fmtlib/fmt.git"
+  ],
+  "free-llm-api-resources": [
+    "https://github.com/cheahjs/free-llm-api-resources.git"
+  ],
+  "fswatch": [
+    "https://github.com/emcrisostomo/fswatch.git"
+  ],
+  "g1": [
+    "https://github.com/build-with-groq/g1.git"
+  ],
+  "gemini-balance": [
+    "https://github.com/snailyp/gemini-balance.git"
+  ],
+  "gemma": [
+    "https://github.com/google-deepmind/gemma.git"
+  ],
+  "gemma_pytorch": [
+    "https://github.com/google/gemma_pytorch.git"
+  ],
+  "generative-recommenders": [
+    "https://github.com/meta-recsys/generative-recommenders.git"
+  ],
+  "genshin_auto_fish": [
+    "https://github.com/IrisRainbowNeko/genshin_auto_fish.git"
+  ],
+  "ggml": [
+    "https://github.com/ggml-org/ggml.git"
+  ],
+  "giotto-tda": [
+    "https://github.com/giotto-ai/giotto-tda.git"
+  ],
+  "gitingest": [
+    "https://github.com/coderamp-labs/gitingest.git"
+  ],
+  "google-news-scraper": [
+    "https://github.com/oxylabs/google-news-scraper.git"
+  ],
+  "google-play-scraper": [
+    "https://github.com/JoMingyu/google-play-scraper.git"
+  ],
+  "googletest": [
+    "https://github.com/google/googletest.git"
+  ],
+  "gperftools": [
+    "https://github.com/gperftools/gperftools.git"
+  ],
+  "gpt-newspaper": [
+    "https://github.com/rotemweiss57/gpt-newspaper.git"
+  ],
+  "gptpdf": [
+    "https://github.com/CosmosShadow/gptpdf.git"
+  ],
+  "gpustack": [
+    "https://github.com/gpustack/gpustack.git"
+  ],
+  "gradio": [
+    "https://github.com/gradio-app/gradio.git"
+  ],
+  "graphiti": [
+    "https://github.com/getzep/graphiti.git"
+  ],
+  "graphrag": [
+    "https://github.com/microsoft/graphrag.git"
+  ],
+  "graphrag-accelerator": [
+    "https://github.com/Azure-Samples/graphrag-accelerator.git"
+  ],
+  "grok-1": [
+    "https://github.com/xai-org/grok-1.git"
+  ],
+  "grover": [
+    "https://github.com/rowanz/grover.git"
+  ],
+  "ha-wyzeapi": [
+    "https://github.com/SecKatie/ha-wyzeapi.git"
+  ],
+  "ha_xiaomi_home": [
+    "https://github.com/XiaoMi/ha_xiaomi_home.git"
+  ],
+  "hallo": [
+    "https://github.com/fudan-generative-vision/hallo.git"
+  ],
+  "hallo2": [
+    "https://github.com/fudan-generative-vision/hallo2.git"
+  ],
+  "hallo3": [
+    "https://github.com/fudan-generative-vision/hallo3.git"
+  ],
+  "harbor": [
+    "https://github.com/av/harbor.git"
+  ],
+  "hermes": [
+    "https://github.com/facebook/hermes.git"
+  ],
+  "hertz-dev": [
+    "https://github.com/Standard-Intelligence/hertz-dev.git"
+  ],
+  "hierarchical-3d-gaussians": [
+    "https://github.com/graphdeco-inria/hierarchical-3d-gaussians.git"
+  ],
+  "holmesgpt": [
+    "https://github.com/robusta-dev/holmesgpt.git"
+  ],
+  "humanoid-gym": [
+    "https://github.com/roboterax/humanoid-gym.git"
+  ],
+  "ichigo": [
+    "https://github.com/menloresearch/ichigo.git"
+  ],
+  "img2img-turbo": [
+    "https://github.com/GaParmar/img2img-turbo.git"
+  ],
+  "index": [
+    "https://github.com/SeetaFace6Open/index.git",
+    "https://github.com/lmnr-ai/index.git"
+  ],
+  "infinite-bookshelf": [
+    "https://github.com/Bklieger/infinite-bookshelf.git"
+  ],
+  "ingestr": [
+    "https://github.com/bruin-data/ingestr.git"
+  ],
+  "instructlab": [
+    "https://github.com/instructlab/instructlab.git"
+  ],
+  "intentkit": [
+    "https://github.com/crestalnetwork/intentkit.git"
+  ],
+  "iptv-api": [
+    "https://github.com/Guovin/iptv-api.git"
+  ],
+  "isle": [
+    "https://github.com/isledecomp/isle.git"
+  ],
+  "itables": [
+    "https://github.com/mwouts/itables.git"
+  ],
+  "jax": [
+    "https://github.com/jax-ml/jax.git"
+  ],
+  "jepa": [
+    "https://github.com/facebookresearch/jepa.git"
+  ],
+  "jsoncpp": [
+    "https://github.com/open-source-parsers/jsoncpp.git"
+  ],
+  "kotaemon": [
+    "https://github.com/Cinnamon/kotaemon.git"
+  ],
+  "ktransformers": [
+    "https://github.com/kvcache-ai/ktransformers.git"
+  ],
+  "kuzu": [
+    "https://github.com/kuzudb/kuzu.git"
+  ],
+  "lag-llama": [
+    "https://github.com/time-series-foundation-models/lag-llama.git"
+  ],
+  "lalboard": [
+    "https://github.com/JesusFreke/lalboard.git"
+  ],
+  "large_concept_model": [
+    "https://github.com/facebookresearch/large_concept_model.git"
+  ],
+  "leaguedirector": [
+    "https://github.com/RiotGames/leaguedirector.git"
+  ],
+  "ledger": [
+    "https://github.com/ledger/ledger.git"
+  ],
+  "lerobot": [
+    "https://github.com/huggingface/lerobot.git"
+  ],
+  "libde265": [
+    "https://github.com/strukturag/libde265.git"
+  ],
+  "librealsense": [
+    "https://github.com/IntelRealSense/librealsense.git"
+  ],
+  "libzmq": [
+    "https://github.com/zeromq/libzmq.git"
+  ],
+  "liffy": [
+    "https://github.com/mzfr/liffy.git"
+  ],
+  "lighteval": [
+    "https://github.com/huggingface/lighteval.git"
+  ],
+  "lightning-thunder": [
+    "https://github.com/Lightning-AI/lightning-thunder.git"
+  ],
+  "lingua": [
+    "https://github.com/facebookresearch/lingua.git"
+  ],
+  "llama-models": [
+    "https://github.com/meta-llama/llama-models.git"
+  ],
+  "llama-stack": [
+    "https://github.com/llamastack/llama-stack.git"
+  ],
+  "llama.cpp": [
+    "https://github.com/ggml-org/llama.cpp.git"
+  ],
+  "llama3": [
+    "https://github.com/meta-llama/llama3.git"
+  ],
+  "llama3-Chinese-chat": [
+    "https://github.com/CrazyBoyM/llama3-Chinese-chat.git"
+  ],
+  "llama_deploy": [
+    "https://github.com/run-llama/llama_deploy.git"
+  ],
+  "llm-compressor": [
+    "https://github.com/vllm-project/llm-compressor.git"
+  ],
+  "llm-twin-course": [
+    "https://github.com/decodingai-magazine/llm-twin-course.git"
+  ],
+  "llm2vec": [
+    "https://github.com/McGill-NLP/llm2vec.git"
+  ],
+  "llm_related": [
+    "https://github.com/wyf3/llm_related.git"
+  ],
+  "lmms-eval": [
+    "https://github.com/EvolvingLMMs-Lab/lmms-eval.git"
+  ],
+  "local-deep-researcher": [
+    "https://github.com/langchain-ai/local-deep-researcher.git"
+  ],
+  "logfire": [
+    "https://github.com/pydantic/logfire.git"
+  ],
+  "lotus": [
+    "https://github.com/lotus-data/lotus.git"
+  ],
+  "low_cost_robot": [
+    "https://github.com/AlexanderKoch-Koch/low_cost_robot.git"
+  ],
+  "loxs": [
+    "https://github.com/coffinxp/loxs.git"
+  ],
+  "maestro": [
+    "https://github.com/Doriandarko/maestro.git",
+    "https://github.com/roboflow/maestro.git"
+  ],
+  "mamba.py": [
+    "https://github.com/alxndrTL/mamba.py.git"
+  ],
+  "mar": [
+    "https://github.com/LTH14/mar.git"
+  ],
+  "markitdown": [
+    "https://github.com/microsoft/markitdown.git"
+  ],
+  "maro": [
+    "https://github.com/microsoft/maro.git"
+  ],
+  "masa": [
+    "https://github.com/siyuanliii/masa.git"
+  ],
+  "mast3r": [
+    "https://github.com/naver/mast3r.git"
+  ],
+  "matmulfreellm": [
+    "https://github.com/ridgerchu/matmulfreellm.git"
+  ],
+  "matter": [
+    "https://github.com/mateosss/matter.git"
+  ],
+  "mcp-agent": [
+    "https://github.com/lastmile-ai/mcp-agent.git"
+  ],
+  "mcp-atlassian": [
+    "https://github.com/sooperset/mcp-atlassian.git"
+  ],
+  "mcp-cli": [
+    "https://github.com/chrishayuk/mcp-cli.git"
+  ],
+  "mcp-obsidian": [
+    "https://github.com/MarkusPfundstein/mcp-obsidian.git"
+  ],
+  "mcp-proxy": [
+    "https://github.com/sparfenyuk/mcp-proxy.git"
+  ],
+  "meet-libai": [
+    "https://github.com/BinNong/meet-libai.git"
+  ],
+  "memobase": [
+    "https://github.com/memodb-io/memobase.git"
+  ],
+  "mesh-transformer-jax": [
+    "https://github.com/kingoflolz/mesh-transformer-jax.git"
+  ],
+  "metavoice-src": [
+    "https://github.com/metavoiceio/metavoice-src.git"
+  ],
+  "mfem": [
+    "https://github.com/mfem/mfem.git"
+  ],
+  "mflux": [
+    "https://github.com/filipstrand/mflux.git"
+  ],
+  "micro_diffusion": [
+    "https://github.com/SonyResearch/micro_diffusion.git"
+  ],
+  "midea_ac_lan": [
+    "https://github.com/wuwentao/midea_ac_lan.git",
+    "https://github.com/georgezhao2010/midea_ac_lan.git"
+  ],
+  "minbpe": [
+    "https://github.com/karpathy/minbpe.git"
+  ],
+  "mindsdb": [
+    "https://github.com/mindsdb/mindsdb.git"
+  ],
+  "mini-omni": [
+    "https://github.com/gpt-omni/mini-omni.git"
+  ],
+  "mini-omni2": [
+    "https://github.com/gpt-omni/mini-omni2.git"
+  ],
+  "minimind": [
+    "https://github.com/jingyaogong/minimind.git"
+  ],
+  "minimind-v": [
+    "https://github.com/jingyaogong/minimind-v.git"
+  ],
+  "minisora": [
+    "https://github.com/mini-sora/minisora.git"
+  ],
+  "miniz": [
+    "https://github.com/richgel999/miniz.git"
+  ],
+  "mistral-finetune": [
+    "https://github.com/mistralai/mistral-finetune.git"
+  ],
+  "ml-4m": [
+    "https://github.com/apple/ml-4m.git"
+  ],
+  "ml-aim": [
+    "https://github.com/apple/ml-aim.git"
+  ],
+  "ml-depth-pro": [
+    "https://github.com/apple/ml-depth-pro.git"
+  ],
+  "ml-mobileclip": [
+    "https://github.com/apple/ml-mobileclip.git"
+  ],
+  "mlsql": [
+    "https://github.com/paulfitz/mlsql.git"
+  ],
+  "mlx": [
+    "https://github.com/ml-explore/mlx.git"
+  ],
+  "mlx-audio": [
+    "https://github.com/Blaizzy/mlx-audio.git"
+  ],
+  "mlx-vlm": [
+    "https://github.com/Blaizzy/mlx-vlm.git"
+  ],
+  "mmocr": [
+    "https://github.com/open-mmlab/mmocr.git"
+  ],
+  "mobile-vision": [
+    "https://github.com/facebookresearch/mobile-vision.git"
+  ],
+  "mochi": [
+    "https://github.com/genmoai/mochi.git"
+  ],
+  "modded-nanogpt": [
+    "https://github.com/KellerJordan/modded-nanogpt.git"
+  ],
+  "model2vec": [
+    "https://github.com/MinishLab/model2vec.git"
+  ],
+  "model_bakery": [
+    "https://github.com/model-bakers/model_bakery.git"
+  ],
+  "moffee": [
+    "https://github.com/wbopan/moffee.git"
+  ],
+  "mold": [
+    "https://github.com/rui314/mold.git"
+  ],
+  "monst3r": [
+    "https://github.com/Junyi42/monst3r.git"
+  ],
+  "moonshine": [
+    "https://github.com/moonshine-ai/moonshine.git"
+  ],
+  "morphik-core": [
+    "https://github.com/morphik-org/morphik-core.git"
+  ],
+  "moshi": [
+    "https://github.com/kyutai-labs/moshi.git"
+  ],
+  "mujoco": [
+    "https://github.com/google-deepmind/mujoco.git"
+  ],
+  "muzic": [
+    "https://github.com/microsoft/muzic.git"
+  ],
+  "n-beats": [
+    "https://github.com/philipperemy/n-beats.git"
+  ],
+  "nano-graphrag": [
+    "https://github.com/gusye1234/nano-graphrag.git"
+  ],
+  "nano-llama31": [
+    "https://github.com/karpathy/nano-llama31.git"
+  ],
+  "narwhals": [
+    "https://github.com/narwhals-dev/narwhals.git"
+  ],
+  "ncnn": [
+    "https://github.com/Tencent/ncnn.git"
+  ],
+  "nesa": [
+    "https://github.com/nesaorg/nesa.git"
+  ],
+  "ninja": [
+    "https://github.com/ninja-build/ninja.git"
+  ],
+  "nlm-ingestor": [
+    "https://github.com/nlmatics/nlm-ingestor.git"
+  ],
+  "no-code-architects-toolkit": [
+    "https://github.com/stephengpope/no-code-architects-toolkit.git"
+  ],
+  "nodriver": [
+    "https://github.com/ultrafunkamsterdam/nodriver.git"
+  ],
+  "notte": [
+    "https://github.com/nottelabs/notte.git"
+  ],
+  "nowafpls": [
+    "https://github.com/assetnote/nowafpls.git"
+  ],
+  "nuclei_poc": [
+    "https://github.com/adysec/nuclei_poc.git"
+  ],
+  "nunchaku": [
+    "https://github.com/nunchaku-tech/nunchaku.git"
+  ],
+  "nv-ingest": [
+    "https://github.com/NVIDIA/nv-ingest.git"
+  ],
+  "nvitop": [
+    "https://github.com/XuehaiPan/nvitop.git"
+  ],
+  "o-lib": [
+    "https://github.com/shiyi-0x7f/o-lib.git"
+  ],
+  "o1-engineer": [
+    "https://github.com/Doriandarko/o1-engineer.git"
+  ],
+  "o365spray": [
+    "https://github.com/0xZDH/o365spray.git"
+  ],
+  "oasis": [
+    "https://github.com/camel-ai/oasis.git"
+  ],
+  "oatpp": [
+    "https://github.com/oatpp/oatpp.git"
+  ],
+  "ocpp": [
+    "https://github.com/mobilityhouse/ocpp.git"
+  ],
+  "ok-wuthering-waves": [
+    "https://github.com/ok-oldking/ok-wuthering-waves.git"
+  ],
+  "olmocr": [
+    "https://github.com/allenai/olmocr.git"
+  ],
+  "omniparse": [
+    "https://github.com/adithya-s-k/omniparse.git"
+  ],
+  "oneDNN": [
+    "https://github.com/uxlfoundation/oneDNN.git"
+  ],
+  "opal": [
+    "https://github.com/permitio/opal.git"
+  ],
+  "open-computer-use": [
+    "https://github.com/e2b-dev/open-computer-use.git"
+  ],
+  "open-notebook": [
+    "https://github.com/lfnovo/open-notebook.git"
+  ],
+  "open-oasis": [
+    "https://github.com/etched-ai/open-oasis.git"
+  ],
+  "open_deep_research": [
+    "https://github.com/langchain-ai/open_deep_research.git"
+  ],
+  "openai-edge-tts": [
+    "https://github.com/travisvn/openai-edge-tts.git"
+  ],
+  "opencv": [
+    "https://github.com/opencv/opencv.git"
+  ],
+  "openlit": [
+    "https://github.com/openlit/openlit.git"
+  ],
+  "openpi": [
+    "https://github.com/Physical-Intelligence/openpi.git"
+  ],
+  "openr": [
+    "https://github.com/facebook/openr.git",
+    "https://github.com/openreasoner/openr.git"
+  ],
+  "openrecall": [
+    "https://github.com/openrecall/openrecall.git"
+  ],
+  "opentelemetry-python-contrib": [
+    "https://github.com/open-telemetry/opentelemetry-python-contrib.git"
+  ],
+  "optillm": [
+    "https://github.com/codelion/optillm.git"
+  ],
+  "osquery": [
+    "https://github.com/osquery/osquery.git"
+  ],
+  "oss-fuzz-gen": [
+    "https://github.com/google/oss-fuzz-gen.git"
+  ],
+  "ottomator-agents": [
+    "https://github.com/coleam00/ottomator-agents.git"
+  ],
+  "oumi": [
+    "https://github.com/oumi-ai/oumi.git"
+  ],
+  "ozz-animation": [
+    "https://github.com/guillaumeblanc/ozz-animation.git"
+  ],
+  "parlant": [
+    "https://github.com/emcie-co/parlant.git"
+  ],
+  "parler-tts": [
+    "https://github.com/huggingface/parler-tts.git"
+  ],
+  "pasa": [
+    "https://github.com/bytedance/pasa.git"
+  ],
+  "patchwork": [
+    "https://github.com/LimHyungTae/patchwork.git",
+    "https://github.com/patched-codes/patchwork.git"
+  ],
+  "pensieve": [
+    "https://github.com/arkohut/pensieve.git"
+  ],
+  "penzai": [
+    "https://github.com/google-deepmind/penzai.git"
+  ],
+  "persona-hub": [
+    "https://github.com/tencent-ailab/persona-hub.git"
+  ],
+  "pgqueuer": [
+    "https://github.com/janbjorge/pgqueuer.git"
+  ],
+  "picacg-qt": [
+    "https://github.com/tonquer/picacg-qt.git"
+  ],
+  "picotron": [
+    "https://github.com/huggingface/picotron.git"
+  ],
+  "pikiwidb": [
+    "https://github.com/OpenAtomFoundation/pikiwidb.git"
+  ],
+  "pipelines": [
+    "https://github.com/open-webui/pipelines.git",
+    "https://github.com/kubeflow/pipelines.git"
+  ],
+  "piper": [
+    "https://github.com/rhasspy/piper.git",
+    "https://github.com/libratbag/piper.git"
+  ],
+  "poco": [
+    "https://github.com/pocoproject/poco.git"
+  ],
+  "podcastfy": [
+    "https://github.com/souzatharsis/podcastfy.git"
+  ],
+  "poetry": [
+    "https://github.com/python-poetry/poetry.git"
+  ],
+  "portray": [
+    "https://github.com/timothycrosley/portray.git"
+  ],
+  "posting": [
+    "https://github.com/darrenburns/posting.git"
+  ],
+  "potpie": [
+    "https://github.com/potpie-ai/potpie.git"
+  ],
+  "preswald": [
+    "https://github.com/StructuredLabs/preswald.git"
+  ],
+  "probreg": [
+    "https://github.com/neka-nat/probreg.git"
+  ],
+  "pwnagotchi": [
+    "https://github.com/jayofelony/pwnagotchi.git",
+    "https://github.com/evilsocket/pwnagotchi.git"
+  ],
+  "pyJianYingDraft": [
+    "https://github.com/GuanYixuan/pyJianYingDraft.git"
+  ],
+  "pybind11": [
+    "https://github.com/pybind/pybind11.git"
+  ],
+  "pycountry": [
+    "https://github.com/pycountry/pycountry.git"
+  ],
+  "pydantic-ai": [
+    "https://github.com/pydantic/pydantic-ai.git"
+  ],
+  "pydoll": [
+    "https://github.com/autoscrape-labs/pydoll.git"
+  ],
+  "pyper": [
+    "https://github.com/pyper-dev/pyper.git"
+  ],
+  "pyreft": [
+    "https://github.com/stanfordnlp/pyreft.git"
+  ],
+  "pyresparser": [
+    "https://github.com/OmkarPathak/pyresparser.git"
+  ],
+  "python-cheatsheet": [
+    "https://github.com/gto76/python-cheatsheet.git"
+  ],
+  "python-ffmpeg-video-streaming": [
+    "https://github.com/quasarstream/python-ffmpeg-video-streaming.git"
+  ],
+  "python-genai": [
+    "https://github.com/googleapis/python-genai.git"
+  ],
+  "python-sdk": [
+    "https://github.com/modelcontextprotocol/python-sdk.git",
+    "https://github.com/watson-developer-cloud/python-sdk.git"
+  ],
+  "pytorch-auto-drive": [
+    "https://github.com/voldemortX/pytorch-auto-drive.git"
+  ],
+  "pywinassistant": [
+    "https://github.com/a-real-ai/pywinassistant.git"
+  ],
+  "qgis-earthengine-examples": [
+    "https://github.com/giswqs/qgis-earthengine-examples.git"
+  ],
+  "qodo-cover": [
+    "https://github.com/qodo-ai/qodo-cover.git"
+  ],
+  "quickfix": [
+    "https://github.com/quickfix/quickfix.git"
+  ],
+  "rStar": [
+    "https://github.com/microsoft/rStar.git",
+    "https://github.com/zhentingqi/rStar.git"
+  ],
+  "ragbits": [
+    "https://github.com/deepsense-ai/ragbits.git"
+  ],
+  "ragbuilder": [
+    "https://github.com/KruxAI/ragbuilder.git"
+  ],
+  "ramalama": [
+    "https://github.com/containers/ramalama.git"
+  ],
+  "raptor": [
+    "https://github.com/ruphy/raptor.git",
+    "https://github.com/parthsarthi03/raptor.git"
+  ],
+  "rawdog": [
+    "https://github.com/AbanteAI/rawdog.git"
+  ],
+  "reactphysics3d": [
+    "https://github.com/DanielChappuis/reactphysics3d.git"
+  ],
+  "requests-async": [
+    "https://github.com/encode/requests-async.git"
+  ],
+  "rerankers": [
+    "https://github.com/AnswerDotAI/rerankers.git"
+  ],
+  "retdec": [
+    "https://github.com/avast/retdec.git"
+  ],
+  "retinanet-examples": [
+    "https://github.com/NVIDIA/retinanet-examples.git"
+  ],
+  "rio": [
+    "https://github.com/ethz-asl/rio.git",
+    "https://github.com/christopherdoer/rio.git",
+    "https://github.com/rio-labs/rio.git"
+  ],
+  "rknn-toolkit": [
+    "https://github.com/rockchip-linux/rknn-toolkit.git"
+  ],
+  "robin-hood-hashing": [
+    "https://github.com/martinus/robin-hood-hashing.git"
+  ],
+  "root": [
+    "https://github.com/root-project/root.git"
+  ],
+  "rosa": [
+    "https://github.com/nasa-jpl/rosa.git"
+  ],
+  "rtaudio": [
+    "https://github.com/thestk/rtaudio.git"
+  ],
+  "sage": [
+    "https://github.com/Storia-AI/sage.git"
+  ],
+  "sahi": [
+    "https://github.com/obss/sahi.git"
+  ],
+  "sample-factory": [
+    "https://github.com/alex-petrenko/sample-factory.git"
+  ],
+  "samurai": [
+    "https://github.com/yangchris11/samurai.git"
+  ],
+  "sapiens": [
+    "https://github.com/facebookresearch/sapiens.git"
+  ],
+  "schedule_free": [
+    "https://github.com/facebookresearch/schedule_free.git"
+  ],
+  "sd-forge-layerdiffuse": [
+    "https://github.com/lllyasviel/sd-forge-layerdiffuse.git"
+  ],
+  "sd3.5": [
+    "https://github.com/Stability-AI/sd3.5.git"
+  ],
+  "seed-tts-eval": [
+    "https://github.com/BytedanceSpeech/seed-tts-eval.git"
+  ],
+  "seed-vc": [
+    "https://github.com/Plachtaa/seed-vc.git"
+  ],
+  "self-rewarding-lm-pytorch": [
+    "https://github.com/lucidrains/self-rewarding-lm-pytorch.git"
+  ],
+  "semantic-kitti-api": [
+    "https://github.com/PRBonn/semantic-kitti-api.git"
+  ],
+  "semiphemeral": [
+    "https://github.com/micahflee/semiphemeral.git"
+  ],
+  "sentencepiece": [
+    "https://github.com/google/sentencepiece.git"
+  ],
+  "server": [
+    "https://github.com/MariaDB/server.git",
+    "https://github.com/mangoszero/server.git",
+    "https://github.com/CasparCG/server.git",
+    "https://github.com/opentibia/server.git",
+    "https://github.com/music-assistant/server.git",
+    "https://github.com/triton-inference-server/server.git",
+    "https://github.com/etesync/server.git"
+  ],
+  "sgcc_electricity_new": [
+    "https://github.com/ARC-MX/sgcc_electricity_new.git"
+  ],
+  "sglang": [
+    "https://github.com/sgl-project/sglang.git"
+  ],
+  "sherlock": [
+    "https://github.com/sherlock-project/sherlock.git"
+  ],
+  "shodan-eye": [
+    "https://github.com/BullsEye0/shodan-eye.git"
+  ],
+  "simba": [
+    "https://github.com/GitHamza0206/simba.git"
+  ],
+  "simbody": [
+    "https://github.com/simbody/simbody.git"
+  ],
+  "simdjson": [
+    "https://github.com/simdjson/simdjson.git"
+  ],
+  "simple-evals": [
+    "https://github.com/openai/simple-evals.git"
+  ],
+  "skyvern": [
+    "https://github.com/Skyvern-AI/skyvern.git"
+  ],
+  "smolagents": [
+    "https://github.com/huggingface/smolagents.git"
+  ],
+  "smollm": [
+    "https://github.com/huggingface/smollm.git"
+  ],
+  "socid-extractor": [
+    "https://github.com/soxoj/socid-extractor.git"
+  ],
+  "socket.io-client-cpp": [
+    "https://github.com/socketio/socket.io-client-cpp.git"
+  ],
+  "solidity": [
+    "https://github.com/argotorg/solidity.git"
+  ],
+  "spdlog": [
+    "https://github.com/gabime/spdlog.git"
+  ],
+  "speaches": [
+    "https://github.com/speaches-ai/speaches.git"
+  ],
+  "speech-to-speech": [
+    "https://github.com/huggingface/speech-to-speech.git"
+  ],
+  "splatviz": [
+    "https://github.com/Florian-Barthel/splatviz.git"
+  ],
+  "sports": [
+    "https://github.com/roboflow/sports.git"
+  ],
+  "sqlpp11": [
+    "https://github.com/rbock/sqlpp11.git"
+  ],
+  "stable-diffusion-webui-forge": [
+    "https://github.com/lllyasviel/stable-diffusion-webui-forge.git"
+  ],
+  "stable-fast-3d": [
+    "https://github.com/Stability-AI/stable-fast-3d.git"
+  ],
+  "statsforecast": [
+    "https://github.com/Nixtla/statsforecast.git"
+  ],
+  "storm": [
+    "https://github.com/stanford-oval/storm.git"
+  ],
+  "stylegan3": [
+    "https://github.com/NVlabs/stylegan3.git"
+  ],
+  "surya": [
+    "https://github.com/datalab-to/surya.git"
+  ],
+  "swarm": [
+    "https://github.com/openai/swarm.git"
+  ],
+  "taskflow": [
+    "https://github.com/taskflow/taskflow.git"
+  ],
+  "td": [
+    "https://github.com/tdlib/td.git"
+  ],
+  "text-extract-api": [
+    "https://github.com/CatchTheTornado/text-extract-api.git"
+  ],
+  "textgrad": [
+    "https://github.com/zou-group/textgrad.git"
+  ],
+  "tf-gnn-samples": [
+    "https://github.com/microsoft/tf-gnn-samples.git"
+  ],
+  "tfrecord": [
+    "https://github.com/vahidk/tfrecord.git"
+  ],
+  "thepipe": [
+    "https://github.com/emcf/thepipe.git"
+  ],
+  "thrift": [
+    "https://github.com/apache/thrift.git",
+    "https://github.com/wmorgan/thrift.git"
+  ],
+  "timesfm": [
+    "https://github.com/google-research/timesfm.git"
+  ],
+  "tinyrenderer": [
+    "https://github.com/ssloy/tinyrenderer.git"
+  ],
+  "tinystatus": [
+    "https://github.com/harsxv/tinystatus.git"
+  ],
+  "tinyxml2": [
+    "https://github.com/leethomason/tinyxml2.git"
+  ],
+  "titiler": [
+    "https://github.com/developmentseed/titiler.git"
+  ],
+  "toolong": [
+    "https://github.com/Textualize/toolong.git"
+  ],
+  "torchchat": [
+    "https://github.com/pytorch/torchchat.git"
+  ],
+  "tracecat": [
+    "https://github.com/TracecatHQ/tracecat.git"
+  ],
+  "tracy": [
+    "https://github.com/wolfpld/tracy.git"
+  ],
+  "transformer-debugger": [
+    "https://github.com/openai/transformer-debugger.git"
+  ],
+  "transformers": [
+    "https://github.com/huggingface/transformers.git"
+  ],
+  "translation-agent": [
+    "https://github.com/andrewyng/translation-agent.git"
+  ],
+  "treesheets": [
+    "https://github.com/aardappel/treesheets.git",
+    "https://github.com/aardappel/treesheets.git"
+  ],
+  "trojan": [
+    "https://github.com/trojan-gfw/trojan.git"
+  ],
+  "ttt-lm-pytorch": [
+    "https://github.com/test-time-training/ttt-lm-pytorch.git"
+  ],
+  "tubearchivist": [
+    "https://github.com/tubearchivist/tubearchivist.git"
+  ],
+  "tv": [
+    "https://github.com/ssili126/tv.git"
+  ],
+  "twikit": [
+    "https://github.com/d60/twikit.git"
+  ],
+  "twitter-apk": [
+    "https://github.com/crimera/twitter-apk.git"
+  ],
+  "uco3d": [
+    "https://github.com/facebookresearch/uco3d.git"
+  ],
+  "umu-launcher": [
+    "https://github.com/Open-Wine-Components/umu-launcher.git"
+  ],
+  "uncrustify": [
+    "https://github.com/uncrustify/uncrustify.git"
+  ],
+  "unitycatalog": [
+    "https://github.com/unitycatalog/unitycatalog.git"
+  ],
+  "university-information": [
+    "https://github.com/CollegesChat/university-information.git"
+  ],
+  "unstract": [
+    "https://github.com/Zipstack/unstract.git"
+  ],
+  "v2ray-configs": [
+    "https://github.com/Epodonios/v2ray-configs.git"
+  ],
+  "v4l2rtspserver": [
+    "https://github.com/mpromonet/v4l2rtspserver.git"
+  ],
+  "verl": [
+    "https://github.com/volcengine/verl.git"
+  ],
+  "vggsfm": [
+    "https://github.com/facebookresearch/vggsfm.git"
+  ],
+  "vision-agent": [
+    "https://github.com/landing-ai/vision-agent.git"
+  ],
+  "voice-pro": [
+    "https://github.com/abus-aikorea/voice-pro.git"
+  ],
+  "vulnhuntr": [
+    "https://github.com/protectai/vulnhuntr.git"
+  ],
+  "wat": [
+    "https://github.com/igrek51/wat.git"
+  ],
+  "weather_landscape": [
+    "https://github.com/lds133/weather_landscape.git"
+  ],
+  "web2pdf": [
+    "https://github.com/dvcoolarun/web2pdf.git"
+  ],
+  "webllama": [
+    "https://github.com/McGill-NLP/webllama.git"
+  ],
+  "webview": [
+    "https://github.com/webview/webview.git"
+  ],
+  "weibo-analysis-and-visualization": [
+    "https://github.com/HUANGZHIHAO1994/weibo-analysis-and-visualization.git"
+  ],
+  "weread2notion-pro": [
+    "https://github.com/malinkang/weread2notion-pro.git"
+  ],
+  "wereader": [
+    "https://github.com/arry-lee/wereader.git"
+  ],
+  "wiseflow": [
+    "https://github.com/TeamWiseFlow/wiseflow.git"
+  ],
+  "wxauto": [
+    "https://github.com/cluic/wxauto.git"
+  ],
+  "x-flux": [
+    "https://github.com/XLabs-AI/x-flux.git"
+  ],
+  "x-flux-comfyui": [
+    "https://github.com/XLabs-AI/x-flux-comfyui.git"
+  ],
+  "xDiT": [
+    "https://github.com/xdit-project/xDiT.git"
+  ],
+  "xlstm": [
+    "https://github.com/NX-AI/xlstm.git"
+  ],
+  "yahooquery": [
+    "https://github.com/dpguthrie/yahooquery.git"
+  ],
+  "yaml-cpp": [
+    "https://github.com/jbeder/yaml-cpp.git"
+  ],
+  "yandex_smart_home": [
+    "https://github.com/dext0r/yandex_smart_home.git"
+  ],
+  "yasb": [
+    "https://github.com/amnweb/yasb.git",
+    "https://github.com/da-rth/yasb.git"
+  ],
+  "yolov10": [
+    "https://github.com/THU-MIG/yolov10.git"
+  ],
+  "yolov9": [
+    "https://github.com/WongKinYiu/yolov9.git"
+  ],
+  "z3": [
+    "https://github.com/Z3Prover/z3.git"
+  ],
+  "zotero-arxiv-daily": [
+    "https://github.com/TideDra/zotero-arxiv-daily.git"
+  ]
+}
