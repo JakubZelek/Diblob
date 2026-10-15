@@ -51,6 +51,14 @@ ONLINE_SHOP_GRAPH = {
     "CheckOut": ["Payment"],
 }
 
+UNIT_COST_EDGE_COVERAGE_GRAPH = {
+    "S": ["a", "c"],
+    "a": ["b", "c"],
+    "b": ["a", "c"],
+    "c": ["T", "a"],
+    "T": [],
+}
+
 
 def nodes_covered(test_cases, digraph):
     """
@@ -218,6 +226,34 @@ def test_edge_coverage():
         cost_function={("5", "6"): 10, ("6", "1"): 10}, default_cost=2, k=3
     )
     assert len(test_cases) == 3
+
+
+def test_edge_coverage_minimal_total_cost_keeps_unit_edge_costs():
+    digraph_manager = DigraphManager({"B0": UNIT_COST_EDGE_COVERAGE_GRAPH})
+
+    test_cases = EdgeCoverage(digraph_manager).get_test_cases_minimal_total_cost()
+
+    invalid_edges, missing_edges = edges_covered(test_cases, digraph_manager)
+    assert not invalid_edges
+    assert not missing_edges
+    assert sum(len(test_case) - 1 for test_case in test_cases) == 10
+
+
+def test_edge_coverage_fulfills_costs_without_mutating_the_input():
+    digraph_manager = DigraphManager({"B0": UNIT_COST_EDGE_COVERAGE_GRAPH})
+    supplied_costs = {("S", "a"): 2}
+
+    costs = EdgeCoverage.fulfill_cost_function(
+        digraph_manager,
+        supplied_costs,
+        default_cost=1,
+        cost_function_multiplier=3,
+    )
+
+    assert supplied_costs == {("S", "a"): 2}
+    assert set(costs) == set(digraph_manager.edges)
+    assert costs[("S", "a")] == 6
+    assert costs[("S", "c")] == 3
 
 
 def test_cycle_coverage():
